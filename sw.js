@@ -1,7 +1,7 @@
 /* Permite instalar RADAR VIRAL como aplicación y abrirla aunque no haya internet.
    Las búsquedas y los vigilados se guardan aparte, en la memoria del navegador.
    No toca las consultas a YouTube: esas siempre van directo a internet. */
-var CACHE="virales-v2";
+var CACHE="virales-v3";
 
 self.addEventListener("install", function(e){
   self.skipWaiting();

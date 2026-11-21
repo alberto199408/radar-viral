@@ -5,285 +5,307 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Radar Viral</title>
 <link rel="manifest" href="./manifest.webmanifest">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23151925'/%3E%3Ccircle cx='32' cy='32' r='20' fill='none' stroke='%23FF5A36' stroke-width='3' opacity='.45'/%3E%3Ccircle cx='32' cy='32' r='12' fill='none' stroke='%23FF5A36' stroke-width='3' opacity='.75'/%3E%3Cpath d='M28 25 L40 32 L28 39 Z' fill='%23FF5A36'/%3E%3C/svg%3E">
+<link rel="icon" href="./icon-virales-192.png">
 <link rel="apple-touch-icon" href="./icon-virales-192.png">
-<meta name="theme-color" content="#151925">
+<meta name="theme-color" content="#0E1118">
 <style>
 :root{
-  --bg:#F1F2EE; --card:#fff; --ink:#141821; --ink2:#4A5263; --ink3:#8B92A3;
-  --rule:#DCDFE5; --rule2:#ECEEF2; --plate:#151925; --plate2:#232A3A;
-  --fuego:#FF5A36; --fuego2:#E5401C; --fuegoS:#FFE8E1;
-  --ambar:#E8890C; --ambarS:#FFF1DC; --azul:#2D6BD8; --azulS:#E5EDFC;
-  --verde:#13915F; --verdeS:#E0F4EA; --gris:#7C8394; --grisS:#EEF0F3;
-  --mono:ui-monospace,"SF Mono",Consolas,monospace; --r:10px;
+  color-scheme:dark;
+  --bg:#0E1118; --card:#171C28; --card2:#1F2535; --rule:#2B3245; --rule2:#222838;
+  --ink:#F2F4F8; --ink2:#A9B1C3; --ink3:#6F788C;
+  --fuego:#FF5A36; --fuego2:#FF7A5C; --verde:#2ECC8F; --ambar:#F5A524; --azul:#5B9BFF; --violeta:#9B7BFF;
+  --r:12px; --mono:ui-monospace,"SF Mono",Consolas,monospace;
 }
-*{box-sizing:border-box}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0}
 body{background:var(--bg);color:var(--ink);font:14px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-text-size-adjust:100%}
+body.conHoja{overflow:hidden}
 button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
 a{color:inherit}
 .hide{display:none!important}
-.mut{color:var(--ink2);font-size:13px;margin:0 0 8px}
+.mut{color:var(--ink2);font-size:12.5px;margin:0 0 8px}
+.mt{margin-top:8px}
+.ic{flex:none;display:block}
 
-/* ---------- cabecera ---------- */
-.cab{position:sticky;top:0;z-index:30;box-shadow:0 2px 8px rgba(0,0,0,.15)}
-header.top{background:var(--plate);color:#fff;display:flex;align-items:center;gap:10px;padding:10px 14px;padding-top:max(10px,env(safe-area-inset-top))}
-.logo{display:flex;align-items:center;gap:8px;font-weight:800;letter-spacing:.14em;font-size:15px;white-space:nowrap}
+/* ---------- cabecera y navegación ---------- */
+.cab{position:sticky;top:0;z-index:30;background:#0B0E14;border-bottom:1px solid var(--rule2)}
+header.top{display:flex;align-items:center;gap:8px;padding:9px 12px;padding-top:max(9px,env(safe-area-inset-top))}
+.logo{display:flex;align-items:center;gap:7px;font-weight:800;letter-spacing:.1em;font-size:14px;white-space:nowrap;cursor:pointer}
 .logo b{color:var(--fuego)}
 .sp{flex:1}
-.cuota{background:var(--plate2);border:1px solid #39415A;border-radius:999px;padding:5px 11px;font-size:12px;color:#C9CFDC;cursor:pointer;white-space:nowrap}
-.cuota b{color:#fff}
-.cuota.alerta{border-color:var(--fuego);color:#FFD0C4}
-.user{display:flex;align-items:center;gap:6px;cursor:pointer}
-.user img{width:30px;height:30px;border-radius:50%;display:block;border:2px solid #39415A}
-nav.tabs{background:var(--plate);display:flex;padding:0 6px;overflow-x:auto;scrollbar-width:none}
-nav.tabs::-webkit-scrollbar{display:none}
-nav.tabs button{background:none;border:0;color:#9BA3B6;padding:10px 14px 11px;font-weight:700;font-size:13.5px;border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap}
-nav.tabs button.on{color:#fff;border-bottom-color:var(--fuego)}
-.demo{background:#FFD84D;color:#3A2E00;font-size:12.5px;font-weight:700;text-align:center;padding:6px 10px;display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap}
-.demo button{background:#3A2E00;color:#FFD84D;border:0;border-radius:6px;padding:4px 10px;font-weight:700;cursor:pointer;font-size:12px}
+.plat{display:flex;align-items:center;gap:6px;background:var(--card2);border:1px solid var(--rule);border-radius:999px;padding:6px 10px;font-weight:700;font-size:12.5px;white-space:nowrap}
+.plat .yt{background:#FF0033;color:#fff;border-radius:5px;font-size:9px;padding:2px 5px}
+.rb{position:relative;width:34px;height:34px;border-radius:50%;background:var(--card2);border:1px solid var(--rule);display:flex;align-items:center;justify-content:center;padding:0;flex:none;overflow:visible}
+.rb img{width:100%;height:100%;border-radius:50%;object-fit:cover}
+.rb .bdg{position:absolute;top:-4px;right:-4px;background:var(--fuego);color:#fff;border-radius:999px;font-size:10px;font-weight:800;min-width:16px;height:16px;padding:0 4px;display:flex;align-items:center;justify-content:center}
+.demo{background:#FFD84D;color:#3A2E00;font-size:12px;font-weight:700;text-align:center;padding:5px 10px;display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap}
+.demo button{background:#3A2E00;color:#FFD84D;border:0;border-radius:6px;padding:3px 9px;font-weight:700;font-size:12px}
+nav.bnav{position:fixed;left:0;right:0;bottom:0;z-index:40;background:#0B0E14;border-top:1px solid var(--rule2);display:flex;padding-bottom:env(safe-area-inset-bottom)}
+nav.bnav button{flex:1;min-width:0;background:none;border:0;color:var(--ink3);padding:7px 2px 6px;font-size:10.5px;font-weight:700;display:flex;flex-direction:column;align-items:center;gap:2px}
+nav.bnav button.on{color:var(--fuego)}
+main{max-width:1100px;margin:0 auto;padding:10px 10px 90px}
 
-main{max-width:1180px;margin:0 auto;padding:12px 12px 90px}
-.card{background:var(--card);border:1px solid var(--rule);border-radius:var(--r);padding:14px;margin-bottom:12px;box-shadow:0 1px 2px rgba(20,24,33,.04)}
-h2{font-size:16px;margin:0 0 8px}
-h2 small{font-weight:500;color:var(--ink3);font-size:12px}
-h3.tit{font-size:14px;margin:18px 2px 8px}
-
-/* ---------- formulario de búsqueda ---------- */
-.qrow{display:flex;gap:8px}
-.qrow input{flex:1;min-width:0;padding:12px 14px;border:1.5px solid var(--rule);border-radius:10px;font-size:16px;background:#FAFBFC}
-.qrow input:focus{outline:none;border-color:var(--fuego);background:#fff}
-.btn{border:1px solid var(--rule);background:#fff;border-radius:9px;padding:9px 14px;font-weight:700;cursor:pointer;white-space:nowrap;text-decoration:none;display:inline-flex;align-items:center;gap:5px;justify-content:center}
-.btn:active{transform:translateY(1px)}
-.btn.pri{background:var(--fuego);border-color:var(--fuego2);color:#fff}
-.btn.osc{background:var(--plate);border-color:var(--plate);color:#fff}
-.btn.sm{padding:6px 10px;font-size:12.5px;border-radius:7px}
-.btn.mal{color:var(--fuego2);border-color:#F3C3B6}
+/* ---------- piezas básicas ---------- */
+.card{background:var(--card);border:1px solid var(--rule2);border-radius:var(--r);padding:12px;margin-bottom:10px}
+h2{font-size:15.5px;margin:0 0 6px}
+h3.tit{font-size:13.5px;margin:16px 2px 8px;display:flex;align-items:center;gap:8px}
+h3.tit .mas{margin-left:auto;font-size:12px;color:var(--fuego2);font-weight:700;background:none;border:0;padding:4px}
+.btn{border:1px solid var(--rule);background:var(--card2);border-radius:9px;padding:9px 12px;font-weight:700;white-space:nowrap;text-decoration:none;display:inline-flex;align-items:center;gap:6px;justify-content:center;font-size:13px}
+.btn:active,.chip:active,.tl[data-act]:active,.vc:active,.cc[data-act]:active{filter:brightness(1.25)}
+.btn.pri{background:var(--fuego);border-color:var(--fuego);color:#fff}
+.btn.osc{background:#0B0E14}
+.btn.sm{padding:6px 10px;font-size:12px;border-radius:8px}
+.btn.mal{color:#FF8A6E;border-color:#5A2A22}
 .btn[disabled]{opacity:.5;pointer-events:none}
-.btn.mas{width:100%;margin-top:10px;padding:12px}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-top:10px}
-.grid label,.grid2 label,label.lbl{display:flex;flex-direction:column;gap:3px;font-size:11px;color:var(--ink2);font-weight:700;text-transform:uppercase;letter-spacing:.04em}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
-select{padding:9px 8px;border:1px solid var(--rule);border-radius:8px;background:#fff;font-size:14px;text-transform:none;letter-spacing:0;font-weight:500;color:var(--ink);min-width:0}
-.gasto{font-size:12px;color:var(--ink2);margin-top:10px}
-#opcs>summary{list-style:none;cursor:pointer;font-size:12.5px;color:var(--ink2);margin-top:10px;display:flex;gap:6px;align-items:baseline}
-#opcs>summary::-webkit-details-marker{display:none}
-#opcs>summary::after{content:"▾ cambiar";margin-left:auto;font-weight:700;color:var(--fuego2);white-space:nowrap}
-#opcs[open]>summary::after{content:"▴ ocultar"}
-#opcs>summary b{color:var(--ink)}
-.gasto b{color:var(--ink)}
-.ideas{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;align-items:center;font-size:12px;color:var(--ink2)}
-.chip{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--rule);background:#fff;border-radius:999px;padding:5px 11px;font-size:12.5px;cursor:pointer;white-space:nowrap;font-weight:600}
-.chip.on{background:var(--plate);border-color:var(--plate);color:#fff}
-.chip small{color:var(--ink3);font-weight:700}
-.chip.on small{color:#AEB6C8}
-
-/* ---------- resultados ---------- */
-.rhead{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-start;justify-content:space-between}
-.rtitle{font-size:17px;font-weight:800;word-break:break-word}
-.rsub{font-size:12px;color:var(--ink2);margin-top:2px}
+.btn.ancho{width:100%;margin-top:10px;padding:11px}
 .row{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
-@media(max-width:600px){.rhead{flex-direction:column}.rhead>.row{width:100%}.rhead>.row .btn{flex:1}}
-.fbar{display:flex;gap:8px;margin-top:12px}
-.fin{flex:1;min-width:0;padding:8px 12px;border:1px solid var(--rule);border-radius:8px;font-size:14px;background:#FAFBFC}
-.fpanel{margin-top:6px;border-top:1px dashed var(--rule);padding-top:4px}
-.flab{font-size:11px;font-weight:700;color:var(--ink2);text-transform:uppercase;letter-spacing:.04em;margin:10px 0 5px}
-.frow{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;scrollbar-width:thin}
-.activos{display:flex;flex-wrap:wrap;gap:6px}
-.activos:not(:empty){margin-top:8px}
-.activos .chip{background:var(--fuegoS);border-color:#F7C2B4;color:#9C2A10}
-.subtabs{display:flex;gap:4px;background:#E2E4E9;padding:4px;border-radius:10px;margin:0 0 12px;position:sticky;top:calc(var(--cabH,94px) + 6px);z-index:20;box-shadow:0 0 0 6px var(--bg)}
-.subtabs button{flex:1;border:0;background:none;padding:9px 4px;border-radius:7px;font-weight:800;color:var(--ink2);cursor:pointer;font-size:13px}
-.subtabs button.on{background:#fff;color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.12)}
-.nota{font-size:12.5px;background:var(--azulS);color:#1E4FA8;border-radius:8px;padding:8px 10px;margin-bottom:10px}
-.vacio{text-align:center;color:var(--ink2);padding:26px 14px}
+.row.ig>*{flex:1}
+select{padding:8px 8px;border:1px solid var(--rule);border-radius:9px;background:var(--card2);font-size:13px;min-width:0;max-width:100%}
+input[type=search],input[type=text],input:not([type]){padding:10px 12px;border:1px solid var(--rule);border-radius:10px;background:#0B0E14;font-size:15px;min-width:0}
+input:focus,select:focus{outline:none;border-color:var(--fuego)}
+.chip{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--rule);background:var(--card2);border-radius:999px;padding:6px 11px;font-size:12.5px;white-space:nowrap;font-weight:600}
+.chip.on{background:var(--fuego);border-color:var(--fuego);color:#fff}
+.chip small{color:var(--ink3);font-weight:700}
+.chip.on small{color:#FFD9CF}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.vacio{text-align:center;color:var(--ink2);padding:24px 14px}
 .cargando{display:flex;gap:12px;align-items:center;font-weight:600}
 .spin{width:22px;height:22px;flex:none;border:3px solid var(--rule);border-top-color:var(--fuego);border-radius:50%;animation:g .8s linear infinite}
 @keyframes g{to{transform:rotate(360deg)}}
-.aviso{border-left:4px solid var(--ambar);background:var(--ambarS)}
-.error{border-left:4px solid var(--fuego);background:var(--fuegoS)}
+.error{border-left:4px solid var(--fuego)}
+.nota{font-size:12.5px;background:rgba(91,155,255,.12);color:#A9C8FF;border-radius:9px;padding:8px 10px;margin-bottom:10px}
+.pill{padding:2px 8px;border-radius:999px;font-weight:800;font-size:11.5px;white-space:nowrap}
+.n-explosivo{background:rgba(255,90,54,.22);color:#FF9A80}
+.n-muyviral{background:rgba(245,165,36,.2);color:#F7BE5E}
+.n-normal{background:rgba(91,155,255,.18);color:#8DB8FF}
+.n-bajo,.n-sindato{background:#262D3E;color:#8E97AB}
+.s-a{background:var(--fuego);color:#fff}
+.s-b{background:rgba(255,90,54,.35);color:#FFD2C6}
+.s-c{background:rgba(91,155,255,.2);color:#9CC0FF}
+.s-d{background:#262D3E;color:#8E97AB}
 
-/* ---------- estudio ---------- */
-.kpis{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:8px;margin-bottom:12px}
-.kpi{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:10px 12px;min-width:0}
-.kpi b{display:block;font-size:20px;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.kpi span{font-size:11.5px;color:var(--ink2);display:block}
-.kpi.top b{font-size:14px;white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
-details.sec{background:var(--card);border:1px solid var(--rule);border-radius:var(--r);margin-bottom:10px}
-details.sec>summary{padding:12px 14px;font-weight:800;cursor:pointer;list-style:none;display:flex;align-items:center;gap:8px}
-details.sec>summary::-webkit-details-marker{display:none}
-details.sec>summary::after{content:"▾";margin-left:auto;color:var(--ink3);transition:transform .15s}
-details.sec:not([open])>summary::after{transform:rotate(-90deg)}
-details.sec .in{padding:0 14px 14px}
+/* ---------- buscador ---------- */
+.buscador{background:var(--card);border:1px solid var(--rule2);border-radius:var(--r);padding:10px;margin-bottom:10px}
+.qrow{display:flex;gap:8px}
+.qrow input{flex:1}
+.pills{display:flex;gap:6px;overflow-x:auto;margin-top:8px;padding-bottom:2px;scrollbar-width:none}
+.pills::-webkit-scrollbar{display:none}
+.pills select{border-radius:999px;padding:6px 8px;font-size:12.5px;flex:none;font-weight:600}
+.gastoRow{display:flex;align-items:center;gap:8px;margin-top:8px;font-size:11.5px;color:var(--ink3)}
+.gastoRow b{color:var(--ink2)}
+.cuota{margin-left:auto;background:var(--card2);border:1px solid var(--rule);border-radius:999px;padding:3px 9px;font-size:11.5px;color:var(--ink2);white-space:nowrap}
+.cuota b{color:#fff}
+.cuota.alerta{border-color:var(--fuego);color:#FFD0C4}
+
+/* ---------- resultados ---------- */
+.rtitle{font-size:16.5px;font-weight:800;word-break:break-word}
+.rsub{font-size:11.5px;color:var(--ink2);margin-top:2px}
+.racc{display:flex;gap:6px;margin-top:10px}
+.racc .btn{flex:1;padding:8px 4px;font-size:12px}
+.activos{display:flex;flex-wrap:wrap;gap:6px}
+.activos:not(:empty){margin-top:8px}
+.activos .chip{background:rgba(255,90,54,.15);border-color:#6B2E22;color:#FFB7A6}
+.subtabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:8px 0;margin:-4px 0 4px;position:sticky;top:var(--cabH,52px);z-index:20;background:var(--bg)}
+.subtabs::-webkit-scrollbar{display:none}
+.subtabs button{flex:none;border:1px solid var(--rule);background:var(--card);padding:8px 13px;border-radius:10px;font-weight:800;color:var(--ink2);font-size:13px;white-space:nowrap}
+.subtabs button.on{background:var(--fuego);border-color:var(--fuego);color:#fff}
+.subtabs small{font-weight:700;opacity:.8}
+.ctrl{display:flex;gap:6px;margin-bottom:8px}
+.ctrl input{flex:1;padding:8px 10px;font-size:13.5px}
+.ctrl select{flex:none;max-width:42%}
+.ctrl .btn{padding:8px 10px}
+
+/* ---------- mosaicos y barras ---------- */
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.tiles.dos{grid-template-columns:repeat(2,1fr)}
+@media(min-width:760px){.tiles{grid-template-columns:repeat(6,1fr)}.tiles.dos{grid-template-columns:repeat(4,1fr)}}
+.tl{background:var(--card);border:1px solid var(--rule2);border-radius:10px;padding:8px 9px;min-width:0}
+.tl[data-act]{cursor:pointer}
+.tl b{display:block;font-size:16px;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tl span{font-size:10.5px;color:var(--ink2);display:block;line-height:1.25}
+.tl[class*=" n-"] span,.tl[class*=" s-"] span{color:inherit;opacity:.85}
+.hero{display:flex;gap:10px;align-items:center}
+.hero .ht{flex:1;min-width:0}
+.op{padding:5px 10px;border-radius:10px;font-size:12px;font-weight:800;border:1px solid;white-space:nowrap;background:none}
+.op-alta{color:var(--verde);border-color:var(--verde);background:rgba(46,204,143,.1)}
+.op-media{color:var(--ambar);border-color:var(--ambar);background:rgba(245,165,36,.1)}
+.op-baja{color:var(--ink2);border-color:var(--rule)}
 .ins{list-style:none;margin:0;padding:0}
-.ins li{display:flex;gap:10px;padding:9px 0;border-top:1px solid var(--rule2);font-size:13.5px}
+.ins li{display:flex;gap:9px;padding:8px 0;border-top:1px solid var(--rule2);font-size:13px}
 .ins li:first-child{border-top:0;padding-top:0}
-.ins .ico{flex:none;width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:var(--grisS);font-size:15px}
+.ins .ico{flex:none;width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:var(--card2);font-size:14px}
 .bars{display:flex;flex-direction:column;gap:7px}
-.bar{display:grid;grid-template-columns:minmax(92px,32%) 1fr;gap:4px 10px;align-items:center;font-size:12.5px}
+.bar{display:grid;grid-template-columns:minmax(92px,34%) 1fr;gap:3px 10px;align-items:center;font-size:12.5px;border-radius:6px}
 .bar .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600}
-.bar .tr{height:10px;background:var(--grisS);border-radius:6px;overflow:hidden}
+.bar .tr{height:9px;background:var(--card2);border-radius:6px;overflow:hidden}
 .bar .tr i{display:block;height:100%;background:var(--fuego);border-radius:6px;min-width:2px}
-.bar .vl{grid-column:2;font-variant-numeric:tabular-nums;color:var(--ink2);font-size:11.5px;margin-top:-3px}
-.bar.click{cursor:pointer;border-radius:6px}
-.bar.click:hover{background:#F7F8FA}
+.bar .vl{grid-column:2;font-variant-numeric:tabular-nums;color:var(--ink2);font-size:11px;margin-top:-2px}
+.bar[data-act]{cursor:pointer}
 .bar.on .nm{color:var(--fuego2)}
-.bar.on .tr i{background:var(--plate)}
-.op{padding:2px 9px;border-radius:999px;font-size:12px;font-weight:800}
-.op-alta{background:var(--verdeS);color:var(--verde)}
-.op-media{background:var(--ambarS);color:#9A5600}
-.op-baja{background:var(--grisS);color:var(--gris)}
+.bar.on .tr i{background:var(--verde)}
 .fac{display:grid;grid-template-columns:1fr auto;gap:2px 10px;padding:8px 0;border-top:1px solid var(--rule2);font-size:13px}
 .fac:first-of-type{border-top:0}
 .fac .fd{grid-column:1/3;color:var(--ink2);font-size:12px}
 .pts{letter-spacing:2px;color:var(--fuego);font-weight:800;white-space:nowrap}
-.kws{display:flex;flex-wrap:wrap;gap:6px}
-.kw{display:inline-flex;border:1px solid var(--rule);border-radius:999px;overflow:hidden;background:#fff}
-.kw button{border:0;background:none;padding:5px 10px;font-size:12.5px;cursor:pointer;font-weight:600}
-.kw button+button{border-left:1px solid var(--rule);padding:5px 8px;color:var(--ink3)}
-.kw small{color:var(--ink3);font-weight:700}
-.kw.on{border-color:var(--plate)}
-.kw.on button:first-child{background:var(--plate);color:#fff}
-.sub2{font-size:11.5px;font-weight:700;color:var(--ink2);text-transform:uppercase;letter-spacing:.04em;margin:12px 0 6px}
+.meses{display:flex;align-items:flex-end;gap:4px;height:96px}
+.mes{flex:1;background:none;border:0;padding:0;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:3px;height:100%;color:var(--ink3);font-size:10px}
+.mes i{display:block;width:100%;background:var(--violeta);border-radius:4px 4px 0 0;min-height:2px}
+.mes i.cero{background:var(--card2)}
+details.sec{background:var(--card);border:1px solid var(--rule2);border-radius:var(--r);margin-bottom:8px}
+details.sec>summary{padding:11px 12px;font-weight:800;cursor:pointer;list-style:none;display:flex;align-items:center;gap:8px;font-size:13.5px}
+details.sec>summary::-webkit-details-marker{display:none}
+details.sec>summary::after{content:"▾";margin-left:auto;color:var(--ink3)}
+details.sec:not([open])>summary::after{content:"▸"}
+details.sec .in{padding:0 12px 12px}
+.sub2{font-size:11px;font-weight:700;color:var(--ink2);text-transform:uppercase;letter-spacing:.04em;margin:12px 0 6px}
 .sub2:first-child{margin-top:0}
+.kw{display:inline-flex;border:1px solid var(--rule);border-radius:999px;overflow:hidden;background:var(--card2)}
+.kw button{border:0;background:none;padding:6px 10px;font-size:12.5px;font-weight:600}
+.kw button+button{border-left:1px solid var(--rule);padding:6px 9px}
+.kw small{color:var(--ink3);font-weight:700}
+.kw.on{border-color:var(--fuego)}
+.kw.on button:first-child{background:var(--fuego);color:#fff}
+.kw.on small{color:#FFD9CF}
+.cmp{display:grid;grid-template-columns:1fr auto auto;gap:6px 12px;font-size:12.5px;align-items:center}
+.cmp .h{font-size:10.5px;color:var(--ink3);font-weight:700;text-transform:uppercase}
+.cmp b{text-align:right;font-variant-numeric:tabular-nums}
+.cmp .up{color:var(--verde)}
 
-/* ---------- tarjetas de video ---------- */
-.ctrl{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px}
-.ctrl label.lbl{flex:1;min-width:150px}
-.seg{display:inline-flex;border:1px solid var(--rule);border-radius:8px;overflow:hidden;background:#fff}
-.seg button{border:0;background:none;padding:8px 11px;font-weight:700;font-size:12.5px;cursor:pointer;color:var(--ink2)}
-.seg button.on{background:var(--plate);color:#fff}
-.vlist{display:grid;grid-template-columns:1fr;gap:10px}
+/* ---------- videos ---------- */
+.vlist{display:grid;grid-template-columns:1fr;gap:6px}
 @media(min-width:760px){.vlist{grid-template-columns:1fr 1fr}}
-@media(min-width:1120px){.vlist{grid-template-columns:1fr 1fr 1fr}}
-.vc{background:var(--card);border:1px solid var(--rule);border-radius:var(--r);padding:10px;display:flex;flex-direction:column;gap:8px;min-width:0}
-.vtop{display:grid;grid-template-columns:136px 1fr;gap:10px;min-width:0}
+.vc{background:var(--card);border:1px solid var(--rule2);border-radius:var(--r);padding:8px;display:grid;grid-template-columns:118px 1fr auto;gap:9px;min-width:0;cursor:pointer;align-items:start}
 .th{position:relative;display:block;aspect-ratio:16/9;border-radius:8px;overflow:hidden;background:linear-gradient(135deg,#2A3146,#151925)}
-.th img{width:100%;height:100%;object-fit:cover;display:block}
-.th .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#ffffff66;font-size:26px}
-.rk{position:absolute;top:4px;left:4px;background:rgba(0,0,0,.78);color:#fff;font-size:11px;font-weight:800;padding:1px 6px;border-radius:5px}
-.du{position:absolute;bottom:4px;right:4px;background:rgba(0,0,0,.82);color:#fff;font-size:11px;font-weight:700;padding:1px 5px;border-radius:4px;font-variant-numeric:tabular-nums}
-.shb{position:absolute;bottom:4px;left:4px;background:var(--fuego);color:#fff;font-size:10px;font-weight:800;padding:1px 5px;border-radius:4px;letter-spacing:.04em}
-.shb.lv{background:#D7263D}
+.th img,.thG img{width:100%;height:100%;object-fit:cover;display:block}
+.ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#ffffff55;font-size:24px}
+.rk{position:absolute;top:3px;left:3px;background:rgba(0,0,0,.8);color:#fff;font-size:10.5px;font-weight:800;padding:1px 5px;border-radius:5px}
+.du{position:absolute;bottom:3px;right:3px;background:rgba(0,0,0,.85);color:#fff;font-size:10.5px;font-weight:700;padding:1px 4px;border-radius:4px}
+.shb{position:absolute;bottom:3px;left:3px;background:var(--fuego);color:#fff;font-size:9px;font-weight:800;padding:1px 4px;border-radius:4px;letter-spacing:.04em}
 .vb{min-width:0}
-.tt{font-weight:700;font-size:13.5px;line-height:1.3;text-decoration:none;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;word-break:break-word}
-.chn{display:flex;align-items:center;gap:4px 8px;font-size:12px;color:var(--ink2);margin-top:5px;flex-wrap:wrap}
-.chn img{width:18px;height:18px;border-radius:50%}
-.chn a{text-decoration:none}
-.met{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
-.met>div{background:var(--grisS);border-radius:8px;padding:6px 7px;min-width:0}
-.met b{display:block;font-size:14.5px;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.met span{font-size:10.5px;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
-.n-explosivo{background:var(--fuegoS)!important;color:#B4260C}
-.n-muyviral{background:var(--ambarS)!important;color:#9A5600}
-.n-normal{background:var(--azulS)!important;color:#1E4FA8}
-.n-bajo,.n-sindato{background:var(--grisS)!important;color:var(--gris)}
-.met>div[class^="n-"] span,.met>div[class^="s-"] span{color:inherit;opacity:.85}
-.s-a{background:#FF5A36!important;color:#fff}
-.s-b{background:#FFB08F!important;color:#5B1A08}
-.s-c{background:#DCE6FA!important;color:#1E4FA8}
-.s-d{background:var(--grisS)!important;color:var(--gris)}
-.met2{display:flex;flex-wrap:wrap;gap:3px 12px;font-size:12px;color:var(--ink2)}
-.acc{display:flex;gap:6px;flex-wrap:wrap}
-.det{border-top:1px dashed var(--rule);padding-top:8px;font-size:12.5px;color:var(--ink2);display:flex;flex-direction:column;gap:6px}
-.det b{color:var(--ink)}
-.tags{display:flex;flex-wrap:wrap;gap:4px}
-.tag{background:var(--grisS);border-radius:5px;padding:2px 7px;font-size:11.5px}
-.desc{white-space:pre-wrap;background:#FAFAF8;border-radius:6px;padding:7px 9px;font-size:12px;max-height:130px;overflow:auto}
-.pill{padding:2px 8px;border-radius:999px;font-weight:800;font-size:12px}
-
-/* ---------- tabla ---------- */
-.twrap{overflow:auto;max-height:76vh;border:1px solid var(--rule);border-radius:var(--r);background:#fff;-webkit-overflow-scrolling:touch}
-table.tb{border-collapse:separate;border-spacing:0;font-size:12.5px;width:100%}
-.tb th{position:sticky;top:0;background:#F4F5F8;z-index:2;text-align:left;padding:9px 8px;border-bottom:1px solid var(--rule);white-space:nowrap;cursor:pointer;user-select:none;font-size:11.5px;color:var(--ink2)}
+.tt{font-weight:700;font-size:13px;line-height:1.28;text-decoration:none;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;word-break:break-word}
+.chn{font-size:11.5px;color:var(--ink2);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chn .cnm{font-weight:700;color:var(--ink)}
+.vst{display:flex;flex-wrap:wrap;gap:3px 8px;align-items:center;font-size:11.5px;color:var(--ink2);margin-top:5px}
+.vst b{color:var(--ink)}
+.vacc{display:flex;flex-direction:column;align-items:center;gap:6px}
+.ib{background:none;border:0;font-size:19px;padding:2px 4px;color:var(--ambar);line-height:1}
+.chev{color:var(--ink3);font-size:20px;line-height:1}
+.twrap{overflow:auto;max-height:72vh;border:1px solid var(--rule2);border-radius:var(--r);background:var(--card)}
+table.tb{border-collapse:separate;border-spacing:0;font-size:12px;width:100%}
+.tb th{position:sticky;top:0;background:var(--card2);z-index:2;text-align:left;padding:8px;border-bottom:1px solid var(--rule);white-space:nowrap;cursor:pointer;font-size:11px;color:var(--ink2)}
 .tb th.on{color:var(--fuego2)}
 .tb th.num,.tb td.num{text-align:right}
-.tb td{padding:7px 8px;border-bottom:1px solid var(--rule2);white-space:nowrap;font-variant-numeric:tabular-nums;background:#fff}
-.tb td.tv{white-space:normal;min-width:150px;max-width:150px;position:sticky;left:0;z-index:1;border-right:1px solid var(--rule2);font-size:12px}
+.tb td{padding:7px 8px;border-bottom:1px solid var(--rule2);white-space:nowrap;font-variant-numeric:tabular-nums;background:var(--card)}
+.tb td.tv{white-space:normal;min-width:150px;max-width:150px;position:sticky;left:0;z-index:1;border-right:1px solid var(--rule2);cursor:pointer;font-weight:600;line-height:1.3}
 .tb th.tv{position:sticky;left:0;z-index:3}
 @media(min-width:760px){.tb td.tv{min-width:300px;max-width:300px}}
-.tb td.tv a{text-decoration:none;font-weight:600;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;line-height:1.3}
-.tb .rkt{color:var(--ink3);font-weight:800;font-size:11px}
-.tb tr:hover td{background:#FBFBF6}
+.tb .rkt{color:var(--ink3);font-weight:800}
 
 /* ---------- canales ---------- */
-.clist{display:grid;grid-template-columns:1fr;gap:8px}
+.clist{display:grid;grid-template-columns:1fr;gap:6px}
 @media(min-width:760px){.clist{grid-template-columns:1fr 1fr}}
-.cc{display:flex;gap:10px;align-items:flex-start;background:#fff;border:1px solid var(--rule);border-radius:var(--r);padding:10px;min-width:0}
-.cc .av{width:44px;height:44px;border-radius:50%;flex:none;background:var(--grisS);object-fit:cover;display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--ink3)}
+.cc{display:flex;gap:10px;align-items:center;background:var(--card);border:1px solid var(--rule2);border-radius:var(--r);padding:9px;min-width:0}
+.cc[data-act]{cursor:pointer}
+.av{width:42px;height:42px;border-radius:50%;flex:none;background:var(--card2);object-fit:cover;display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--ink2)}
 .cc .cb{flex:1;min-width:0}
-.cc .cn{font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.cc .cs{font-size:12px;color:var(--ink2);margin-top:2px}
-.cc .row{margin-top:8px}
-.mio{background:#FFE9A8;color:#6B4D00;font-size:10.5px;font-weight:800;padding:1px 6px;border-radius:5px;margin-left:4px}
+.cn{font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cs{font-size:11.5px;color:var(--ink2);margin-top:1px}
+.cs b{color:var(--ink)}
+.mio{background:#FFE9A8;color:#6B4D00;font-size:10px;font-weight:800;padding:1px 6px;border-radius:5px;margin-left:5px}
+
+/* ---------- hoja (detalle a pantalla completa) ---------- */
+.hoja{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.65);display:flex;justify-content:center}
+.hojaIn{background:var(--bg);width:100%;max-width:760px;height:100%;display:flex;flex-direction:column}
+.hojaCab{display:flex;align-items:center;gap:6px;padding:8px 10px;padding-top:max(8px,env(safe-area-inset-top));border-bottom:1px solid var(--rule2);background:#0B0E14;font-weight:800;font-size:15px}
+.hojaCab span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hojaCab button{background:var(--card2);border:1px solid var(--rule);border-radius:9px;width:36px;height:36px;font-size:17px;flex:none}
+#hojaCuerpo{flex:1;overflow-y:auto;padding:10px 10px 40px;-webkit-overflow-scrolling:touch}
+.thG{position:relative;display:block;aspect-ratio:16/9;border-radius:var(--r);overflow:hidden;background:linear-gradient(135deg,#2A3146,#151925);max-height:46vh;margin:0 auto}
+.playG{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:rgba(255,0,51,.92);color:#fff;border-radius:14px;padding:8px 18px;font-size:20px}
+.vtit{font-size:16px;line-height:1.3;margin:10px 2px}
+.dl{background:var(--card);border:1px solid var(--rule2);border-radius:var(--r);margin-top:8px}
+.dl>div{display:flex;justify-content:space-between;gap:12px;padding:8px 11px;border-top:1px solid var(--rule2);font-size:12.5px}
+.dl>div:first-child{border-top:0}
+.dl span{color:var(--ink2)}
+.dl b{text-align:right}
+.tag{background:var(--card2);border:1px solid var(--rule);border-radius:7px;padding:4px 8px;font-size:12px}
+.desc{white-space:pre-wrap;background:var(--card);border:1px solid var(--rule2);border-radius:var(--r);padding:9px 11px;font-size:12.5px;color:var(--ink2);max-height:150px;overflow:auto}
+.plt{display:flex;gap:10px;align-items:flex-start;padding:11px;border:1px solid var(--rule2);border-radius:var(--r);background:var(--card);margin-bottom:8px}
+.plt.on{border-color:var(--verde)}
+.plt .pi{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;background:var(--card2);flex:none}
 
 /* ---------- ajustes ---------- */
-.campo{display:flex;flex-direction:column;gap:5px;margin:10px 0}
+.campo{display:flex;flex-direction:column;gap:5px;margin:8px 0}
 .campo>label{font-size:12px;font-weight:700;color:var(--ink2)}
-.campo input{padding:10px 12px;border:1px solid var(--rule);border-radius:8px;font-size:14px;font-family:var(--mono);min-width:0}
-.estado{font-size:12.5px;margin-top:8px}
 .ok{color:var(--verde);font-weight:700}
-.malo{color:var(--fuego2);font-weight:700}
-ol.guia{padding-left:20px;margin:6px 0} ol.guia li{margin:7px 0;font-size:13.5px}
-code{font-family:var(--mono);background:var(--grisS);padding:1px 5px;border-radius:4px;font-size:12px;word-break:break-all}
-.cupo{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.malo{color:#FF8A6E;font-weight:700}
+code{font-family:var(--mono);background:var(--card2);padding:1px 5px;border-radius:4px;font-size:12px;word-break:break-all}
 .ayuda dt{font-weight:800;margin-top:10px}
-.ayuda dd{margin:3px 0 0;color:var(--ink2);font-size:13px}
-.ver{text-align:center;color:var(--ink3);font-size:11.5px}
-.hq{font-weight:800;font-size:15px;word-break:break-word}
+.ayuda dd{margin:3px 0 0;color:var(--ink2);font-size:12.5px}
+.ver{text-align:center;color:var(--ink3);font-size:11.5px;line-height:1.7}
+.hq{font-weight:800;font-size:14.5px;word-break:break-word}
+.atajos{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.atajos button{background:var(--card);border:1px solid var(--rule2);border-radius:var(--r);padding:12px 4px;font-weight:700;font-size:12px;display:flex;flex-direction:column;align-items:center;gap:6px}
+.atajos button .ic{color:var(--fuego)}
 
-#toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(140px);background:var(--plate);color:#fff;padding:11px 16px;border-radius:10px;font-size:13.5px;max-width:92vw;z-index:60;transition:transform .25s;box-shadow:0 6px 24px rgba(0,0,0,.25);text-align:center}
+#toast{position:fixed;left:50%;bottom:74px;transform:translateX(-50%) translateY(160px);background:#F2F4F8;color:#10141C;padding:10px 15px;border-radius:10px;font-size:13px;font-weight:600;max-width:92vw;z-index:60;transition:transform .25s;box-shadow:0 6px 24px rgba(0,0,0,.5);text-align:center}
 #toast.ver{transform:translateX(-50%) translateY(0)}
+#toast code{background:#DDE1EA;color:#10141C}
 </style>
 </head>
 <body>
 
 <div class="cab">
   <header class="top">
-    <div class="logo">
-      <svg width="24" height="24" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="24" fill="none" stroke="#FF5A36" stroke-width="4" opacity=".4"/><circle cx="32" cy="32" r="14" fill="none" stroke="#FF5A36" stroke-width="4" opacity=".75"/><path d="M27 23 L42 32 L27 41 Z" fill="#FF5A36"/></svg>
+    <div class="logo" data-act="inicio">
+      <svg width="24" height="24" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="26" fill="none" stroke="#FF5A36" stroke-width="5" opacity=".4"/><circle cx="32" cy="32" r="15" fill="none" stroke="#FF5A36" stroke-width="5" opacity=".8"/><path d="M27 23 L42 32 L27 41 Z" fill="#FF5A36"/></svg>
       <span><b>RADAR</b> VIRAL</span>
     </div>
     <div class="sp"></div>
-    <button class="cuota" id="cuotaPill" data-act="irCupo" title="Búsquedas de YouTube usadas hoy">🔎 <b>0</b>/100</button>
-    <div id="userBox"></div>
+    <button class="plat" data-act="plataforma" title="Cambiar de plataforma"><span class="yt">▶</span>YouTube ▾</button>
+    <button class="rb" id="bell" data-act="campana" title="Novedades de tus canales vigilados"></button>
+    <button class="rb" id="userBox" data-act="cuenta" title="Mi cuenta"></button>
   </header>
-  <div id="demoBanner" class="demo hide">MODO EJEMPLO · datos inventados para ver cómo funciona <button data-act="salirDemo">Salir del ejemplo</button></div>
-  <nav class="tabs" id="tabs">
-    <button data-tab="buscar" class="on">🔎 Buscar</button>
-    <button data-tab="vigilados">👁 Vigilados</button>
-    <button data-tab="historial">🕘 Historial</button>
-    <button data-tab="ajustes">⚙ Ajustes</button>
-  </nav>
+  <div id="demoBanner" class="demo hide">MODO EJEMPLO · datos inventados <button data-act="salirDemo">Salir</button></div>
 </div>
 
 <main>
   <section id="tab-buscar">
-    <form id="fBuscar" class="card" autocomplete="off">
+    <form id="fBuscar" class="buscador" autocomplete="off">
       <div class="qrow">
-        <input id="q" type="search" enterkeyhint="search" placeholder="Tema: ej. de dónde sale el popó">
+        <input id="q" type="search" enterkeyhint="search" placeholder="Busca un tema: ej. veneno de serpiente">
         <button class="btn pri" id="btnBuscar" type="submit">Buscar</button>
       </div>
-      <details id="opcs" open><summary id="opcsRes">⚙ Opciones de búsqueda</summary>
-      <div class="grid">
-        <label>Idioma<select id="fIdioma"></select></label>
-        <label>Buscar en el país<select id="fPais"></select></label>
-        <label>Publicado<select id="fFecha"></select></label>
-        <label>Tipo<select id="fTipo"></select></label>
-        <label>Categoría<select id="fCat"></select></label>
-        <label>Traer primero<select id="fOrden"></select></label>
-        <label>Cantidad<select id="fCant"></select></label>
+      <div class="pills">
+        <select id="fIdioma" title="Idioma"></select><select id="fPais" title="País"></select><select id="fFecha" title="Fecha de publicación"></select><select id="fTipo" title="Tipo de video"></select><select id="fCat" title="Categoría"></select><select id="fOrden" title="Qué traer primero"></select><select id="fCant" title="Cantidad"></select>
       </div>
-      <div class="gasto" id="gasto"></div>
-      <div class="ideas" id="ideas"></div>
-      </details>
+      <div class="gastoRow"><span id="gasto"></span><button type="button" class="cuota" id="cuotaPill" data-act="irCupo"></button></div>
     </form>
     <div id="resultados"></div>
   </section>
+  <section id="tab-tendencias" class="hide"></section>
   <section id="tab-vigilados" class="hide"></section>
+  <section id="tab-guardados" class="hide"></section>
   <section id="tab-historial" class="hide"></section>
   <section id="tab-ajustes" class="hide"></section>
 </main>
+
+<nav class="bnav" id="tabs">
+  <button data-tab="buscar" data-ic="buscar" class="on">Buscar</button>
+  <button data-tab="tendencias" data-ic="fuego">Tendencias</button>
+  <button data-tab="vigilados" data-ic="ojo">Vigilados</button>
+  <button data-tab="guardados" data-ic="estrella">Guardados</button>
+  <button data-tab="historial" data-ic="reloj">Historial</button>
+  <button data-tab="ajustes" data-ic="ajustes">Ajustes</button>
+</nav>
+
+<div id="hoja" class="hoja hide">
+  <div class="hojaIn">
+    <div class="hojaCab"><button id="hojaAtras" data-act="atrasHoja" title="Volver">←</button><span id="hojaTit"></span><button data-act="cerrarHoja" title="Cerrar">✕</button></div>
+    <div id="hojaCuerpo"></div>
+  </div>
+</div>
 
 <div id="toast"></div>
 <input type="file" id="inImportar" accept=".json,application/json" class="hide">
@@ -310,7 +332,7 @@ const CONFIG = {
   claveYouTube: "AIzaSyAFeMoFL462h3ig4mDHEwOY5KexFweGN_w",
   idClienteGoogle: "578899082343-ckp1972mrjhs1cil1e94tqs4crvd6a8d.apps.googleusercontent.com"
 };
-const VERSION = "1.1";
+const VERSION = "2.0";
 const API = "https://www.googleapis.com/youtube/v3/";
 const MAX_HIST = 40;               /* búsquedas que se guardan en Historial */
 const LIMITE_BUSQ = 100;           /* búsquedas diarias que da YouTube gratis */
@@ -556,7 +578,7 @@ function normVideo(it){
 function normCanal(it){
   const s=it.snippet||{}, st=it.statistics||{}, vc=num(st.videoCount), vw=num(st.viewCount);
   const th=s.thumbnails||{};
-  return { id:it.id, nombre:s.title||"", url:s.customUrl||"", pais:s.country||"",
+  return { id:it.id, nombre:s.title||"", url:s.customUrl||"", pais:s.country||"", creado:s.publishedAt||"", descr:(s.description||"").slice(0,300),
     foto:(th.default||th.medium||{}).url||"", subs: st.hiddenSubscriberCount ? null : num(st.subscriberCount),
     vistas:vw, nvideos:vc, prom: vc>0 ? vw/vc : 0,
     uploads:(it.contentDetails&&it.contentDetails.relatedPlaylists&&it.contentDetails.relatedPlaylists.uploads)||"" };
@@ -564,7 +586,7 @@ function normCanal(it){
 const P_VIDEO="snippet,statistics,contentDetails,player";
 const F_VIDEO="items(id,snippet(publishedAt,channelId,channelTitle,title,description,tags,categoryId,defaultLanguage,defaultAudioLanguage,liveBroadcastContent),statistics(viewCount,likeCount,commentCount),contentDetails(duration),player(embedWidth,embedHeight))";
 const P_CANAL="snippet,statistics,contentDetails";
-const F_CANAL="items(id,snippet(title,customUrl,country,thumbnails(default(url))),statistics(viewCount,subscriberCount,hiddenSubscriberCount,videoCount),contentDetails(relatedPlaylists(uploads)))";
+const F_CANAL="items(id,snippet(title,customUrl,country,publishedAt,description,thumbnails(default(url))),statistics(viewCount,subscriberCount,hiddenSubscriberCount,videoCount),contentDetails(relatedPlaylists(uploads)))";
 async function traerVideos(ids, avance){
   const out=[];
   for(let i=0;i<ids.length;i+=50){
@@ -625,15 +647,19 @@ function ordenarPor(filas, clave, dir){
 }
 
 /* ---------------- estado de la pantalla ---------------- */
-function filtroVacio(){ return {texto:"",paises:new Set(),idiomas:new Set(),tipo:"",niveles:new Set(),minVistas:0,dentro:0,palabra:"",palabraTxt:"",canal:"",abierto:false}; }
+const VER = "2.0";
+function filtroVacio(){ return {texto:"",paises:new Set(),idiomas:new Set(),niveles:new Set(),durs:new Set(),tams:new Set(),minVistas:0,dentro:0,palabra:"",palabraTxt:"",canal:""}; }
 const vistaGuardada=LS.get("vista",{});
 const estado = {
   tab:"buscar", est:null, filas:[], sub:"estudio", filtro:filtroVacio(),
   orden:vistaGuardada.orden||"puntaje", dir:vistaGuardada.dir||"desc", vista:vistaGuardada.vista||"tarjetas",
-  limite:60, abiertos:new Set(), secs:{}, ocupado:false, deCache:false,
-  vig:null, canalAbierto:null, ordenCanal:"puntaje", dirCanal:"desc", limiteCanal:60, token:null
+  limite:40, secs:{}, ocupado:false, deCache:false, vig:null, token:null,
+  pila:[], guard:[], tend:null, tendSub:"todos", tendOrden:"vistas", canalCache:{}, canalVista:{}
 };
+const MAPA_CANALES = new Map();   /* id → canal, para abrir su ficha desde cualquier lado */
 function guardarVista(){ LS.set("vista",{orden:estado.orden,dir:estado.dir,vista:estado.vista}); }
+function armar(o){ const F=construirFilas(o); F.forEach(f=>{ if(f.canal) MAPA_CANALES.set(f.canalId,f.canal); }); return F; }
+function crudo(f){ const o={}; ["id","demo","titulo","desc","canalId","canalNombre","fecha","dur","short","vistas","likes","coment","tags","cat","idioma","idiomaEst","envivo"].forEach(k=>{ if(f[k]!==undefined) o[k]=f[k]; }); return o; }
 
 /* ---------------- formulario ---------------- */
 function opciones(sel, lista, valor){ $(sel).innerHTML=lista.map(o=>`<option value="${esc(o[0])}"${String(o[0])===String(valor)?" selected":""}>${esc(o[1])}</option>`).join(""); }
@@ -641,7 +667,8 @@ function llenarFormulario(p){
   p=Object.assign({q:"",idioma:"es",pais:"",fecha:"",tipo:"",cat:"",orden:"viewCount",cant:50}, p||{});
   $("#q").value=p.q;
   opciones("#fIdioma",IDIOMAS,p.idioma); opciones("#fPais",PAISES,p.pais); opciones("#fFecha",FECHAS,p.fecha);
-  opciones("#fTipo",TIPOS,p.tipo); opciones("#fCat",CATEGORIAS,p.cat); opciones("#fOrden",ORDENES_YT,p.orden); opciones("#fCant",CANTIDADES,p.cant);
+  opciones("#fTipo",TIPOS,p.tipo); opciones("#fCat",CATEGORIAS.map(c=>[c[0],c[0]?c[1]:"Toda categoría"]),p.cat);
+  opciones("#fOrden",ORDENES_YT.map(o=>[o[0],"Trae: "+o[1].toLowerCase()]),p.orden); opciones("#fCant",CANTIDADES,p.cant);
   actualizarGasto();
 }
 function leerFormulario(){
@@ -649,13 +676,8 @@ function leerFormulario(){
     tipo:$("#fTipo").value, cat:$("#fCat").value, orden:$("#fOrden").value, cant:+$("#fCant").value||50 };
 }
 function actualizarGasto(){
-  const pf=leerFormulario();
-  $("#opcsRes").innerHTML=`⚙ <span><b>${esc(etiquetas(pf).slice(0,-1).join(" · "))}</b> · ${pf.cant} videos</span>`;
   const n=(+$("#fCant").value||50)/50, c=cuota(), quedan=Math.max(0,LIMITE_BUSQ-c.busq);
-  $("#gasto").innerHTML = modoDemo ? "Modo ejemplo: no gasta cupo." :
-    `Esta búsqueda gasta <b>${n}</b> de tus ${LIMITE_BUSQ} búsquedas diarias · te ${pl(quedan,"queda","quedan")} <b>${quedan}</b>. Si ya buscaste lo mismo hace poco, se abre lo guardado sin gastar.`;
-  $("#ideas").innerHTML = `<span>Ideas rápidas (lo más viral de la semana):</span>`+
-    [["27","Educación"],["28","Ciencia y tecnología"],["24","Entretenimiento"],["22","Gente y blogs"]].map(([c,n])=>`<button type="button" class="chip" data-act="idea" data-cat="${c}">${n}</button>`).join("");
+  $("#gasto").innerHTML = modoDemo ? "Modo ejemplo: no gasta búsquedas." : `Esta búsqueda gasta <b>${n}</b> · te ${pl(quedan,"queda","quedan")} <b>${quedan}</b> hoy`;
 }
 function etiquetas(p){
   const e=[];
@@ -664,7 +686,6 @@ function etiquetas(p){
   e.push((FECHAS.find(x=>x[0]===p.fecha)||FECHAS[0])[1]);
   if(p.tipo) e.push((TIPOS.find(x=>x[0]===p.tipo)||TIPOS[0])[1]);
   if(p.cat && p.q) e.push(nombreCat(p.cat));
-  e.push("trae: "+((ORDENES_YT.find(x=>x[0]===p.orden)||ORDENES_YT[0])[1]).toLowerCase());
   return e;
 }
 const tituloEst = p => p.q ? "«"+p.q+"»" : "Lo más viral en "+nombreCat(p.cat);
@@ -691,6 +712,7 @@ async function buscar(p, opt={}){
   if(estado.ocupado) return;
   if(!p.q && !p.cat){ toast("Escribe un tema o elige una categoría"); $("#q").focus(); return; }
   LS.set("filtros",p);
+  if(estado.tab!=="buscar") irA("buscar");
   const clave=claveBusqueda(p);
   if(!opt.forzar){
     const idx=(await ALM.get("estudios_idx"))||[], horas=CFG().cacheHoras;
@@ -709,7 +731,7 @@ async function buscar(p, opt={}){
       avance(`Buscando… ${ids.length} videos encontrados`);
       if(!token) break;
     }
-    if(!ids.length){ ocupar(false); $("#resultados").innerHTML=`<div class="card vacio">YouTube no encontró videos con esos filtros. Prueba con otras palabras, otra fecha o «Cualquier idioma».</div>`; return; }
+    if(!ids.length){ ocupar(false); estado.est=null; $("#resultados").innerHTML=`<div class="card vacio">YouTube no encontró videos con esos filtros. Prueba con otras palabras, otra fecha o «Cualquier idioma».</div>`; return; }
     let videos=await traerVideos(ids,avance);
     const antes=videos.length; videos=filtrarTipo(videos,p.tipo);
     const canales=await traerCanales([...new Set(videos.map(v=>v.canalId))],avance);
@@ -718,12 +740,13 @@ async function buscar(p, opt={}){
     ocupar(false);
     abrirEstudio(est);
   }catch(e){ ocupar(false); mostrarError(e); }
+  actualizarGasto();
 }
 async function cargarMas(){
   const est=estado.est; if(!est||!est.siguiente||estado.ocupado) return;
-  ocupar(true); toast("Trayendo 50 videos más…");
+  ocupar(true); toast("Trayendo 50 videos más…",20000);
   try{
-    if(modoDemo){ const extra=estudioDemo(est.params, (est.pag||1), est); est.videos.push(...extra.videos); est.pag=(est.pag||1)+1; est.siguiente=est.pag<5?"demo":null; }
+    if(modoDemo){ const extra=estudioDemo(est.params,(est.pag||1),est); est.videos.push(...extra.videos); est.pag=(est.pag||1)+1; est.siguiente=est.pag<5?"demo":null; toast("Se agregaron 50 videos"); }
     else{
       const r=await yt("search",Object.assign(paramsBusqueda(est.params),{pageToken:est.siguiente}));
       const ya=new Set(est.videos.map(v=>v.id));
@@ -735,20 +758,18 @@ async function cargarMas(){
       toast(vids.length ? `Se agregaron ${vids.length} videos` : "YouTube no devolvió videos nuevos");
     }
     await guardarEstudio(est);
-    estado.filas=construirFilas(est);
+    estado.filas=armar(est);
     pintarResultados();
-  }catch(e){ toast(e.message, 6000); }
-  ocupar(false);
+  }catch(e){ toast(e.message, 7000); }
+  ocupar(false); actualizarGasto();
 }
 function mostrarError(e){
-  const html=`<div class="card error"><b>No se pudo completar.</b><div style="margin-top:6px">${e.message}</div>
-    ${e.reason==="sinClave"?`<div class="row" style="margin-top:10px"><button class="btn osc sm" data-act="ejemplo">Ver con datos de ejemplo</button></div>`:""}</div>`;
-  if(estado.est){ toast(e.message, 7000); pintarResultados(); }
-  else $("#resultados").innerHTML=html;
-  if(estado.est) $("#resultados").insertAdjacentHTML("afterbegin",html);
+  if(estado.est){ pintarResultados(); toast(e.message,7000); return; }
+  $("#resultados").innerHTML=`<div class="card error"><b>No se pudo completar.</b><div class="mt">${e.message}</div>
+    ${e.reason==="sinClave"?`<div class="row mt"><button class="btn sm" data-act="ejemplo">Ver con datos de ejemplo</button></div>`:""}</div>`;
 }
 
-/* ---------------- historial (búsquedas guardadas) ---------------- */
+/* ---------------- búsquedas guardadas ---------------- */
 async function guardarEstudio(est){
   let idx=(await ALM.get("estudios_idx"))||[];
   for(const v of idx.filter(x=>x.clave===est.clave && x.id!==est.id)) await ALM.del("estudio:"+v.id);
@@ -760,27 +781,26 @@ async function guardarEstudio(est){
   await ALM.set("estudios_idx", idx);
 }
 function abrirEstudio(est, opt={}){
-  estado.est=est; estado.filas=construirFilas(est); estado.filtro=filtroVacio(); estado.limite=60; estado.abiertos.clear();
-  estado.deCache=!!opt.deCache;
+  estado.est=est; estado.filas=armar(est); estado.filtro=filtroVacio(); estado.limite=40;
+  estado.deCache=!!opt.deCache; estado.sub="estudio";
   if(est.params.idioma){ estado.filtro.idiomas.add(est.params.idioma); if(estado.filas.some(f=>!f.idioma)) estado.filtro.idiomas.add("?"); }
-  if(!opt.mantenerSub) estado.sub="estudio";
   llenarFormulario(est.params);
-  $("#opcs").open=false;
   if(estado.tab!=="buscar") irA("buscar");
   pintarResultados();
-  if(!opt.silencioso) $("#resultados").scrollIntoView({behavior:"smooth",block:"start"});
+  if(!opt.silencioso) window.scrollTo(0,0);
 }
 
 /* ---------------- filtros sobre los resultados ---------------- */
-function aplicarFiltros(filas){
+function tamDe(f){ return !f.canal ? -1 : f.canal.subs==null ? TAM_B.length : bucket(f.canal.subs,TAM_B); }
+function filtrar(filas){   /* todos los filtros menos Shorts/largos (eso lo deciden las pestañas) */
   const F=estado.filtro, txt=sinTildes(F.texto.toLowerCase()).trim(), lim=F.dentro?Date.now()-F.dentro*864e5:0;
   return filas.filter(f=>{
     if(F.canal && f.canalId!==F.canal) return false;
     if(F.paises.size){ const p=(f.canal&&f.canal.pais)||"-"; let ok=false; for(const x of F.paises){ if(x==="LATAM"?LATAM.has(p):x===p){ ok=true; break; } } if(!ok) return false; }
     if(F.idiomas.size && !F.idiomas.has(f.idioma||"?")) return false;
-    if(F.tipo==="short" && !f.short) return false;
-    if(F.tipo==="largo" && f.short) return false;
     if(F.niveles.size && !F.niveles.has(f.nivel)) return false;
+    if(F.durs.size && !F.durs.has(String(bucket(f.dur,DUR_B)))) return false;
+    if(F.tams.size && !F.tams.has(String(tamDe(f)))) return false;
     if(F.minVistas && f.vistas<F.minVistas) return false;
     if(lim && Date.parse(f.fecha)<lim) return false;
     if(F.palabra && !f._norm.includes(" "+F.palabra+" ")) return false;
@@ -788,92 +808,11 @@ function aplicarFiltros(filas){
     return true;
   });
 }
-function nActivos(){ const F=estado.filtro; return F.paises.size+F.idiomas.size+(F.tipo?1:0)+F.niveles.size+(F.minVistas?1:0)+(F.dentro?1:0)+(F.palabra?1:0)+(F.canal?1:0); }
-function chip(act,v,txt,n,on){ return `<button class="chip${on?" on":""}" data-act="${act}" data-v="${esc(v)}">${txt}${n!=null?` <small>${n}</small>`:""}</button>`; }
-function htmlFiltros(){
-  const F=estado.filtro, all=estado.filas, na=nActivos();
-  let h=`<div class="fbar"><input id="ftexto" class="fin" type="search" placeholder="Filtrar por palabra del título o canal…" value="${esc(F.texto)}">
-    <button class="btn sm${F.abierto?" osc":""}" data-act="filtrosToggle">⚙ Filtros${na?" ("+na+")":""}</button></div>`;
-  if(F.abierto){
-    const pc=contar(all,f=>(f.canal&&f.canal.pais)||"-"), lat=all.filter(f=>f.canal&&LATAM.has(f.canal.pais)).length;
-    const ic=contar(all,f=>f.idioma||"?"), nc=contar(all,f=>f.nivel);
-    const ord=o=>Object.entries(o).sort((a,b)=>(a[0]==="-"||a[0]==="?")-(b[0]==="-"||b[0]==="?") || b[1]-a[1]);
-    h+=`<div class="fpanel">
-      <div class="flab">País del canal</div><div class="frow">${lat?chip("fpais","LATAM","🌎 Latinoamérica",lat,F.paises.has("LATAM")):""}${ord(pc).map(([k,n])=>chip("fpais",k,k==="-"?"Sin país":bandera(k)+" "+esc(nombrePais(k)),n,F.paises.has(k))).join("")}</div>
-      <div class="flab">Idioma del video</div><div class="frow">${ord(ic).map(([k,n])=>chip("fidioma",k,esc(nombreIdioma(k)),n,F.idiomas.has(k))).join("")}</div>
-      <div class="flab">Tipo</div><div class="frow">${chip("ftipo","","Todos",all.length,!F.tipo)}${chip("ftipo","short","📱 Shorts",all.filter(f=>f.short).length,F.tipo==="short")}${chip("ftipo","largo","🎬 Largos",all.filter(f=>!f.short).length,F.tipo==="largo")}</div>
-      <div class="flab">Viralidad (vistas comparadas con el promedio de su canal)</div><div class="frow">${Object.keys(NIVELES).filter(k=>nc[k]).map(k=>chip("fnivel",k,NIVELES[k].nombre,nc[k],F.niveles.has(k))).join("")}</div>
-      <div class="grid2">
-        <label>Vistas mínimas<select data-ch="fmin">${[[0,"Cualquiera"],[1e4,"10 mil"],[1e5,"100 mil"],[5e5,"500 mil"],[1e6,"1 millón"],[1e7,"10 millones"]].map(o=>`<option value="${o[0]}"${F.minVistas==o[0]?" selected":""}>${o[1]}</option>`).join("")}</select></label>
-        <label>Publicado hace menos de<select data-ch="fdentro">${[[0,"Sin límite"],[1,"1 día"],[7,"1 semana"],[30,"1 mes"],[90,"3 meses"],[365,"1 año"]].map(o=>`<option value="${o[0]}"${F.dentro==o[0]?" selected":""}>${o[1]}</option>`).join("")}</select></label>
-      </div></div>`;
-  }
-  return h;
-}
-function htmlActivos(){
-  const F=estado.filtro, c=[];
-  const q=(tipo,v,txt)=>c.push(`<button class="chip" data-act="quitar" data-t="${tipo}" data-v="${esc(v)}">${txt} ✕</button>`);
-  if(F.palabra) q("palabra","",`🧩 «${esc(F.palabraTxt)}»`);
-  if(F.canal){ const fx=estado.filas.find(f=>f.canalId===F.canal); q("canal","","📺 "+esc(fx?fx.canalNombre:"canal")); }
-  F.paises.forEach(p=>q("pais",p, p==="LATAM"?"🌎 Latinoamérica":p==="-"?"Sin país":bandera(p)+" "+esc(nombrePais(p))));
-  F.idiomas.forEach(i=>q("idioma",i,"🗣 "+(i==="?"?"Idioma sin dato":esc(nombreIdioma(i)))));
-  if(F.tipo) q("tipo","",F.tipo==="short"?"📱 Shorts":"🎬 Largos");
-  F.niveles.forEach(n=>q("nivel",n,NIVELES[n].corto));
-  if(F.minVistas) q("min","","≥ "+fmtC(F.minVistas)+" vistas");
-  if(F.dentro) q("dentro","","últimos "+F.dentro+" días");
-  if(c.length>1) c.push(`<button class="chip" data-act="limpiar">Quitar todos</button>`);
-  return c.join("");
-}
-
-/* ---------------- pintar resultados ---------------- */
-function pintarResultados(){
-  const est=estado.est;
-  if(!est){ pintarBienvenida(); return; }
-  const p=est.params;
-  $("#resultados").innerHTML=`
-  <div class="card">
-    <div class="rhead">
-      <div style="min-width:0;flex:1">
-        <div class="rtitle">${esc(tituloEst(p))}</div>
-        <div class="rsub">${est.videos.length} videos · ${etiquetas(p).map(esc).join(" · ")}</div>
-        <div class="rsub">${estado.deCache?"Guardado":"Consultado"} ${fmtHace(est.fecha)}${est.descartados?` · se quitaron ${est.descartados} que no eran del tipo pedido`:""}</div>
-      </div>
-      <div class="row">
-        <button class="btn sm" data-act="actualizar" title="Volver a consultar YouTube">🔄 Actualizar</button>
-        ${est.siguiente?`<button class="btn sm" data-act="mas" title="Gasta 1 búsqueda">＋ 50 más</button>`:""}
-        <button class="btn sm" data-act="csv" title="Descargar para Excel">⬇ Excel</button>
-      </div>
-    </div>
-    ${htmlFiltros()}
-    <div id="activos" class="activos"></div>
-  </div>
-  <div id="rsub"></div>
-  <div id="rcuerpo"></div>`;
-  pintarCuerpo();
-}
-function pintarCuerpo(){
-  if(!estado.est) return;
-  const vis=aplicarFiltros(estado.filas);
-  const nCan=new Set(vis.map(f=>f.canalId)).size;
-  $("#activos").innerHTML=htmlActivos();
-  $("#rsub").innerHTML=`<div class="subtabs">
-    <button data-act="sub" data-v="estudio" class="${estado.sub==="estudio"?"on":""}">🧠 Estudio</button>
-    <button data-act="sub" data-v="videos" class="${estado.sub==="videos"?"on":""}">🎬 Videos (${vis.length})</button>
-    <button data-act="sub" data-v="canales" class="${estado.sub==="canales"?"on":""}">📺 Canales (${nCan})</button></div>`;
-  $("#rcuerpo").innerHTML = estado.sub==="videos" ? htmlVideos(vis) : estado.sub==="canales" ? htmlCanales(vis) : htmlEstudio(vis);
-}
-function pintarBienvenida(){
-  $("#opcs").open=true;
-  const cfg=CFG(), perfil=LS.get("perfil",null);
-  $("#resultados").innerHTML = cfg.apiKey ? `
-   <div class="card"><h2>¿Qué tema quieres estudiar?</h2>
-    <p class="mut">Escribe un tema arriba y toca <b>Buscar</b>. Entre más específico, más fino el estudio: «popó» trae todo lo relacionado; «de dónde sale el popó» va directo a eso.</p>
-    <div class="ideas">${["datos curiosos del cuerpo humano","de dónde sale el popó","historia de los romanos","cultura general preguntas"].map(t=>`<button class="chip" data-act="ejemploTema" data-t="${esc(t)}">${esc(t)}</button>`).join("")}</div>
-    ${cfg.clientId&&!perfil?`<div class="row" style="margin-top:12px"><button class="btn osc" data-act="entrarGoogle">Entrar con Google</button><span class="mut" style="margin:0">Opcional: para que la app te reconozca.</span></div>`:""}</div>` : `
-   <div class="card aviso"><h2>Radar Viral</h2>
-    <p class="mut" style="color:var(--ink)">La app todavía no está conectada a YouTube. Mientras tanto puedes verla funcionando con datos de ejemplo.</p>
-    <div class="row"><button class="btn osc" data-act="ejemplo">Ver con datos de ejemplo</button></div></div>`;
-}
+function aplicarFiltros(filas){ const b=filtrar(filas); return estado.sub==="shorts" ? b.filter(f=>f.short) : estado.sub==="largos" ? b.filter(f=>!f.short) : b; }
+function nActivos(){ const F=estado.filtro; return F.paises.size+(F.idiomas.size?1:0)+F.niveles.size+F.durs.size+F.tams.size+(F.minVistas?1:0)+(F.dentro?1:0)+(F.palabra?1:0)+(F.canal?1:0); }
+const CONJ = {pais:"paises",idioma:"idiomas",nivel:"niveles",dur:"durs",tam:"tams"};
+function alternarFiltro(t,v){ const s=estado.filtro[CONJ[t]]; if(!s) return; if(s.has(v)) s.delete(v); else s.add(v); estado.limite=40; }
+const TAM_N = TAM_B.map(b=>b[2]).concat(["Suscriptores ocultos"]);
 
 /* ---------------- estudio ---------------- */
 function grupos(F, fn, B){ const g=B.map(b=>({nombre:b[2],filas:[]})); F.forEach(f=>{ const i=fn(f); if(i>=0&&g[i]) g[i].filas.push(f); }); return g; }
@@ -964,164 +903,6 @@ function estudiar(F){
   if(interMed!=null) C.push({i:"💬",t:`Interacción típica (likes + comentarios ÷ vistas): <b>${fmtPct(interMed)}</b>.`});
   return {n,total,med,vpdMed,top,virales,explos,interMed,sh,lg,medSh,medLg,durG,edadG,tamG,diaG,horaG,porPais,porIdioma,porCat,canales,top5,kw,op,C,hs:hashtags(F)};
 }
-function barras(items){   /* items: {nombre, valor, texto, act, v, on} */
-  const max=Math.max(...items.map(x=>x.valor||0),1);
-  return `<div class="bars">${items.map(x=>`<div class="bar${x.act?" click":""}${x.on?" on":""}"${x.act?` data-act="${x.act}" data-v="${esc(x.v)}"`:""}>
-    <div class="nm">${x.nombre}</div><div class="tr"><i style="width:${Math.max(1,(x.valor||0)/max*100)}%"></i></div><div class="vl">${x.texto}</div></div>`).join("")}</div>`;
-}
-const barrasGrupo = (g, extra) => barras(g.filter(x=>x.filas.length).map(x=>{ const m=mediana(x.filas.map(f=>f.vistas)); return {nombre:esc(x.nombre), valor:m, texto:`${x.filas.length} ${pl(x.filas.length,"video","videos")} · mediana ${fmtC(m)} vistas${extra?extra(x.filas):""}`}; }));
-const sec = (k,titulo,cuerpo,def) => `<details class="sec" data-sec="${k}" ${(k in estado.secs?estado.secs[k]:def)?"open":""}><summary>${titulo}</summary><div class="in">${cuerpo}</div></details>`;
-function htmlEstudio(F){
-  if(!F.length) return `<div class="card vacio">Ningún video cumple los filtros. Quita alguno arriba.</div>`;
-  const E=estudiar(F), Fl=estado.filtro;
-  const kwHtml=lst=>`<div class="kws">${lst.map(k=>`<span class="kw${Fl.palabra===k.k?" on":""}"><button data-act="palabra" data-k="${esc(k.k)}" data-t="${esc(k.txt)}" title="Ver solo estos videos">${esc(k.txt)} <small>${k.n} · ${fmtC(k.med)}</small></button><button data-act="buscarPalabra" data-t="${esc(k.txt)}" title="Nueva búsqueda más específica">🔎</button></span>`).join("")}</div>`;
-  const paisItems=[...E.porPais.entries()].sort((a,b)=>(a[0]==="-")-(b[0]==="-")||suma(b[1].map(f=>f.vistas))-suma(a[1].map(f=>f.vistas))).map(([k,fs])=>({nombre:k==="-"?"Sin país":bandera(k)+" "+esc(nombrePais(k)), valor:suma(fs.map(f=>f.vistas)), texto:`${fs.length} ${pl(fs.length,"video","videos")} · ${fmtC(suma(fs.map(f=>f.vistas)))} vistas · mediana ${fmtC(mediana(fs.map(f=>f.vistas)))}`, act:"fpais", v:k, on:Fl.paises.has(k)}));
-  const lat=F.filter(f=>f.canal&&LATAM.has(f.canal.pais));
-  if(lat.length&&lat.length<F.length) paisItems.unshift({nombre:"🌎 <b>Latinoamérica</b>", valor:suma(lat.map(f=>f.vistas)), texto:`${lat.length} videos · ${fmtC(suma(lat.map(f=>f.vistas)))} vistas · mediana ${fmtC(mediana(lat.map(f=>f.vistas)))}`, act:"fpais", v:"LATAM", on:Fl.paises.has("LATAM")});
-  const idiomaItems=[...E.porIdioma.entries()].sort((a,b)=>b[1].length-a[1].length).map(([k,fs])=>({nombre:esc(nombreIdioma(k)), valor:fs.length, texto:`${fs.length} videos (${Math.round(fs.length/E.n*100)}%) · mediana ${fmtC(mediana(fs.map(f=>f.vistas)))}`, act:"fidioma", v:k, on:Fl.idiomas.has(k)}));
-  const nivelItems=Object.keys(NIVELES).map(k=>{ const fs=F.filter(f=>f.nivel===k); return {nombre:NIVELES[k].nombre, valor:fs.length, texto:`${fs.length} videos (${Math.round(fs.length/E.n*100)}%)`, act:"fnivel", v:k, on:Fl.niveles.has(k)}; }).filter(x=>x.valor);
-  const catItems=[...E.porCat.entries()].sort((a,b)=>b[1].length-a[1].length).map(([k,fs])=>({nombre:esc(nombreCat(k)), valor:fs.length, texto:`${fs.length} videos · mediana ${fmtC(mediana(fs.map(f=>f.vistas)))}`}));
-  const shItems=[["📱 Shorts",E.sh,E.medSh],["🎬 Largos",E.lg,E.medLg]].filter(x=>x[1].length).map(([nm,fs,m])=>({nombre:nm, valor:m, texto:`${fs.length} videos · mediana ${fmtC(m)} vistas · ${fmtC(suma(fs.map(f=>f.vistas)))} en total`, act:"ftipo", v:nm.includes("Shorts")?"short":"largo", on:Fl.tipo===(nm.includes("Shorts")?"short":"largo")}));
-  return `
-  ${F.length<estado.filas.length?`<div class="nota">Este estudio analiza <b>${F.length}</b> de ${estado.filas.length} videos (los que pasan tus filtros).</div>`:""}
-  <div class="kpis">
-    <div class="kpi"><b>${E.n}</b><span>videos analizados</span></div>
-    <div class="kpi"><b>${fmtC(E.total)}</b><span>vistas sumadas</span></div>
-    <div class="kpi"><b>${fmtC(E.med)}</b><span>mediana de vistas</span></div>
-    <div class="kpi"><b>${fmtC(E.vpdMed)}</b><span>vistas por día (típico)</span></div>
-    <div class="kpi"><b>${E.virales.length}</b><span>virales (3× o más su canal)</span></div>
-    <div class="kpi top"><b>${esc(E.top.titulo)}</b><span>el más visto: ${fmtC(E.top.vistas)} · ${esc(E.top.canalNombre)}</span></div>
-  </div>
-  ${sec("ins","🧠 Conclusiones",`<ul class="ins">${E.C.map(c=>`<li><span class="ico">${c.i}</span><span>${c.t}</span></li>`).join("")}</ul>`,true)}
-  ${sec("op",`🎯 Oportunidad del tema: <span class="op op-${E.op.nivel}">${E.op.nombre}</span>`,E.op.fac.map(f=>`<div class="fac"><b>${f.nombre}</b><span class="pts">${"●".repeat(f.p+1)}${"○".repeat(2-f.p)} ${f.et}</span><span class="fd">${f.txt}</span></div>`).join("")+`<p class="mut" style="margin-top:8px">Se suma demanda + puerta para canales chicos + poca competencia. Es una guía para escoger temas, no una promesa.</p>`,true)}
-  ${sec("kw","🧩 Subtemas y palabras clave",(E.kw.frec.length?`<div class="sub2">Las que más se repiten (toca una para ver solo esos videos · 🔎 para buscar más a fondo)</div>${kwHtml(E.kw.frec)}`:`<p class="mut">Hacen falta más videos para encontrar subtemas.</p>`)+(E.kw.vistas.length?`<div class="sub2">Las que más vistas traen (mediana)</div>${kwHtml(E.kw.vistas)}`:"")+(E.hs.length?`<div class="sub2">Hashtags más usados</div><div class="kws">${E.hs.map(([h,c])=>`<span class="kw${Fl.palabra===h?" on":""}"><button data-act="palabra" data-k="${esc(h)}" data-t="${esc(h)}">${esc(h)} <small>${c}</small></button></span>`).join("")}</div>`:""),true)}
-  ${sec("niv","🔥 Nivel de viralidad",barras(nivelItems)+`<p class="mut" style="margin-top:8px">Se compara cada video con el promedio de vistas de su propio canal. Toca un nivel para filtrar.</p>`,true)}
-  ${sec("dur","⏱ Shorts vs largos y duración",`<div class="sub2">Formato</div>${barras(shItems)}<div class="sub2">Duración (mediana de vistas)</div>${barrasGrupo(E.durG)}`,true)}
-  ${sec("pais","🌎 País del canal",barras(paisItems)+`<p class="mut" style="margin-top:8px">Es el país que el canal declara en YouTube. Toca uno para filtrar.</p>`,true)}
-  ${sec("idi","🗣 Idioma del video",barras(idiomaItems)+`<p class="mut" style="margin-top:8px">El que declara el video; si no lo declara, se estima por el título.</p>`,true)}
-  ${sec("can","📺 Canales que dominan el tema",`<div class="clist">${E.canales.slice(0,8).map((c,i)=>tarjetaCanalRes(c,i)).join("")}</div>${E.canales.length>8?`<button class="btn mas" data-act="sub" data-v="canales">Ver los ${E.canales.length} canales</button>`:""}`,true)}
-  ${sec("edad","📅 Antigüedad de los videos",barrasGrupo(E.edadG),false)}
-  ${sec("tam","👥 Tamaño del canal",barrasGrupo(E.tamG, fs=>{ const v=fs.filter(f=>f.mult!=null&&f.mult>=3).length; return v?` · ${v} virales`:""; }),false)}
-  ${sec("dia","🕒 Día y hora de publicación",`<div class="sub2">Día de la semana</div>${barrasGrupo(E.diaG)}<div class="sub2">Hora (hora de tu teléfono)</div>${barrasGrupo(E.horaG)}`,false)}
-  ${sec("cat","🏷 Categoría",barras(catItems),false)}`;
-}
-
-/* ---------------- videos (tarjetas y tabla) ---------------- */
-function claseNivelPuntaje(p){ return p>=80?"s-a":p>=60?"s-b":p>=40?"s-c":"s-d"; }
-function urlVideo(f){ return (f.short?"https://www.youtube.com/shorts/":"https://www.youtube.com/watch?v=")+f.id; }
-function tarjeta(f,i,o={}){
-  const c=f.canal||{}, ab=estado.abiertos.has(f.id), u=urlVideo(f);
-  const img=f.demo?`<span class="ph">▶</span>`:`<img loading="lazy" src="https://i.ytimg.com/vi/${esc(f.id)}/mqdefault.jpg" alt="">`;
-  return `<article class="vc">
-   <div class="vtop">
-    <a class="th" href="${u}" target="_blank" rel="noopener">${img}<span class="rk">#${i+1}</span>${f.dur?`<span class="du">${fmtDur(f.dur)}</span>`:""}${f.envivo==="live"?`<span class="shb lv">EN VIVO</span>`:f.short?`<span class="shb">SHORT</span>`:""}</a>
-    <div class="vb">
-     <a class="tt" href="${u}" target="_blank" rel="noopener">${esc(f.titulo)}</a>
-     ${o.sinCanal?"":`<div class="chn">${c.foto&&!f.demo?`<img src="${esc(c.foto)}" alt="" loading="lazy">`:""}<a href="https://www.youtube.com/channel/${esc(f.canalId)}" target="_blank" rel="noopener"><b>${esc(f.canalNombre)}</b></a>${c.pais?`<span>${bandera(c.pais)} ${esc(nombrePais(c.pais))}</span>`:""}<span>${c.subs!=null?fmtC(c.subs)+" subs":"subs ocultos"}</span></div>`}
-    </div>
-   </div>
-   <div class="met">
-    <div><b>${fmtC(f.vistas)}</b><span>vistas</span></div>
-    <div title="Publicado ${fmtHace(f.fecha)}"><b>${fmtHace(f.fecha).replace("hace ","")}</b><span>${fmtFecha(f.fecha)}</span></div>
-    <div class="n-${f.nivel}" title="Vistas comparadas con el promedio de su canal"><b>${fmtX(f.mult)}</b><span>${NIVELES[f.nivel].corto}</span></div>
-    <div class="${claseNivelPuntaje(f.puntaje)}" title="Puntaje viral 0 a 100 dentro de esta lista"><b>${f.puntaje}</b><span>puntaje</span></div>
-   </div>
-   <div class="met2"><span>⚡ ${fmtC(f.vpd)}/día</span><span>👍 ${fmtC(f.likes)}</span><span>💬 ${fmtC(f.coment)}</span><span>❤ ${fmtPct(f.inter)}</span><span>🗣 ${esc(nombreIdioma(f.idioma))}${f.idiomaEst&&f.idioma?"*":""}</span>${f.cat?`<span>🏷 ${esc(nombreCat(f.cat))}</span>`:""}</div>
-   <div class="acc">
-    <button class="btn sm" data-act="det" data-id="${esc(f.id)}">${ab?"Ocultar":"Detalles"}</button>
-    ${o.sinVigilar?"":`<button class="btn sm" data-act="vigilar" data-c="${esc(f.canalId)}">👁 Vigilar canal</button>`}
-    <button class="btn sm" data-act="copiar" data-id="${esc(f.id)}">Copiar título</button>
-   </div>
-   ${ab?detalle(f):""}
-  </article>`;
-}
-function detalle(f){
-  const c=f.canal;
-  return `<div class="det">
-   <div>📅 Publicado el <b>${fmtFecha(f.fecha)}</b> a las <b>${fmtHora(f.fecha)}</b> (hora de tu teléfono) · ${fmtN(f.dias)} días</div>
-   <div>👁 <b>${fmtN(f.vistas)}</b> vistas exactas · ⚡ ${fmtN(f.vpd)} por día · 👍 ${fmtN(f.likes)} · 💬 ${fmtN(f.coment)}</div>
-   ${c?`<div>📺 Su canal promedia <b>${fmtC(c.prom)}</b> vistas por video (${fmtC(c.vistas)} vistas en ${fmtN(c.nvideos)} videos) → este video lleva <b>${fmtX(f.mult)}</b> ese promedio.</div>`:""}
-   <div>⏱ ${fmtDur(f.dur)} · ${f.short?"Short":"Video largo"} · 🗣 ${esc(nombreIdioma(f.idioma))}${f.idiomaEst&&f.idioma?" (estimado por el título)":""} · 🏷 ${esc(nombreCat(f.cat))}</div>
-   ${f.tags&&f.tags.length?`<div><b>Etiquetas del video</b><div class="tags">${f.tags.map(t=>`<span class="tag">${esc(t)}</span>`).join("")}</div></div>`:""}
-   ${f.desc?`<div><b>Descripción</b><div class="desc">${esc(f.desc)}</div></div>`:""}
-   <div class="row"><a class="btn sm osc" href="${urlVideo(f)}" target="_blank" rel="noopener">▶ Abrir en YouTube</a><a class="btn sm" href="https://www.youtube.com/channel/${esc(f.canalId)}" target="_blank" rel="noopener">Abrir canal</a></div>
-  </div>`;
-}
-function controlesOrden(clave,dir,actO,actD){
-  return `<label class="lbl">Ordenar por<select data-ch="${actO}">${ORDENES_TARJETAS.map(k=>`<option value="${k}"${k===clave?" selected":""}>${ORDEN[k].n}</option>`).join("")}${ORDENES_TARJETAS.includes(clave)?"":`<option value="${clave}" selected>${ORDEN[clave].n}</option>`}</select></label>
-   <button class="btn sm" data-act="${actD}" style="padding:9px 11px">${dir==="desc"?"↓ Mayor a menor":"↑ Menor a mayor"}</button>`;
-}
-function htmlVideos(F){
-  const ctrl=`<div class="ctrl">${controlesOrden(estado.orden,estado.dir,"orden","dir")}
-    <div class="seg"><button data-act="vista" data-v="tarjetas" class="${estado.vista==="tarjetas"?"on":""}">Tarjetas</button><button data-act="vista" data-v="tabla" class="${estado.vista==="tabla"?"on":""}">Tabla</button></div></div>`;
-  if(!F.length) return ctrl+`<div class="card vacio">Ningún video cumple los filtros.</div>`;
-  const ord=ordenarPor(F,estado.orden,estado.dir);
-  if(estado.vista==="tabla") return ctrl+htmlTabla(ord);
-  return ctrl+`<div class="vlist">${ord.slice(0,estado.limite).map((f,i)=>tarjeta(f,i)).join("")}</div>`+
-    (ord.length>estado.limite?`<button class="btn mas" data-act="vermas">Mostrar más (${ord.length-estado.limite} restantes)</button>`:"");
-}
-const COLS = [
-  {k:"titulo",n:"Video",cls:"tv",v:(f,i)=>`<a href="${urlVideo(f)}" target="_blank" rel="noopener"><span class="rkt">${i+1}.</span> ${esc(f.titulo)}</a>`},
-  {k:"vistas",n:"Vistas",num:1,v:f=>fmtN(f.vistas)},
-  {k:"mult",n:"× su canal",num:1,v:f=>`<span class="pill n-${f.nivel}">${fmtX(f.mult)}</span>`},
-  {k:"puntaje",n:"Puntaje",num:1,v:f=>`<span class="pill ${claseNivelPuntaje(f.puntaje)}">${f.puntaje}</span>`},
-  {k:"fecha",n:"Publicado",v:f=>fmtFecha(f.fecha)+" "+fmtHora(f.fecha)},
-  {k:"vpd",n:"Vistas/día",num:1,v:f=>fmtN(f.vpd)},
-  {k:"canal",n:"Canal",v:f=>esc(cortar(f.canalNombre,28))},
-  {k:"pais",n:"País",v:f=>f.canal&&f.canal.pais?bandera(f.canal.pais)+" "+f.canal.pais:"—"},
-  {k:"subs",n:"Subs canal",num:1,v:f=>fmtC(f.canal&&f.canal.subs)},
-  {k:"dias",n:"Días",num:1,v:f=>fmtN(f.dias)},
-  {k:"likes",n:"Likes",num:1,v:f=>fmtN(f.likes)},
-  {k:"coment",n:"Coment.",num:1,v:f=>fmtN(f.coment)},
-  {k:"inter",n:"Interacción",num:1,v:f=>fmtPct(f.inter)},
-  {k:"dur",n:"Duración",num:1,v:f=>fmtDur(f.dur)},
-  {k:"tipo",n:"Tipo",v:f=>f.short?"Short":"Largo"},
-  {k:"idioma",n:"Idioma",v:f=>esc(nombreIdioma(f.idioma))+(f.idiomaEst&&f.idioma?"*":"")},
-  {k:"cat",n:"Categoría",v:f=>esc(nombreCat(f.cat))}
-];
-function htmlTabla(F){
-  return `<div class="twrap"><table class="tb"><thead><tr>${COLS.map(c=>`<th class="${c.cls||""}${c.num?" num":""}${estado.orden===c.k?" on":""}" data-act="ordcol" data-k="${c.k}">${c.n}${estado.orden===c.k?(estado.dir==="desc"?" ▼":" ▲"):""}</th>`).join("")}</tr></thead>
-   <tbody>${F.map((f,i)=>`<tr>${COLS.map(c=>`<td class="${c.cls||""}${c.num?" num":""}">${c.v(f,i)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>
-   <p class="mut" style="margin-top:6px">Toca el nombre de una columna para ordenar; tócalo otra vez para invertir. * = idioma estimado por el título.</p>`;
-}
-
-/* ---------------- canales dentro de una búsqueda ---------------- */
-function avatar(c,nombre){ return c&&c.foto&&!String(c.id).startsWith("DEMO") ? `<img class="av" src="${esc(c.foto)}" alt="" loading="lazy">` : `<span class="av">${esc((nombre||"?").charAt(0).toUpperCase())}</span>`; }
-function tarjetaCanalRes(a,i){
-  const c=a.canal;
-  return `<div class="cc">${avatar(c,a.nombre)}<div class="cb">
-    <div class="cn">${i+1}. ${esc(a.nombre)}</div>
-    <div class="cs">${c&&c.pais?bandera(c.pais)+" "+esc(nombrePais(c.pais))+" · ":""}${c&&c.subs!=null?fmtC(c.subs)+" subs":"subs ocultos"}${c?" · promedia "+fmtC(c.prom)+" por video":""}</div>
-    <div class="cs">Aquí: <b>${a.n}</b> ${pl(a.n,"video","videos")} · <b>${fmtC(a.vistas)}</b> vistas · mejor ${fmtX(a.mejor)}</div>
-    <div class="row"><button class="btn sm" data-act="verCanal" data-c="${esc(a.id)}">Ver sus videos</button><button class="btn sm" data-act="vigilar" data-c="${esc(a.id)}">👁 Vigilar</button></div>
-  </div></div>`;
-}
-function htmlCanales(F){
-  if(!F.length) return `<div class="card vacio">Ningún video cumple los filtros.</div>`;
-  const m=new Map();
-  F.forEach(f=>{ let a=m.get(f.canalId); if(!a){ a={id:f.canalId,nombre:f.canalNombre,canal:f.canal,n:0,vistas:0,mejor:null}; m.set(f.canalId,a); } a.n++; a.vistas+=f.vistas; if(f.mult!=null&&(a.mejor==null||f.mult>a.mejor)) a.mejor=f.mult; });
-  const lst=[...m.values()].sort((a,b)=>b.vistas-a.vistas);
-  return `<p class="mut">Ordenados por las vistas que suman en esta búsqueda.</p><div class="clist">${lst.map((a,i)=>tarjetaCanalRes(a,i)).join("")}</div>`;
-}
-
-/* ---------------- exportar a Excel ---------------- */
-function exportarCSV(){
-  const est=estado.est; if(!est) return;
-  const F=ordenarPor(aplicarFiltros(estado.filas),estado.orden,estado.dir);
-  const d=x=>x==null||!isFinite(x)?"":String(Math.round(x*100)/100).replace(".",",");
-  const cols=[["#",(f,i)=>i+1],["Título",f=>f.titulo],["Canal",f=>f.canalNombre],["País del canal",f=>f.canal&&f.canal.pais?nombrePais(f.canal.pais):""],["Suscriptores",f=>f.canal?f.canal.subs:""],
-    ["Vistas",f=>f.vistas],["Likes",f=>f.likes],["Comentarios",f=>f.coment],["Interacción %",f=>d(f.inter)],["Vistas por día",f=>Math.round(f.vpd)],
-    ["Veces el promedio del canal",f=>d(f.mult)],["Nivel",f=>NIVELES[f.nivel].corto],["Puntaje viral",f=>f.puntaje],
-    ["Fecha de publicación",f=>{ const x=new Date(f.fecha), p=n=>String(n).padStart(2,"0"); return `${x.getFullYear()}-${p(x.getMonth()+1)}-${p(x.getDate())} ${p(x.getHours())}:${p(x.getMinutes())}`; }],
-    ["Días publicado",f=>Math.round(f.dias)],["Duración (min)",f=>d(f.dur/60)],["Tipo",f=>f.short?"Short":"Largo"],["Idioma",f=>nombreIdioma(f.idioma)],["Categoría",f=>nombreCat(f.cat)],
-    ["Etiquetas",f=>(f.tags||[]).join(", ")],["Enlace",f=>urlVideo(f)]];
-  const celda=v=>{ v=v==null?"":String(v); if(/^[=+\-@]/.test(v)) v="'"+v; return /[;"\r\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v; };
-  const lineas=[cols.map(c=>c[0])].concat(F.map((f,i)=>cols.map(c=>c[1](f,i))));
-  const nombre="radar-viral_"+sinTildes(est.params.q||nombreCat(est.params.cat)).replace(/[^\w]+/g,"-").replace(/^-|-$/g,"").slice(0,40)+".csv";
-  descargar("﻿"+lineas.map(r=>r.map(celda).join(";")).join("\r\n"), nombre, "text/csv;charset=utf-8");
-  toast(`Descargado: ${F.length} videos para abrir en Excel`);
-}
-
 /* ---------------- vigilados ---------------- */
 async function cargarVig(){ if(!estado.vig) estado.vig=(await ALM.get("vigilados"))||{canales:[],videos:{},actualizado:0}; return estado.vig; }
 async function guardarVig(){ await ALM.set("vigilados",estado.vig); }
@@ -1179,115 +960,6 @@ async function actualizarVigilados(){
   }catch(e){ toast(e.message,7000); }
   estado.ocupado=false; pintarVigilados();
 }
-async function pintarVigilados(){
-  const V=await cargarVig(), el=$("#tab-vigilados");
-  if(estado.canalAbierto){ el.innerHTML=htmlCanalDetalle(V,estado.canalAbierto); return; }
-  const canales=[...V.canales].sort((a,b)=>(b.esMio?1:0)-(a.esMio?1:0)||(b.subs||0)-(a.subs||0));
-  const mapa=Object.fromEntries(canales.map(c=>[c.id,c]));
-  const recientes=[]; canales.forEach(c=>(V.videos[c.id]||[]).forEach(v=>{ if(Date.now()-Date.parse(v.fecha)<=14*864e5) recientes.push(v); }));
-  const nov=ordenarPor(construirFilas({videos:recientes,canales:mapa}),"mult","desc").slice(0,12);
-  const costo=canales.length*2+Math.ceil(canales.length/50);
-  el.innerHTML=`
-   <form class="card" id="fCanal" autocomplete="off"><h2>👁 Vigilar un canal</h2>
-    <p class="mut">Pega el enlace del canal, su @nombre o el enlace de cualquier video suyo. No gasta búsquedas (solo 2 unidades de las 10.000 diarias).</p>
-    <div class="qrow"><input id="inCanal" placeholder="@canal o enlace de YouTube"><button class="btn pri" type="submit">Agregar</button></div></form>
-   ${canales.length?`
-   <div class="card"><div class="rhead"><div><b>${canales.length} ${pl(canales.length,"canal vigilado","canales vigilados")}</b>
-     <div class="rsub">Actualizado ${V.actualizado?fmtHace(V.actualizado):"al agregarlos"} · actualizar todos gasta ~${costo} unidades (no usa búsquedas)</div></div>
-     <button class="btn osc sm" data-act="actTodos">🔄 Actualizar todos</button></div></div>
-   ${nov.length?`<h3 class="tit">🔥 Novedades de los últimos 14 días, de la más viral a la menos</h3><div class="vlist">${nov.map((f,i)=>tarjeta(f,i,{sinVigilar:true})).join("")}</div>`:""}
-   <h3 class="tit">Tus canales</h3><div class="clist">${canales.map(c=>tarjetaVigilado(c,V)).join("")}</div>`
-   :`<div class="card vacio">Todavía no vigilas ningún canal.<br><br>Agrega a tu competencia (o tu propio canal) para ver cuáles de sus videos pegan más y enterarte cuando suban uno que se haga viral. También puedes tocar <b>👁 Vigilar canal</b> en cualquier video de una búsqueda.</div>`}`;
-}
-function tarjetaVigilado(c,V){
-  const vids=V.videos[c.id]||[], ult=vids.reduce((m,v)=>!m||Date.parse(v.fecha)>Date.parse(m.fecha)?v:m,null);
-  const filas=construirFilas({videos:vids,canales:{[c.id]:c}}), mejor=ordenarPor(filas,"mult","desc")[0];
-  return `<div class="cc">${avatar(c,c.nombre)}<div class="cb">
-    <div class="cn">${esc(c.nombre)}${c.esMio?`<span class="mio">⭐ MI CANAL</span>`:""}</div>
-    <div class="cs">${c.pais?bandera(c.pais)+" "+esc(nombrePais(c.pais))+" · ":""}${c.subs!=null?fmtC(c.subs)+" subs":"subs ocultos"} · ${fmtC(c.vistas)} vistas · ${fmtN(c.nvideos)} videos</div>
-    <div class="cs">Promedia <b>${fmtC(c.prom)}</b> por video${ult?` · último video ${fmtHace(ult.fecha)}`:""}</div>
-    ${mejor?`<div class="cs">Mejor de sus últimos ${vids.length}: «${esc(cortar(mejor.titulo,48))}» ${fmtX(mejor.mult)}</div>`:""}
-    <div class="row"><button class="btn sm osc" data-act="abrirCanal" data-c="${esc(c.id)}">Ver sus videos</button><button class="btn sm" data-act="marcarMio" data-c="${esc(c.id)}">${c.esMio?"⭐ Es mi canal":"☆ Es mi canal"}</button><button class="btn sm mal" data-act="quitarCanal" data-c="${esc(c.id)}">Quitar</button></div>
-  </div></div>`;
-}
-function htmlCanalDetalle(V,cid){
-  const c=V.canales.find(x=>x.id===cid);
-  if(!c){ estado.canalAbierto=null; return ""; }
-  const filas=construirFilas({videos:V.videos[cid]||[],canales:{[cid]:c}});
-  const ord=ordenarPor(filas,estado.ordenCanal,estado.dirCanal);
-  const sh=filas.filter(f=>f.short), lg=filas.filter(f=>!f.short), mSh=mediana(sh.map(f=>f.vistas)), mLg=mediana(lg.map(f=>f.vistas));
-  const vir=filas.filter(f=>f.mult!=null&&f.mult>=3).length;
-  const durG=grupos(filas,f=>bucket(f.dur,DUR_B),DUR_B);
-  return `<div class="card"><div class="row" style="justify-content:space-between">
-     <button class="btn sm" data-act="cerrarCanal">← Volver</button>
-     <div class="row"><button class="btn sm" data-act="actCanal" data-c="${esc(cid)}">🔄 Actualizar</button><a class="btn sm" href="https://www.youtube.com/channel/${esc(cid)}" target="_blank" rel="noopener">Abrir en YouTube</a></div></div>
-    <div class="cc" style="border:0;padding:12px 0 0">${avatar(c,c.nombre)}<div class="cb"><div class="cn" style="font-size:16px">${esc(c.nombre)}${c.esMio?`<span class="mio">⭐ MI CANAL</span>`:""}</div>
-     <div class="cs">${c.pais?bandera(c.pais)+" "+esc(nombrePais(c.pais))+" · ":""}${c.url?esc(c.url)+" · ":""}actualizado ${c.actualizado?fmtHace(c.actualizado):"—"}</div></div></div></div>
-   <div class="kpis">
-    <div class="kpi"><b>${c.subs!=null?fmtC(c.subs):"oculto"}</b><span>suscriptores</span></div>
-    <div class="kpi"><b>${fmtC(c.vistas)}</b><span>vistas totales</span></div>
-    <div class="kpi"><b>${fmtN(c.nvideos)}</b><span>videos subidos</span></div>
-    <div class="kpi"><b>${fmtC(c.prom)}</b><span>promedio por video</span></div>
-    <div class="kpi"><b>${fmtC(mediana(filas.map(f=>f.vistas)))}</b><span>mediana de sus últimos ${filas.length}</span></div>
-    <div class="kpi"><b>${vir}</b><span>virales (3× o más) entre los últimos ${filas.length}</span></div>
-   </div>
-   ${filas.length?sec("cform","⏱ Qué le funciona a este canal",`<div class="sub2">Formato</div>${barras([["📱 Shorts",sh,mSh],["🎬 Largos",lg,mLg]].filter(x=>x[1].length).map(([n,fs,m])=>({nombre:n,valor:m,texto:`${fs.length} videos · mediana ${fmtC(m)} vistas`})))}<div class="sub2">Duración (mediana de vistas)</div>${barrasGrupo(durG)}`,true):""}
-   <h3 class="tit">Sus últimos ${filas.length} videos</h3>
-   <div class="ctrl">${controlesOrden(estado.ordenCanal,estado.dirCanal,"ordenCanal","dirCanal")}</div>
-   ${ord.length?`<div class="vlist">${ord.slice(0,estado.limiteCanal).map((f,i)=>tarjeta(f,i,{sinCanal:true,sinVigilar:true})).join("")}</div>${ord.length>estado.limiteCanal?`<button class="btn mas" data-act="vermasCanal">Mostrar más</button>`:""}`:`<div class="card vacio">Todavía no hay videos. Pulsa 🔄 Actualizar.</div>`}`;
-}
-
-/* ---------------- historial ---------------- */
-async function pintarHistorial(){
-  const idx=(await ALM.get("estudios_idx"))||[], el=$("#tab-historial");
-  el.innerHTML = idx.length ? `
-   <div class="card"><div class="rhead"><div><b>${idx.length} ${pl(idx.length,"búsqueda guardada","búsquedas guardadas")}</b><div class="rsub">Abrirlas no gasta cupo. Se guardan las últimas ${MAX_HIST}.</div></div>
-    <button class="btn sm mal" data-act="borrarHist">Borrar todo</button></div></div>
-   ${idx.map(x=>`<div class="card"><div class="hq">${esc(tituloEst(x.params))}</div>
-     <div class="rsub">${etiquetas(x.params).map(esc).join(" · ")}</div>
-     <div class="rsub">${fmtHace(x.fecha)} · ${x.n} videos · el más visto: ${fmtC(x.top)}</div>
-     <div class="row" style="margin-top:8px"><button class="btn sm pri" data-act="abrirEst" data-id="${esc(x.id)}">Abrir</button><button class="btn sm" data-act="refrescarEst" data-id="${esc(x.id)}">🔄 Actualizar</button><button class="btn sm mal" data-act="borrarEst" data-id="${esc(x.id)}">Borrar</button></div></div>`).join("")}`
-   : `<div class="card vacio">Aquí aparecerán tus búsquedas. Se guardan solas y puedes volver a abrirlas sin gastar cupo.</div>`;
-}
-
-/* ---------------- ajustes ---------------- */
-function origenWeb(){ return /^https?:/.test(location.protocol) && location.origin!=="null" ? location.origin : "https://TU-USUARIO.github.io"; }
-function pintarAjustes(){
-  const cfg=CFG(), c=cuota(), perfil=LS.get("perfil",null), o=origenWeb();
-  $("#tab-ajustes").innerHTML=`
-  <div class="card"><h2>🔌 Conexión con YouTube</h2>
-   <p class="mut" style="margin:0">${cfg.apiKey?`<span class="ok">✔ Conectada.</span> No tienes que configurar nada: solo busca.`:`<span class="malo">Todavía no está conectada.</span> Mientras tanto puedes usar el modo ejemplo.`}</p></div>
-  ${cfg.clientId?`<div class="card"><h2>👤 Tu cuenta de Google</h2>
-   ${perfil?`<div class="cc" style="margin-bottom:8px">${perfil.foto?`<img class="av" src="${esc(perfil.foto)}" alt="">`:`<span class="av">${esc((perfil.nombre||"?").charAt(0))}</span>`}<div class="cb"><div class="cn">${esc(perfil.nombre||"")}</div><div class="cs">${esc(perfil.correo||"")}</div></div></div>
-     <div class="row"><button class="btn mal" data-act="salirGoogle">Cerrar sesión</button></div>`
-   :`<p class="mut">Opcional: entra con tu cuenta de Google para que la app te reconozca. No hace falta para buscar.</p><button class="btn osc" data-act="entrarGoogle">Entrar con Google</button>`}
-  </div>`:""}
-  <div class="card" id="cupoCard"><h2>📦 Cupo de hoy</h2>
-   <div class="cupo"><div class="kpi"><b>${c.busq} / ${LIMITE_BUSQ}</b><span>búsquedas usadas</span></div><div class="kpi"><b>${fmtN(c.unid)} / ${fmtN(LIMITE_UNID)}</b><span>otras consultas (estadísticas, canales)</span></div></div>
-   <p class="mut" style="margin-top:8px">YouTube da a la app ${LIMITE_BUSQ} búsquedas gratis al día (cada 50 videos es 1 búsqueda). Este contador es lo que se buscó desde este teléfono. Se renueva a las <b>${horaRenovacion()}</b> (hora de tu teléfono). Vigilar canales y abrir el Historial no gastan búsquedas.</p>
-   <button class="btn sm" data-act="resetCuota">Poner el contador en cero</button>
-  </div>
-  <div class="card"><h2>💾 Reutilizar búsquedas</h2>
-   <p class="mut">Si repites la misma búsqueda con los mismos filtros, se abre la guardada sin gastar cupo, siempre que tenga menos de:</p>
-   <select data-ch="cache">${[[0,"No reutilizar (siempre consultar)"],[3,"3 horas"],[6,"6 horas"],[12,"12 horas"],[24,"24 horas"],[72,"3 días"]].map(x=>`<option value="${x[0]}"${+cfg.cacheHoras===x[0]?" selected":""}>${x[1]}</option>`).join("")}</select>
-  </div>
-  <div class="card"><h2>🧪 Modo ejemplo</h2><p class="mut">Muestra la app con datos inventados, para ver cómo funciona sin clave. No toca tus datos.</p>
-   <button class="btn" data-act="ejemplo">${modoDemo?"Ya estás en el ejemplo":"Ver con datos de ejemplo"}</button></div>
-  <div class="card"><h2>🗂 Copia de seguridad</h2><p class="mut">Pasa tus vigilados y búsquedas a otro teléfono o a la PC.</p>
-   <div class="row"><button class="btn" data-act="exportar">⬇ Exportar</button><button class="btn" data-act="importar">⬆ Importar</button><button class="btn mal" data-act="borrarTodo">Borrar todo</button></div></div>
-  ${sec("ayuda","❓ Cómo se calcula cada número",`<dl class="ayuda">
-    <dt>× su canal (multiplicador)</dt><dd>Vistas del video ÷ promedio de vistas por video de su canal (vistas totales del canal ÷ videos subidos). 1× = normal para ese canal; 3× o más = muy viral; 10× o más = explosivo. Es la mejor señal de que <b>el tema</b> pegó, no solo el tamaño del canal.</dd>
-    <dt>Puntaje viral (0 a 100)</dt><dd>Compara cada video con los demás de la misma búsqueda: 50% multiplicador, 35% vistas por día y 15% interacción. Un 90 significa que está por encima del 90% de esa lista. Es el orden «Más viral».</dd>
-    <dt>Vistas por día</dt><dd>Vistas ÷ días desde que se publicó. Sirve para comparar videos nuevos con viejos.</dd>
-    <dt>Interacción</dt><dd>(Likes + comentarios) ÷ vistas.</dd>
-    <dt>Short</dt><dd>Dura 3 minutos o menos y es vertical. Si YouTube no informa la forma, se toma como Short si dura 1 minuto o menos o tiene #shorts.</dd>
-    <dt>Ojo al comparar Shorts con largos</dt><dd>Desde 2025 YouTube cuenta cada repetición de un Short como vista, por eso suelen tener muchas más. Para comparar justo, filtra Shorts con Shorts.</dd>
-    <dt>Idioma</dt><dd>El que declara el video. Si no lo declara, se estima por las palabras del título (marcado con *).</dd>
-    <dt>País</dt><dd>El que el canal declara en YouTube. Muchos canales no lo ponen: salen como «Sin país».</dd>
-    <dt>Oportunidad del tema</dt><dd>Suma tres cosas: demanda (vistas por día típicas), puerta para canales chicos (cuántos canales de menos de 100 mil suscriptores pegaron) y competencia (cuánto se llevan los 5 canales más grandes).</dd></dl>`,false)}
-  <p class="ver">Radar Viral v${VERSION} · Usa los Servicios de API de YouTube · <a href="https://www.youtube.com/t/terms" target="_blank" rel="noopener">Términos de YouTube</a> · <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Privacidad de Google</a> · <a href="./privacidad.html" target="_blank" rel="noopener">Privacidad de la app</a></p>`;
-}
-
 /* ---------------- inicio de sesión con Google (opcional) ---------------- */
 let gsiPromesa=null;
 function cargarGSI(){
@@ -1324,38 +996,6 @@ function salirGoogle(){
   try{ if(estado.token&&window.google) google.accounts.oauth2.revoke(estado.token,()=>{}); }catch(e){}
   estado.token=null; LS.set("perfil",null); pintarUsuario(); pintarAjustes(); toast("Sesión cerrada");
 }
-function pintarUsuario(){
-  const p=LS.get("perfil",null);
-  $("#userBox").innerHTML = p&&p.foto ? `<span class="user" data-act="irAjustes" title="${esc(p.nombre)}"><img src="${esc(p.foto)}" alt=""></span>`
-    : (CFG().clientId && !p ? `<button class="cuota" data-act="entrarGoogle">Entrar</button>` : "");
-}
-
-/* ---------------- copia de seguridad ---------------- */
-async function exportar(){
-  const idx=(await DB.get("estudios_idx"))||[], estudios=[];
-  for(const x of idx){ const e=await DB.get("estudio:"+x.id); if(e) estudios.push(e); }
-  const datos={app:"radar-viral",version:VERSION,fecha:new Date().toISOString(),vigilados:(await DB.get("vigilados"))||null,estudios,ajustes:{cacheHoras:CFG().cacheHoras},filtros:LS.get("filtros",null)};
-  descargar(JSON.stringify(datos),"radar-viral-copia_"+new Date().toISOString().slice(0,10)+".json","application/json");
-  toast("Copia descargada");
-}
-async function importar(archivo){
-  if(modoDemo){ toast("Sal del modo ejemplo para importar"); return; }
-  try{
-    const d=JSON.parse(await archivo.text());
-    if(d.app!=="radar-viral") throw new Error("Ese archivo no es una copia de Radar Viral.");
-    if(d.vigilados){
-      const V=(await DB.get("vigilados"))||{canales:[],videos:{},actualizado:0};
-      d.vigilados.canales.forEach(c=>{ if(!V.canales.find(x=>x.id===c.id)) V.canales.push(c); });
-      Object.assign(V.videos,d.vigilados.videos||{});
-      await DB.set("vigilados",V);
-    }
-    for(const e of (d.estudios||[]).slice().reverse()) await guardarEstudio(e);
-    if(d.ajustes) guardarCFG({cacheHoras:d.ajustes.cacheHoras});
-    estado.vig=null; toast(`Importado: ${(d.vigilados&&d.vigilados.canales.length)||0} canales y ${(d.estudios||[]).length} búsquedas`);
-    pintarHistorial();
-  }catch(e){ toast(e.message||"No se pudo leer el archivo",6000); }
-}
-
 /* ---------------- modo ejemplo (datos inventados) ---------------- */
 function prng(seed){ let s=(seed>>>0)||1; return ()=>{ s^=s<<13; s>>>=0; s^=s>>>17; s^=s<<5; s>>>=0; return s/4294967296; }; }
 function hashTxt(t){ let h=2166136261; for(const ch of String(t)){ h^=ch.charCodeAt(0); h=Math.imul(h,16777619); } return h>>>0; }
@@ -1393,138 +1033,789 @@ function demoVideosCanal(c){
   for(let i=0;i<30;i++){ const tpl=DEMO_T[Math.floor(r()*12)]; out.push(demoVideo(r,c,temas[Math.floor(r()*temas.length)],tpl,!!tpl[2]&&r()<0.9,400,c.id+"_v"+i)); }
   return out;
 }
+/* =====================================================================
+   INTERFAZ v2 · todo lo que se ve y se toca
+   Regla: todo lo que se toca responde (abre una ficha, filtra o lleva a una pestaña).
+   ===================================================================== */
+const IC = {
+  buscar:'<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',
+  fuego:'<path d="M12 3c.5 3-3 5-3 9a3 3 0 0 0 6 0c0-1-.3-2-1-3 2.500 1.500 4 3.500 4 6a6 6 0 0 1-12 0c0-5 5-7 6-12Z"/>',
+  ojo:'<path d="M2 12s3.600-7 10-7 10 7 10 7-3.600 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/>',
+  estrella:'<path d="m12 3 2.700 5.600 6.100.900-4.400 4.300 1 6.100L12 17l-5.400 2.900 1-6.100-4.400-4.300 6.100-.900z"/>',
+  reloj:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  ajustes:'<path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/>',
+  campana:'<path d="M6 16v-5a6 6 0 1 1 12 0v5l2 2H4l2-2Z"/><path d="M10 20a2 2 0 0 0 4 0"/>',
+  usuario:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.600-6 8-6s8 2 8 6"/>',
+  filtro:'<path d="M4 6h16M7 12h10M10 18h4"/>'
+};
+const ic = (n,s) => `<svg class="ic" width="${s||20}" height="${s||20}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${IC[n]}</svg>`;
+const vacio = t => `<div class="card vacio">${t}</div>`;
+const urlVideo = f => (f.short?"https://www.youtube.com/shorts/":"https://www.youtube.com/watch?v=")+f.id;
+const urlCanal = cid => "https://www.youtube.com/channel/"+cid;
+const claseP = p => p>=80?"s-a":p>=60?"s-b":p>=40?"s-c":"s-d";
+const miniatura = f => f.demo ? `<span class="ph">▶</span>` : `<img loading="lazy" src="https://i.ytimg.com/vi/${esc(f.id)}/mqdefault.jpg" alt="">`;
+const avatar = (c,nombre) => c&&c.foto&&!String(c.id).startsWith("DEMO") ? `<img class="av" src="${esc(c.foto)}" alt="" loading="lazy">` : `<span class="av">${esc((nombre||"?").charAt(0).toUpperCase())}</span>`;
+const esGuardado = id => estado.guard.some(g=>g.v.id===id);
+const esVigilado = cid => !!(estado.vig && estado.vig.canales.some(c=>c.id===cid));
+const canalDe = cid => (estado.vig && estado.vig.canales.find(c=>c.id===cid)) || MAPA_CANALES.get(cid) || null;
+const tile = (v,l,cls,attrs) => `<div class="tl ${cls||""}" ${attrs||""}><b>${v}</b><span>${l}</span></div>`;
+const sec = (k,titulo,cuerpo,def) => `<details class="sec" data-sec="${k}" ${(k in estado.secs?estado.secs[k]:def)?"open":""}><summary>${titulo}</summary><div class="in">${cuerpo}</div></details>`;
+function barras(items){   /* items: {nombre, valor, texto, act, attrs, on} */
+  const max=Math.max(...items.map(x=>x.valor||0),1);
+  return `<div class="bars">${items.map(x=>`<div class="bar${x.on?" on":""}"${x.act?` data-act="${x.act}" ${x.attrs||""}`:""}>
+    <div class="nm">${x.nombre}</div><div class="tr"><i style="width:${Math.max(1,(x.valor||0)/max*100)}%"></i></div><div class="vl">${x.texto}</div></div>`).join("")}</div>`;
+}
+const selOrden = (clave,ch,extra) => `<select data-ch="${ch}" ${extra||""} title="Ordenar por">${ORDENES_TARJETAS.map(k=>`<option value="${k}"${k===clave?" selected":""}>${ORDEN[k].n}</option>`).join("")}${ORDENES_TARJETAS.includes(clave)?"":`<option value="${clave}" selected>${ORDEN[clave].n}</option>`}</select>`;
+const chipsTipo = (act,sub,F,extra) => `<div class="chips" style="margin-bottom:8px">${[["todos","Todos",F.length],["shorts","📱 Shorts",F.filter(f=>f.short).length],["largos","🎬 Largos",F.filter(f=>!f.short).length]].map(([k,n,c])=>`<button class="chip${sub===k?" on":""}" data-act="${act}" data-v="${k}" ${extra||""}>${n} <small>${c}</small></button>`).join("")}</div>`;
+const porTipo = (F,sub) => sub==="shorts" ? F.filter(f=>f.short) : sub==="largos" ? F.filter(f=>!f.short) : F;
+
+/* ---------------- hojas (fichas a pantalla completa) ---------------- */
+function abrirHoja(titulo, render){
+  estado.pila.push({titulo,render});
+  try{ history.pushState({rv:estado.pila.length},""); }catch(e){}
+  pintarHoja(true);
+}
+function pintarHoja(arriba){
+  const h=$("#hoja"), top=estado.pila[estado.pila.length-1];
+  if(!top){ h.classList.add("hide"); document.body.classList.remove("conHoja"); return; }
+  h.classList.remove("hide"); document.body.classList.add("conHoja");
+  $("#hojaTit").textContent=top.titulo;
+  $("#hojaAtras").classList.toggle("hide", estado.pila.length<2);
+  const c=$("#hojaCuerpo"), y=c.scrollTop;
+  c.innerHTML=top.render(); c.scrollTop=arriba?0:y;
+}
+function cerrarHoja(todas){
+  const n=todas?estado.pila.length:1; if(!estado.pila.length) return;
+  estado.pila.length=Math.max(0,estado.pila.length-n); pintarHoja(true);
+  try{ const h=(history.state&&history.state.rv)||0; if(h) history.go(-Math.min(n,h)); }catch(e){}
+}
+window.addEventListener("popstate", e=>{
+  const n=(e.state&&e.state.rv)||0;
+  if(estado.pila.length>n){ estado.pila.length=n; pintarHoja(true); }
+});
+
+/* ---------------- tarjeta de video ---------------- */
+function tarjeta(f,i,o={}){
+  const c=f.canal||{}, u=urlVideo(f);
+  return `<article class="vc" data-act="video" data-id="${esc(f.id)}">
+    <a class="th" href="${u}" target="_blank" rel="noopener" title="Abrir en YouTube">${miniatura(f)}<span class="rk">${i+1}</span>${f.dur?`<span class="du">${fmtDur(f.dur)}</span>`:""}${f.short?`<span class="shb">SHORT</span>`:""}</a>
+    <div class="vb">
+      <a class="tt" href="${u}" target="_blank" rel="noopener" title="Abrir en YouTube">${esc(f.titulo)}</a>
+      ${o.sinCanal?"":`<div class="chn"><span class="cnm" data-act="canal" data-c="${esc(f.canalId)}">${esc(f.canalNombre)}</span> ${c.pais?bandera(c.pais):""} · ${c.subs!=null?fmtC(c.subs)+" subs":"subs ocultos"}</div>`}
+      <div class="vst"><span>👁 <b>${fmtC(f.vistas)}</b></span><span>📅 ${fmtHace(f.fecha).replace("hace ","")}</span><span>👍 ${fmtC(f.likes)}</span><span class="pill n-${f.nivel}" title="Veces el promedio de su canal">${fmtX(f.mult)}</span></div>
+    </div>
+    <div class="vacc"><button class="ib" data-act="guardar" data-id="${esc(f.id)}" title="Guardar">${esGuardado(f.id)?"★":"☆"}</button><span class="chev" title="Ver detalles">›</span></div>
+  </article>`;
+}
+const listaTarjetas = (F,o) => `<div class="vlist">${F.map((f,i)=>tarjeta(f,i,o)).join("")}</div>`;
+
+/* ---------------- ficha de un video ---------------- */
+function abrirVideo(id){ const f=MAPA_FILAS.get(id); if(!f){ toast("No tengo los datos de ese video"); return; } abrirHoja("Detalle del video", ()=>htmlVideo(f)); }
+function htmlVideo(f){
+  const c=f.canal, u=urlVideo(f);
+  return `<a class="thG" href="${u}" target="_blank" rel="noopener">${miniatura(f)}<span class="playG">▶</span>${f.dur?`<span class="du">${fmtDur(f.dur)}</span>`:""}</a>
+  <h2 class="vtit">${esc(f.titulo)}</h2>
+  <div class="row ig"><a class="btn pri" href="${u}" target="_blank" rel="noopener">▶ Ver en YouTube</a><button class="btn" data-act="guardar" data-id="${esc(f.id)}">${esGuardado(f.id)?"★ Guardado":"☆ Guardar"}</button><button class="btn" data-act="copiarTxt" data-t="${esc(f.titulo)}">Copiar título</button></div>
+  <h3 class="tit">📊 Datos del video</h3>
+  <div class="tiles">
+    ${tile(fmtN(f.vistas),"vistas")}${tile(fmtN(f.likes),"me gusta")}${tile(fmtN(f.coment),"comentarios")}
+    ${tile(fmtPct(f.inter),"participación")}${tile(fmtN(f.vpd),"vistas por día")}${tile(fmtX(f.mult),"veces su canal · "+NIVELES[f.nivel].corto,"n-"+f.nivel)}
+  </div>
+  <div class="dl">
+    <div><span>Publicado</span><b>${fmtFecha(f.fecha)} · ${fmtHora(f.fecha)} (${fmtHace(f.fecha)})</b></div>
+    <div><span>Tipo y duración</span><b>${f.short?"Short":"Video largo"} · ${fmtDur(f.dur)}</b></div>
+    <div><span>Me gusta por cada 1.000 vistas</span><b>${f.likes!=null&&f.vistas?nf1.format(f.likes/f.vistas*1000):"—"}</b></div>
+    <div><span>Comentarios por cada 1.000 vistas</span><b>${f.coment!=null&&f.vistas?nf1.format(f.coment/f.vistas*1000):"—"}</b></div>
+    <div><span>Idioma</span><b>${esc(nombreIdioma(f.idioma))}${f.idiomaEst&&f.idioma?" (estimado)":""}</b></div>
+    <div><span>Categoría</span><b>${esc(nombreCat(f.cat))}</b></div>
+  </div>
+  <p class="mut mt">Participación = (me gusta + comentarios) ÷ vistas.${c&&f.mult!=null?` Su canal promedia <b>${fmtC(c.prom)}</b> vistas por video; este lleva <b>${fmtX(f.mult)}</b> ese promedio.`:""}</p>
+  ${f.tags&&f.tags.length?`<h3 class="tit">🏷 Etiquetas que usó <button class="mas" data-act="copiarTxt" data-t="${esc(f.tags.join(", "))}">Copiar todas</button></h3><div class="chips">${f.tags.map(t=>`<button class="tag" data-act="buscarTema" data-t="${esc(t)}" title="Buscar este tema">${esc(t)}</button>`).join("")}</div><p class="mut mt">Toca una etiqueta para buscar ese tema.</p>`:""}
+  ${f.desc?`<h3 class="tit">📝 Descripción</h3><div class="desc">${esc(f.desc)}</div>`:""}
+  <h3 class="tit">📺 Canal</h3>
+  ${bloqueCanal(f.canalId,f.canalNombre,true)}`;
+}
+function bloqueCanal(cid,nombre,conBoton){
+  const c=canalDe(cid), vg=esVigilado(cid);
+  if(!c) return `<div class="cc"><span class="av">${esc((nombre||"?").charAt(0))}</span><div class="cb"><div class="cn">${esc(nombre||"Canal")}</div><div class="cs">Sin datos del canal</div></div></div>
+    <div class="row ig mt"><a class="btn" href="${urlCanal(cid)}" target="_blank" rel="noopener">Abrir en YouTube</a></div>`;
+  return `<div class="cc" ${conBoton?`data-act="canal" data-c="${esc(cid)}"`:""}>${avatar(c,c.nombre)}<div class="cb">
+      <div class="cn">${esc(c.nombre)}${c.esMio?`<span class="mio">MI CANAL</span>`:""}</div>
+      <div class="cs">${c.pais?bandera(c.pais)+" "+esc(nombrePais(c.pais)):"País no declarado"}${c.url?" · "+esc(c.url):""}${c.creado?" · desde "+new Date(c.creado).getFullYear():""}</div>
+    </div>${conBoton?`<span class="chev">›</span>`:""}</div>
+  <div class="tiles dos mt">
+    ${tile(c.subs!=null?fmtC(c.subs):"ocultos","suscriptores")}${tile(fmtC(c.vistas),"vistas totales")}
+    ${tile(fmtN(c.nvideos),"videos subidos")}${tile(fmtC(c.prom),"promedio por video")}
+  </div>
+  <div class="row ig mt">
+    ${conBoton?`<button class="btn pri" data-act="canal" data-c="${esc(cid)}">Ver canal completo</button>`:""}
+    <button class="btn" data-act="${vg?"dejarVigilar":"vigilar"}" data-c="${esc(cid)}">${vg?"👁 Vigilado ✓":"👁 Vigilar"}</button>
+    <a class="btn" href="${urlCanal(cid)}" target="_blank" rel="noopener">Abrir en YouTube</a>
+  </div>`;
+}
+
+/* ---------------- ficha de un canal ---------------- */
+function abrirCanal(cid){ const c=canalDe(cid); if(!c){ toast("No tengo los datos de ese canal"); return; } abrirHoja("Canal", ()=>htmlCanal(cid)); }
+const videosDeCanal = cid => (estado.vig && estado.vig.videos[cid]) || estado.canalCache[cid] || null;
+async function cargarVideosCanal(cid){
+  const c=canalDe(cid); if(!c) return;
+  if(esVigilado(cid)){ if(!modoDemo){ const n=await traerCanales([cid]); if(n[cid]) Object.assign(c,n[cid]); } await traerVideosCanal(cid); return; }
+  if(modoDemo){ estado.canalCache[cid]=demoVideosCanal(c); return; }
+  const n=await traerCanales([cid]); if(n[cid]) Object.assign(c,n[cid]);
+  const lista=await yt("playlistItems",{part:"contentDetails",playlistId:c.uploads||("UU"+cid.slice(2)),maxResults:50,fields:"items(contentDetails(videoId))"});
+  estado.canalCache[cid]=await traerVideos((lista.items||[]).map(it=>it.contentDetails.videoId));
+}
+function htmlCanal(cid){
+  const c=canalDe(cid); if(!c) return vacio("Ya no tengo los datos de este canal.");
+  const vids=videosDeCanal(cid), st=estado.canalVista[cid]||(estado.canalVista[cid]={sub:"todos",orden:"mult",dir:"desc",lim:30});
+  let h=bloqueCanal(cid,c.nombre,false);
+  if(esVigilado(cid)) h+=`<div class="row ig mt"><button class="btn" data-act="marcarMio" data-c="${esc(cid)}">${c.esMio?"★ Es mi canal":"☆ Marcar como mi canal"}</button></div>`;
+  if(c.descr) h+=`<div class="desc mt">${esc(c.descr)}</div>`;
+  if(!vids){
+    const aqui=estado.est ? estado.filas.filter(f=>f.canalId===cid) : [];
+    h+=`<div class="card mt"><b>Sus videos</b><p class="mut mt">Trae sus últimos 50 videos para ver cuáles le funcionan mejor. No gasta búsquedas.</p>
+      <button class="btn pri ancho" data-act="cargarCanal" data-c="${esc(cid)}">Cargar sus últimos 50 videos</button></div>`;
+    if(aqui.length) h+=`<h3 class="tit">En tu búsqueda (${aqui.length})</h3>${listaTarjetas(ordenarPor(aqui,"vistas","desc"),{sinCanal:true})}`;
+    return h;
+  }
+  const filas=armar({videos:vids,canales:{[cid]:c}});
+  if(!filas.length) return h+vacio("Este canal no tiene videos públicos.");
+  const sh=filas.filter(f=>f.short), lg=filas.filter(f=>!f.short);
+  const fechas=filas.map(f=>Date.parse(f.fecha)).sort((a,b)=>a-b), dias=(fechas[fechas.length-1]-fechas[0])/864e5;
+  const porSem=filas.length>1&&dias>0 ? (filas.length-1)/dias*7 : null;
+  const vir=filas.filter(f=>f.mult!=null&&f.mult>=3).length;
+  const durG=grupos(filas,f=>bucket(f.dur,DUR_B),DUR_B).filter(g=>g.filas.length);
+  const F=ordenarPor(porTipo(filas,st.sub),st.orden,st.dir);
+  h+=`<h3 class="tit">📈 Sus últimos ${filas.length} videos <button class="mas" data-act="cargarCanal" data-c="${esc(cid)}">🔄 Actualizar</button></h3>
+  <div class="tiles dos">
+    ${tile(fmtC(mediana(filas.map(f=>f.vistas))),"mediana de vistas")}${tile(vir,"virales (3× o más)")}
+    ${tile(porSem==null?"—":nf1.format(porSem),"videos por semana")}${tile(fmtHace(fechas[fechas.length-1]).replace("hace ",""),"desde el último video")}
+  </div>
+  ${sec("cform","⏱ Qué le funciona a este canal",`<div class="sub2">Formato</div>${barras([["📱 Shorts",sh],["🎬 Largos",lg]].filter(x=>x[1].length).map(([n,fs])=>({nombre:n,valor:mediana(fs.map(f=>f.vistas)),texto:`${fs.length} videos · mediana ${fmtC(mediana(fs.map(f=>f.vistas)))} vistas`})))}
+    <div class="sub2">Duración (mediana de vistas)</div>${barras(durG.map(g=>({nombre:esc(g.nombre),valor:mediana(g.filas.map(f=>f.vistas)),texto:`${g.filas.length} videos · mediana ${fmtC(mediana(g.filas.map(f=>f.vistas)))}`})))}`,false)}
+  ${chipsTipo("csub",st.sub,filas,`data-c="${esc(cid)}"`)}
+  <div class="ctrl">${selOrden(st.orden,"corden",`data-c="${esc(cid)}" style="flex:1;max-width:none"`)}<button class="btn" data-act="cdir" data-c="${esc(cid)}">${st.dir==="desc"?"↓ Mayor":"↑ Menor"}</button></div>
+  ${F.length?listaTarjetas(F.slice(0,st.lim),{sinCanal:true}):vacio("No tiene videos de ese tipo entre los últimos.")}
+  ${F.length>st.lim?`<button class="btn ancho" data-act="cmas" data-c="${esc(cid)}">Mostrar más (${F.length-st.lim})</button>`:""}`;
+  return h;
+}
+
+/* ---------------- resultados de una búsqueda ---------------- */
+function pintarResultados(){
+  const est=estado.est;
+  if(!est){ pintarInicio(); return; }
+  const p=est.params, na=nActivos();
+  $("#resultados").innerHTML=`
+  <div class="card">
+    <div class="rtitle">${esc(tituloEst(p))}</div>
+    <div class="rsub">${est.videos.length} videos · ${etiquetas(p).map(esc).join(" · ")} · ${estado.deCache?"guardado":"consultado"} ${fmtHace(est.fecha)}</div>
+    <div class="racc">
+      <button class="btn${na?" pri":""}" data-act="filtros">${ic("filtro",15)} Filtros${na?" ("+na+")":""}</button>
+      <button class="btn" data-act="actualizar" title="Volver a consultar YouTube">🔄 Actualizar</button>
+      ${est.siguiente?`<button class="btn" data-act="mas" title="Trae 50 videos más (gasta 1 búsqueda)">＋50</button>`:""}
+      <button class="btn" data-act="csv" title="Descargar para Excel">⬇ Excel</button>
+    </div>
+    <div id="activos" class="activos"></div>
+  </div>
+  <div id="rsub" class="subtabs"></div>
+  <div id="rcuerpo"></div>`;
+  pintarCuerpo();
+}
+function pintarSub(base){
+  const nS=base.filter(f=>f.short).length, nC=new Set(base.map(f=>f.canalId)).size;
+  const T=[["estudio","🧠 Estudio"],["todos","Todos",base.length],["shorts","📱 Shorts",nS],["largos","🎬 Largos",base.length-nS],["canales","📺 Canales",nC],["ideas","💡 Ideas"]];
+  $("#rsub").innerHTML=T.map(([k,n,c])=>`<button data-act="sub" data-v="${k}" class="${estado.sub===k?"on":""}">${n}${c!=null?` <small>${c}</small>`:""}</button>`).join("");
+  const on=$("#rsub .on"); if(on&&on.scrollIntoView) on.scrollIntoView({block:"nearest",inline:"center"});
+}
+const esLista = () => ["todos","shorts","largos"].includes(estado.sub);
+function pintarCuerpo(){
+  if(!estado.est||!$("#rcuerpo")) return;
+  const base=filtrar(estado.filas);
+  $("#activos").innerHTML=htmlActivos();
+  pintarSub(base);
+  if(esLista()){
+    $("#rcuerpo").innerHTML=`<div class="ctrl"><input id="ftexto" type="search" placeholder="Filtrar…" value="${esc(estado.filtro.texto)}">${selOrden(estado.orden,"orden")}
+      <button class="btn" data-act="dir" title="Invertir el orden">${estado.dir==="desc"?"↓":"↑"}</button><button class="btn" data-act="vista" title="Cambiar entre tarjetas y tabla">${estado.vista==="tabla"?"▤":"▦"}</button></div><div id="lista"></div>`;
+    pintarLista();
+  } else $("#rcuerpo").innerHTML = estado.sub==="ideas" ? htmlIdeas(base) : estado.sub==="canales" ? htmlCanales(base) : htmlEstudio(base);
+}
+function pintarLista(){
+  const el=$("#lista"); if(!el) return;
+  const F=ordenarPor(aplicarFiltros(estado.filas),estado.orden,estado.dir);
+  if(!F.length){ el.innerHTML=vacio(estado.filas.length?"Ningún video cumple los filtros. Quita alguno arriba.":"No hay videos."); return; }
+  el.innerHTML = estado.vista==="tabla" ? htmlTabla(F)
+    : listaTarjetas(F.slice(0,estado.limite))+(F.length>estado.limite?`<button class="btn ancho" data-act="vermas">Mostrar más (${F.length-estado.limite} restantes)</button>`:"");
+}
+function irSub(s, subir){
+  estado.sub=s; estado.limite=40; pintarCuerpo();
+  const r=$("#rsub"), cab=$(".cab"); if(!r) return;
+  const y=r.getBoundingClientRect().top+window.scrollY-(cab?cab.offsetHeight:0);
+  if(subir || window.scrollY>y) window.scrollTo(0,y);
+}
+function htmlActivos(){
+  const F=estado.filtro, c=[];
+  const q=(tipo,v,txt)=>c.push(`<button class="chip" data-act="quitar" data-t="${tipo}" data-v="${esc(v)}">${txt} ✕</button>`);
+  if(F.texto.trim()) q("texto","",`🔤 «${esc(F.texto.trim())}»`);
+  if(F.palabra) q("palabra","",`🧩 «${esc(F.palabraTxt)}»`);
+  if(F.canal){ const c0=canalDe(F.canal); q("canal","","📺 "+esc(c0?c0.nombre:"canal")); }
+  F.paises.forEach(p=>q("pais",p, p==="LATAM"?"🌎 Latinoamérica":p==="-"?"Sin país":bandera(p)+" "+esc(nombrePais(p))));
+  if(F.idiomas.size===2&&F.idiomas.has("?")) q("idiomas","","🗣 Solo "+esc(nombreIdioma([...F.idiomas].find(x=>x!=="?")).toLowerCase()));
+  else F.idiomas.forEach(i=>q("idioma",i,"🗣 "+(i==="?"?"Idioma sin dato":esc(nombreIdioma(i)))));
+  F.niveles.forEach(n=>q("nivel",n,"🔥 "+NIVELES[n].corto));
+  F.durs.forEach(d=>q("dur",d,"⏱ "+(DUR_B[d]?DUR_B[d][2]:"")));
+  F.tams.forEach(t=>q("tam",t,"👥 "+(TAM_N[t]||"")));
+  if(F.minVistas) q("min","","≥ "+fmtC(F.minVistas)+" vistas");
+  if(F.dentro) q("dentro","","últimos "+F.dentro+" días");
+  if(c.length>1) c.push(`<button class="chip" data-act="limpiar">Quitar todos</button>`);
+  return c.join("");
+}
+
+/* ---------------- filtros (una sola ficha con todos) ---------------- */
+function htmlFiltros(){
+  const F=estado.filtro, all=estado.filas, n=filtrar(all).length;
+  const ch=(t,v,txt,c,on)=>`<button class="chip${on?" on":""}" data-act="ff" data-t="${t}" data-v="${esc(v)}">${txt} <small>${c}</small></button>`;
+  const ord=o=>Object.entries(o).sort((a,b)=>(a[0]==="-"||a[0]==="?")-(b[0]==="-"||b[0]==="?") || b[1]-a[1]);
+  const pc=contar(all,f=>(f.canal&&f.canal.pais)||"-"), lat=all.filter(f=>f.canal&&LATAM.has(f.canal.pais)).length;
+  const ic_=contar(all,f=>f.idioma||"?"), nc=contar(all,f=>f.nivel), dc=contar(all,f=>bucket(f.dur,DUR_B)), tc=contar(all,f=>tamDe(f));
+  const sel=(chg,val,ops)=>`<select data-ch="${chg}" style="width:100%">${ops.map(o=>`<option value="${o[0]}"${val==o[0]?" selected":""}>${o[1]}</option>`).join("")}</select>`;
+  return `<p class="mut">Los filtros se aplican a todas las pestañas (Estudio, Todos, Shorts, Largos, Canales e Ideas). Puedes marcar varios.</p>
+  <div class="sub2">🔥 Viralidad (vistas comparadas con el promedio de su canal)</div><div class="chips">${Object.keys(NIVELES).filter(k=>nc[k]).map(k=>ch("nivel",k,NIVELES[k].nombre,nc[k],F.niveles.has(k))).join("")}</div>
+  <div class="sub2">⏱ Duración</div><div class="chips">${DUR_B.map((b,i)=>dc[i]?ch("dur",i,b[2],dc[i],F.durs.has(String(i))):"").join("")}</div>
+  <div class="sub2">👥 Tamaño del canal (suscriptores)</div><div class="chips">${TAM_N.map((t,i)=>tc[i]?ch("tam",i,t,tc[i],F.tams.has(String(i))):"").join("")}</div>
+  <div class="sub2">🌎 País del canal</div><div class="chips">${lat?ch("pais","LATAM","🌎 Latinoamérica",lat,F.paises.has("LATAM")):""}${ord(pc).map(([k,c])=>ch("pais",k,k==="-"?"Sin país":bandera(k)+" "+esc(nombrePais(k)),c,F.paises.has(k))).join("")}</div>
+  <div class="sub2">🗣 Idioma del video</div><div class="chips">${ord(ic_).map(([k,c])=>ch("idioma",k,esc(nombreIdioma(k)),c,F.idiomas.has(k))).join("")}</div>
+  <div class="sub2">👁 Vistas mínimas</div>${sel("fmin",F.minVistas,[[0,"Cualquiera"],[1e3,"1.000"],[1e4,"10 mil"],[1e5,"100 mil"],[5e5,"500 mil"],[1e6,"1 millón"],[1e7,"10 millones"]])}
+  <div class="sub2">📅 Publicado hace menos de</div>${sel("fdentro",F.dentro,[[0,"Sin límite"],[1,"1 día"],[7,"1 semana"],[30,"1 mes"],[90,"3 meses"],[180,"6 meses"],[365,"1 año"]])}
+  <div class="row ig" style="margin-top:16px"><button class="btn" data-act="limpiar">Quitar todos</button><button class="btn pri" data-act="cerrarHoja">Ver ${n} ${pl(n,"video","videos")}</button></div>`;
+}
+
+/* ---------------- pestaña Estudio ---------------- */
+function htmlMeses(F){
+  const hoy=new Date(), M=[];
+  for(let i=11;i>=0;i--){ const d=new Date(hoy.getFullYear(),hoy.getMonth()-i,1); M.push({d,fs:[]}); }
+  let viejos=0;
+  F.forEach(f=>{ const x=new Date(f.fecha), m=M.find(m=>m.d.getFullYear()===x.getFullYear()&&m.d.getMonth()===x.getMonth()); if(m) m.fs.push(f); else viejos++; });
+  const max=Math.max(...M.map(m=>m.fs.length),1);
+  return `<div class="meses">${M.map(m=>{ const nom=m.d.toLocaleDateString("es-EC",{month:"long",year:"numeric"}), n=m.fs.length;
+    return `<button class="mes" data-act="aviso" data-t="${esc(cap(nom)+": "+n+" "+pl(n,"video","videos")+(n?" · mediana "+fmtC(mediana(m.fs.map(f=>f.vistas)))+" vistas":""))}"><i class="${n?"":"cero"}" style="height:${n?Math.max(6,n/max*78):3}px"></i>${m.d.toLocaleDateString("es-EC",{month:"short"}).slice(0,3)}</button>`; }).join("")}</div>
+  <p class="mut mt">Videos de esta lista publicados cada mes (toca una barra para ver el dato).${viejos?` Otros <b>${viejos}</b> son de hace más de un año.`:""}</p>`;
+}
+function htmlEstudio(F){
+  if(!F.length) return vacio("Ningún video cumple los filtros. Quita alguno arriba.");
+  const E=estudiar(F), Fl=estado.filtro;
+  const grp=(G,t)=>barras(G.map((g,i)=>({g,i})).filter(x=>x.g.filas.length).map(({g,i})=>{ const m=mediana(g.filas.map(f=>f.vistas)); return {nombre:esc(g.nombre),valor:m,texto:`${g.filas.length} ${pl(g.filas.length,"video","videos")} · mediana ${fmtC(m)} vistas`,act:t?"bf":"",attrs:t?`data-t="${t}" data-v="${i}"`:"",on:t?Fl[CONJ[t]].has(String(i)):false}; }));
+  const paisItems=[...E.porPais.entries()].sort((a,b)=>(a[0]==="-")-(b[0]==="-")||b[1].length-a[1].length).map(([k,fs])=>({nombre:k==="-"?"Sin país":bandera(k)+" "+esc(nombrePais(k)),valor:fs.length,texto:`${fs.length} ${pl(fs.length,"video","videos")} · mediana ${fmtC(mediana(fs.map(f=>f.vistas)))}`,act:"bf",attrs:`data-t="pais" data-v="${esc(k)}"`,on:Fl.paises.has(k)}));
+  const lat=F.filter(f=>f.canal&&LATAM.has(f.canal.pais));
+  if(lat.length&&lat.length<F.length) paisItems.unshift({nombre:"🌎 <b>Latinoamérica</b>",valor:lat.length,texto:`${lat.length} videos · mediana ${fmtC(mediana(lat.map(f=>f.vistas)))}`,act:"bf",attrs:`data-t="pais" data-v="LATAM"`,on:Fl.paises.has("LATAM")});
+  const idiomaItems=[...E.porIdioma.entries()].sort((a,b)=>b[1].length-a[1].length).map(([k,fs])=>({nombre:esc(nombreIdioma(k)),valor:fs.length,texto:`${fs.length} videos (${Math.round(fs.length/E.n*100)}%) · mediana ${fmtC(mediana(fs.map(f=>f.vistas)))}`,act:"bf",attrs:`data-t="idioma" data-v="${esc(k)}"`,on:Fl.idiomas.has(k)}));
+  const nivelItems=Object.keys(NIVELES).map(k=>{ const n=F.filter(f=>f.nivel===k).length; return {nombre:NIVELES[k].nombre,valor:n,texto:`${n} videos (${Math.round(n/E.n*100)}%)`,act:"bf",attrs:`data-t="nivel" data-v="${k}"`,on:Fl.niveles.has(k)}; }).filter(x=>x.valor);
+  const catItems=[...E.porCat.entries()].sort((a,b)=>b[1].length-a[1].length).map(([k,fs])=>({nombre:esc(nombreCat(k)),valor:fs.length,texto:`${fs.length} videos · mediana ${fmtC(mediana(fs.map(f=>f.vistas)))}`}));
+  const fmt=[["📱 Shorts",E.sh,E.medSh,"shorts"],["🎬 Videos largos",E.lg,E.medLg,"largos"]].filter(x=>x[1].length).map(([n,fs,m,s])=>({nombre:n,valor:m,texto:`${fs.length} videos · mediana ${fmtC(m)} · ${fmtC(suma(fs.map(f=>f.vistas)))} en total`,act:"sub",attrs:`data-v="${s}" data-subir="1"`}));
+  const temas=E.kw.frec.slice(0,6).map(k=>({nombre:esc(k.txt),valor:k.n,texto:`${k.n} videos · mediana ${fmtC(k.med)} vistas`,act:"palabra",attrs:`data-k="${esc(k.k)}" data-t="${esc(k.txt)}"`,on:Fl.palabra===k.k}));
+  const top5=ordenarPor(F,"vistas","desc").slice(0,5);
+  return `${F.length<estado.filas.length?`<div class="nota">Analizando <b>${F.length}</b> de ${estado.filas.length} videos (los que pasan tus filtros).</div>`:""}
+  <div class="card"><div class="hero"><div class="ht"><h2 style="margin:0">Estudio del tema</h2><div class="rsub">${E.n} videos de ${E.canales.length} canales</div></div>
+    <button class="op op-${E.op.nivel}" data-act="opExplica">🎯 Oportunidad ${E.op.nombre.toLowerCase()} ›</button></div></div>
+  <div class="tiles">
+    ${tile(fmtC(E.total),"vistas sumadas","",`data-act="irOrden" data-o="vistas"`)}${tile(fmtC(E.med),"mediana de vistas","",`data-act="irOrden" data-o="vistas"`)}${tile(fmtC(E.vpdMed),"vistas por día (típico)","",`data-act="irOrden" data-o="vpd"`)}
+    ${tile(E.virales.length,"virales (3× su canal)","n-muyviral",`data-act="soloVirales"`)}${tile(fmtDur(Math.round(mediana(F.map(f=>f.dur))||0)),"duración típica","",`data-act="irOrden" data-o="dur"`)}${tile(fmtPct(E.interMed),"participación típica","",`data-act="irOrden" data-o="inter"`)}
+  </div>
+  <h3 class="tit">🧠 Conclusiones</h3><div class="card"><ul class="ins">${E.C.map(c=>`<li><span class="ico">${c.i}</span><span>${c.t}</span></li>`).join("")}</ul></div>
+  <h3 class="tit">🎬 ¿Shorts o videos largos?</h3><div class="card">${barras(fmt)}</div>
+  ${temas.length?`<h3 class="tit">🧩 Temas relacionados <button class="mas" data-act="sub" data-v="ideas" data-subir="1">Ver ideas ›</button></h3><div class="card">${barras(temas)}<p class="mut mt">Toca un tema para ver solo esos videos.</p></div>`:""}
+  <h3 class="tit">🏆 Videos más vistos <button class="mas" data-act="irOrden" data-o="vistas">Ver todos ›</button></h3>${listaTarjetas(top5)}
+  <h3 class="tit">📺 Canales que dominan <button class="mas" data-act="sub" data-v="canales" data-subir="1">Ver todos ›</button></h3><div class="clist">${E.canales.slice(0,3).map((c,i)=>tarjetaCanalRes(c,i)).join("")}</div>
+  <h3 class="tit">📅 Publicaciones por mes</h3><div class="card">${htmlMeses(F)}</div>
+  <h3 class="tit">🔎 Más desglose</h3>
+  ${sec("niv","🔥 Nivel de viralidad",barras(nivelItems)+`<p class="mut mt">Cada video se compara con el promedio de su propio canal. Toca un nivel para ver esos videos.</p>`,false)}
+  ${sec("dur","⏱ Duración",grp(E.durG,"dur"),false)}
+  ${sec("tam","👥 Tamaño del canal",grp(E.tamG,"tam"),false)}
+  ${sec("pais","🌎 País del canal",barras(paisItems)+`<p class="mut mt">El país que el canal declara en YouTube.</p>`,false)}
+  ${sec("idi","🗣 Idioma del video",barras(idiomaItems),false)}
+  ${sec("edad","🗓 Antigüedad de los videos",grp(E.edadG),false)}
+  ${sec("dia","🕒 Día y hora de publicación",`<div class="sub2">Día de la semana</div>${grp(E.diaG)}<div class="sub2">Hora (hora de tu teléfono)</div>${grp(E.horaG)}`,false)}
+  ${sec("cat","🏷 Categoría",barras(catItems),false)}`;
+}
+function htmlOportunidad(){
+  const E=estudiar(filtrar(estado.filas));
+  return `<div class="card"><div class="hero"><div class="ht"><h2 style="margin:0">Oportunidad del tema</h2><div class="rsub">${esc(tituloEst(estado.est.params))}</div></div><span class="op op-${E.op.nivel}">${E.op.nombre}</span></div></div>
+  <div class="card">${E.op.fac.map(f=>`<div class="fac"><b>${f.nombre}</b><span class="pts">${"●".repeat(f.p+1)}${"○".repeat(2-f.p)} ${f.et}</span><span class="fd">${f.txt}</span></div>`).join("")}</div>
+  <p class="mut">Se suma la demanda (vistas por día típicas), la puerta para canales chicos (cuántos canales de menos de 100 mil suscriptores la pegaron) y la competencia (cuánto se llevan los 5 canales más grandes). Es una guía para escoger temas, no una promesa.</p>
+  <div class="row ig"><button class="btn pri" data-act="soloVirales">Ver los videos virales</button><button class="btn" data-act="sub" data-v="ideas" data-subir="1">Ver ideas</button></div>`;
+}
+
+/* ---------------- pestaña Canales ---------------- */
+function tarjetaCanalRes(a,i){
+  const c=a.canal;
+  return `<div class="cc" data-act="canal" data-c="${esc(a.id)}">${avatar(c,a.nombre)}<div class="cb">
+    <div class="cn">${i+1}. ${esc(a.nombre)}${esVigilado(a.id)?" 👁":""}</div>
+    <div class="cs">${c&&c.pais?bandera(c.pais)+" ":""}${c&&c.subs!=null?fmtC(c.subs)+" subs":"subs ocultos"}${c?" · promedia "+fmtC(c.prom):""}</div>
+    <div class="cs">Aquí: <b>${a.n}</b> ${pl(a.n,"video","videos")} · <b>${fmtC(a.vistas)}</b> vistas · mejor <b>${fmtX(a.mejor)}</b></div>
+  </div><button class="btn sm" data-act="verAqui" data-c="${esc(a.id)}" title="Ver solo sus videos en esta búsqueda">Sus videos</button></div>`;
+}
+function htmlCanales(F){
+  if(!F.length) return vacio("Ningún video cumple los filtros.");
+  const m=new Map();
+  F.forEach(f=>{ let a=m.get(f.canalId); if(!a){ a={id:f.canalId,nombre:f.canalNombre,canal:f.canal,n:0,vistas:0,mejor:null}; m.set(f.canalId,a); } a.n++; a.vistas+=f.vistas; if(f.mult!=null&&(a.mejor==null||f.mult>a.mejor)) a.mejor=f.mult; });
+  const o=estado.canOrden||"vistas", val={vistas:a=>a.vistas,n:a=>a.n,subs:a=>a.canal&&a.canal.subs||0,mejor:a=>a.mejor||0,chicos:a=>-(a.canal&&a.canal.subs!=null?a.canal.subs:1e12)}[o];
+  const lst=[...m.values()].sort((a,b)=>val(b)-val(a));
+  return `<div class="ctrl"><select data-ch="canOrden" style="flex:1;max-width:none">${[["vistas","Más vistas en este tema"],["n","Más videos en este tema"],["mejor","Mejor video (× su canal)"],["subs","Canales más grandes"],["chicos","Canales más chicos"]].map(x=>`<option value="${x[0]}"${o===x[0]?" selected":""}>${x[1]}</option>`).join("")}</select></div>
+  <div class="clist">${lst.map((a,i)=>tarjetaCanalRes(a,i)).join("")}</div>
+  <p class="mut mt">Toca un canal para ver su ficha completa.</p>`;
+}
+
+/* ---------------- pestaña Ideas ---------------- */
+function patronesTitulos(F){
+  if(F.length<8) return null;
+  const ord=ordenarPor(F,"puntaje","desc"), k=Math.max(3,Math.round(F.length/4)), A=ord.slice(0,k), B=ord.slice(k);
+  const pct=(L,fn)=>Math.round(L.filter(fn).length/L.length*100);
+  const T=[["Hacen una pregunta (¿…?)",f=>/[?¿]/.test(f.titulo)],["Llevan un número",f=>/\d/.test(f.titulo)],["Llevan emoji",f=>/\p{Extended_Pictographic}/u.test(f.titulo)],
+    ["Tienen palabras EN MAYÚSCULAS",f=>/(^|[^\p{L}])\p{Lu}{4,}(?!\p{L})/u.test(f.titulo)],["Llevan #hashtag",f=>/#[\p{L}\p{N}]/u.test(f.titulo)]];
+  return {k, la:Math.round(mediana(A.map(f=>f.titulo.length))), lb:Math.round(mediana(B.map(f=>f.titulo.length))), filas:T.map(([n,fn])=>({n,a:pct(A,fn),b:pct(B,fn)}))};
+}
+function etiquetasUsadas(F){
+  const m=new Map();
+  F.forEach(f=>new Set((f.tags||[]).map(t=>t.toLowerCase().trim()).filter(t=>t.length>1)).forEach(t=>m.set(t,(m.get(t)||0)+1)));
+  return [...m.entries()].filter(x=>x[1]>=2).sort((a,b)=>b[1]-a[1]).slice(0,24);
+}
+function htmlIdeas(F){
+  if(!F.length) return vacio("Ningún video cumple los filtros.");
+  const E=estudiar(F), Fl=estado.filtro, P=patronesTitulos(F), tags=etiquetasUsadas(F);
+  const kwHtml=lst=>`<div class="chips">${lst.map(k=>`<span class="kw${Fl.palabra===k.k?" on":""}"><button data-act="palabra" data-k="${esc(k.k)}" data-t="${esc(k.txt)}" title="Ver solo estos videos">${esc(k.txt)} <small>${k.n} · ${fmtC(k.med)}</small></button><button data-act="buscarTema" data-t="${esc(k.txt)}" data-sumar="1" title="Buscar este subtema">🔎</button></span>`).join("")}</div>`;
+  const mejores=ordenarPor(F.filter(f=>f.mult!=null),"mult","desc").slice(0,8);
+  const chicos=ordenarPor(F.filter(f=>f.canal&&f.canal.subs!=null&&f.canal.subs<1e5&&f.mult!=null&&f.mult>=3),"mult","desc").slice(0,5);
+  return `<p class="mut">Ideas sacadas de los ${F.length} videos de esta búsqueda. Todo sale de datos reales de YouTube.</p>
+  <h3 class="tit">🧩 Subtemas que más se repiten</h3><div class="card">${E.kw.frec.length?kwHtml(E.kw.frec)+`<p class="mut mt">Toca un subtema para ver esos videos · 🔎 hace una búsqueda nueva más específica. Los números son: cuántos videos · mediana de vistas.</p>`:`<p class="mut" style="margin:0">Hacen falta más videos para encontrar subtemas. Usa «＋50».</p>`}</div>
+  ${E.kw.vistas.length?`<h3 class="tit">🚀 Palabras que más vistas traen</h3><div class="card">${kwHtml(E.kw.vistas)}</div>`:""}
+  ${mejores.length?`<h3 class="tit">🏅 Títulos que mejor funcionaron <button class="mas" data-act="copiarTxt" data-t="${esc(mejores.map(f=>f.titulo).join("\n"))}">Copiar</button></h3>${listaTarjetas(mejores)}<p class="mut mt">Los que más superaron el promedio de su propio canal: ahí el título y el tema hicieron el trabajo.</p>`:""}
+  ${P?`<h3 class="tit">✍️ Cómo son los títulos ganadores</h3><div class="card"><div class="cmp"><span class="h">Característica</span><span class="h">Mejores ${P.k}</span><span class="h">El resto</span>
+     <span>Largo típico del título</span><b>${P.la} letras</b><b>${P.lb} letras</b>
+     ${P.filas.map(x=>`<span>${x.n}</span><b class="${x.a>=x.b+10?"up":""}">${x.a}%</b><b>${x.b}%</b>`).join("")}</div>
+     <p class="mut mt">Compara la cuarta parte con mejor puntaje viral contra los demás. En verde, lo que los ganadores hacen bastante más.</p></div>`:""}
+  ${chicos.length?`<h3 class="tit">🌱 Canales chicos que la pegaron</h3>${listaTarjetas(chicos)}<p class="mut mt">Canales con menos de 100 mil suscriptores que superaron 3 veces su promedio: prueba de que el tema le abre la puerta a un canal pequeño.</p>`:""}
+  ${tags.length?`<h3 class="tit">🏷 Etiquetas más usadas <button class="mas" data-act="copiarTxt" data-t="${esc(tags.map(t=>t[0]).join(", "))}">Copiar todas</button></h3><div class="card"><div class="chips">${tags.map(([t,c])=>`<button class="chip" data-act="copiarTxt" data-t="${esc(t)}">${esc(t)} <small>${c}</small></button>`).join("")}</div><p class="mut mt">Toca una para copiarla.</p></div>`:""}
+  ${E.hs.length?`<h3 class="tit"># Hashtags más usados <button class="mas" data-act="copiarTxt" data-t="${esc(E.hs.map(h=>h[0]).join(" "))}">Copiar todos</button></h3><div class="card"><div class="chips">${E.hs.map(([h,c])=>`<button class="chip" data-act="copiarTxt" data-t="${esc(h)}">${esc(h)} <small>${c}</small></button>`).join("")}</div></div>`:""}`;
+}
+
+/* ---------------- tabla ---------------- */
+const COLS = [
+  {k:"titulo",n:"Video",cls:"tv",v:(f,i)=>`<span class="rkt">${i+1}.</span> ${esc(cortar(f.titulo,70))}`},
+  {k:"vistas",n:"Vistas",num:1,v:f=>fmtN(f.vistas)},
+  {k:"mult",n:"× su canal",num:1,v:f=>`<span class="pill n-${f.nivel}">${fmtX(f.mult)}</span>`},
+  {k:"puntaje",n:"Puntaje",num:1,v:f=>`<span class="pill ${claseP(f.puntaje)}">${f.puntaje}</span>`},
+  {k:"fecha",n:"Publicado",v:f=>fmtFecha(f.fecha)},
+  {k:"vpd",n:"Vistas/día",num:1,v:f=>fmtN(f.vpd)},
+  {k:"likes",n:"Me gusta",num:1,v:f=>fmtN(f.likes)},
+  {k:"coment",n:"Coment.",num:1,v:f=>fmtN(f.coment)},
+  {k:"inter",n:"Particip.",num:1,v:f=>fmtPct(f.inter)},
+  {k:"dur",n:"Duración",num:1,v:f=>fmtDur(f.dur)},
+  {k:"tipo",n:"Tipo",v:f=>f.short?"Short":"Largo"},
+  {k:"canal",n:"Canal",v:f=>esc(cortar(f.canalNombre,26))},
+  {k:"subs",n:"Subs",num:1,v:f=>fmtC(f.canal&&f.canal.subs)},
+  {k:"pais",n:"País",v:f=>f.canal&&f.canal.pais?bandera(f.canal.pais)+" "+f.canal.pais:"—"},
+  {k:"idioma",n:"Idioma",v:f=>esc(nombreIdioma(f.idioma))}
+];
+function htmlTabla(F){
+  return `<div class="twrap"><table class="tb"><thead><tr>${COLS.map(c=>`<th class="${c.cls||""}${c.num?" num":""}${estado.orden===c.k?" on":""}" data-act="ordcol" data-k="${c.k}">${c.n}${estado.orden===c.k?(estado.dir==="desc"?" ▼":" ▲"):""}</th>`).join("")}</tr></thead>
+   <tbody>${F.map((f,i)=>`<tr>${COLS.map(c=>`<td class="${c.cls||""}${c.num?" num":""}"${c.cls?` data-act="video" data-id="${esc(f.id)}"`:""}>${c.v(f,i)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>
+   <p class="mut mt">Toca el nombre de una columna para ordenar. Toca un video para ver su detalle.</p>`;
+}
+function exportarCSV(){
+  const est=estado.est; if(!est) return;
+  const F=ordenarPor(aplicarFiltros(estado.filas),estado.orden,estado.dir);
+  const d=x=>x==null||!isFinite(x)?"":String(Math.round(x*100)/100).replace(".",",");
+  const cols=[["#",(f,i)=>i+1],["Título",f=>f.titulo],["Canal",f=>f.canalNombre],["País del canal",f=>f.canal&&f.canal.pais?nombrePais(f.canal.pais):""],["Suscriptores",f=>f.canal?f.canal.subs:""],
+    ["Vistas",f=>f.vistas],["Me gusta",f=>f.likes],["Comentarios",f=>f.coment],["Participación %",f=>d(f.inter)],["Vistas por día",f=>Math.round(f.vpd)],
+    ["Veces el promedio del canal",f=>d(f.mult)],["Nivel",f=>NIVELES[f.nivel].corto],["Puntaje viral",f=>f.puntaje],
+    ["Fecha de publicación",f=>{ const x=new Date(f.fecha), p=n=>String(n).padStart(2,"0"); return `${x.getFullYear()}-${p(x.getMonth()+1)}-${p(x.getDate())} ${p(x.getHours())}:${p(x.getMinutes())}`; }],
+    ["Días publicado",f=>Math.round(f.dias)],["Duración (min)",f=>d(f.dur/60)],["Tipo",f=>f.short?"Short":"Largo"],["Idioma",f=>nombreIdioma(f.idioma)],["Categoría",f=>nombreCat(f.cat)],
+    ["Etiquetas",f=>(f.tags||[]).join(", ")],["Enlace",f=>urlVideo(f)]];
+  const celda=v=>{ v=v==null?"":String(v); if(/^[=+\-@]/.test(v)) v="'"+v; return /[;"\r\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v; };
+  const lineas=[cols.map(c=>c[0])].concat(F.map((f,i)=>cols.map(c=>c[1](f,i))));
+  const nombre="radar-viral_"+sinTildes(est.params.q||nombreCat(est.params.cat)).replace(/[^\w]+/g,"-").replace(/^-|-$/g,"").slice(0,40)+".csv";
+  descargar("﻿"+lineas.map(r=>r.map(celda).join(";")).join("\r\n"), nombre, "text/csv;charset=utf-8");
+  toast(`Descargado: ${F.length} videos para abrir en Excel`);
+}
+
+/* ---------------- pantalla de inicio (sin búsqueda abierta) ---------------- */
+async function pintarInicio(){
+  const idx=((await ALM.get("estudios_idx"))||[]).slice(0,5);
+  if(estado.est) return;
+  $("#resultados").innerHTML = (CFG().apiKey||modoDemo ? `
+   <div class="card"><h2>¿Qué tema quieres investigar?</h2>
+    <p class="mut">Escribe un tema arriba y toca <b>Buscar</b>. Verás los videos separados en Shorts y largos, los canales, un estudio y las ideas. Entre más específico el tema, más fino el resultado.</p>
+    <div class="chips">${["datos curiosos del cuerpo humano","cómo produce el veneno una serpiente","historia de los romanos","cultura general preguntas"].map(t=>`<button class="chip" data-act="ejemploTema" data-t="${esc(t)}">${esc(t)}</button>`).join("")}</div></div>` : `
+   <div class="card error"><h2>Radar Viral</h2><p class="mut">La app todavía no está conectada a YouTube. Mientras tanto puedes verla funcionando con datos de ejemplo.</p>
+    <button class="btn pri" data-act="ejemplo">Ver con datos de ejemplo</button></div>`)+`
+   <div class="atajos"><button data-act="ir" data-v="tendencias">${ic("fuego",22)}Tendencias</button><button data-act="ir" data-v="vigilados">${ic("ojo",22)}Vigilados</button><button data-act="ir" data-v="guardados">${ic("estrella",22)}Guardados</button></div>
+   ${idx.length?`<h3 class="tit">🕘 Búsquedas recientes <button class="mas" data-act="ir" data-v="historial">Ver todas ›</button></h3>${idx.map(x=>`<div class="cc" data-act="abrirEst" data-id="${esc(x.id)}" style="margin-bottom:6px"><div class="cb"><div class="cn">${esc(tituloEst(x.params))}</div><div class="cs">${fmtHace(x.fecha)} · ${x.n} videos · el más visto: ${fmtC(x.top)}</div></div><span class="chev">›</span></div>`).join("")}`:""}`;
+}
+
+/* ---------------- Tendencias ---------------- */
+async function cargarTend(pais,cat){
+  if(estado.ocupado) return;
+  estado.ocupado=true; $("#tendRes").innerHTML=`<div class="card"><div class="cargando"><div class="spin"></div><div>Consultando las tendencias…</div></div></div>`;
+  try{
+    let T;
+    if(modoDemo){ const e=estudioDemo({q:"lo más popular",idioma:"es",pais,fecha:"7d",tipo:"",cat,orden:"viewCount",cant:50}); T={pais,cat,fecha:Date.now(),videos:e.videos,canales:e.canales}; }
+    else{
+      const r=await yt("videos",{part:P_VIDEO,chart:"mostPopular",regionCode:pais,videoCategoryId:cat||undefined,maxResults:50,maxWidth:480,fields:F_VIDEO});
+      const videos=(r.items||[]).map(normVideo);
+      T={pais,cat,fecha:Date.now(),videos,canales:await traerCanales([...new Set(videos.map(v=>v.canalId))])};
+    }
+    estado.tend=T; await ALM.set("tend",T);
+  }catch(e){
+    estado.ocupado=false;
+    $("#tendRes").innerHTML=`<div class="card error"><b>No se pudo completar.</b><div class="mt">${e.code===404||e.code===400?"YouTube no tiene tendencias para esa categoría en ese país. Prueba con «Todas las categorías».":e.message}</div></div>`;
+    return;
+  }
+  estado.ocupado=false; pintarTend();
+}
+function pintarTend(){
+  const s=LS.get("tendSel",{pais:"EC",cat:""}), T=estado.tend;
+  let res=vacio("Elige un país y toca <b>Ver tendencias</b>.");
+  if(T){
+    const F0=armar(T), F=ordenarPor(porTipo(F0,estado.tendSub),estado.tendOrden,"desc");
+    res=`<div class="card"><div class="rtitle">${bandera(T.pais)} ${esc(nombrePais(T.pais))}${T.cat?" · "+esc(nombreCat(T.cat)):""}</div><div class="rsub">${F0.length} videos en tendencia · consultado ${fmtHace(T.fecha)}</div></div>
+    ${F0.length?chipsTipo("tsub",estado.tendSub,F0)+`<div class="ctrl">${selOrden(estado.tendOrden,"tendOrden",`style="flex:1;max-width:none"`)}</div>`+(F.length?listaTarjetas(F):vacio("No hay videos de ese tipo en tendencia.")):vacio("YouTube no devolvió tendencias para esa selección.")}`;
+  }
+  $("#tab-tendencias").innerHTML=`<div class="card"><h2>🔥 Tendencias de YouTube</h2><p class="mut">Lo más popular ahora mismo en un país. No gasta búsquedas.</p>
+    <div class="row ig"><select id="tPais">${PAISES.filter(p=>p[0]).map(p=>`<option value="${p[0]}"${p[0]===s.pais?" selected":""}>${esc(p[1])}</option>`).join("")}</select>
+    <select id="tCat">${CATEGORIAS.map(c=>`<option value="${c[0]}"${c[0]===s.cat?" selected":""}>${c[0]?esc(c[1]):"Todas las categorías"}</option>`).join("")}</select></div>
+    <button class="btn pri ancho" data-act="verTend">Ver tendencias</button></div><div id="tendRes">${res}</div>`;
+}
+
+/* ---------------- Vigilados y novedades ---------------- */
+function novedades(){
+  const V=estado.vig; if(!V||!V.canales.length) return [];
+  const mapa=Object.fromEntries(V.canales.map(c=>[c.id,c])), rec=[];
+  V.canales.forEach(c=>(V.videos[c.id]||[]).forEach(v=>{ if(Date.now()-Date.parse(v.fecha)<=14*864e5) rec.push(v); }));
+  return ordenarPor(armar({videos:rec,canales:mapa}),"mult","desc");
+}
+function pintarCampana(){
+  const n=novedades().filter(f=>f.mult!=null&&f.mult>=3).length;
+  $("#bell").innerHTML=ic("campana",18)+(n?`<span class="bdg">${n}</span>`:"");
+}
+function htmlCampana(){
+  const V=estado.vig, N=novedades();
+  if(!V||!V.canales.length) return vacio("Aquí verás los videos nuevos de los canales que vigilas, con los virales primero.<br><br>Todavía no vigilas ninguno.")+`<button class="btn pri ancho" data-act="ir" data-v="vigilados">Ir a Vigilados</button>`;
+  return `<p class="mut">Videos de los últimos 14 días de tus ${V.canales.length} ${pl(V.canales.length,"canal vigilado","canales vigilados")}, del más viral al menos. Actualizado ${V.actualizado?fmtHace(V.actualizado):"al agregarlos"}.</p>
+   <button class="btn ancho" data-act="actTodos" style="margin:0 0 10px">🔄 Actualizar ahora</button>
+   ${N.length?listaTarjetas(N.slice(0,30)):vacio("Ninguno de tus canales publicó en los últimos 14 días.")}`;
+}
+function pintarVigilados(){
+  const V=estado.vig||{canales:[],videos:{},actualizado:0}, el=$("#tab-vigilados");
+  const canales=[...V.canales].sort((a,b)=>(b.esMio?1:0)-(a.esMio?1:0)||(b.subs||0)-(a.subs||0));
+  const nov=novedades().slice(0,6), costo=canales.length*2+Math.ceil(canales.length/50);
+  el.innerHTML=`<form class="card" id="fCanal" autocomplete="off"><h2>👁 Vigilar un canal</h2>
+    <p class="mut">Pega el enlace del canal, su @nombre o el enlace de un video suyo. No gasta búsquedas.</p>
+    <div class="qrow"><input id="inCanal" type="text" placeholder="@canal o enlace de YouTube"><button class="btn pri" type="submit">Agregar</button></div></form>
+   ${canales.length?`
+   <div class="card"><div class="hero"><div class="ht"><b>${canales.length} ${pl(canales.length,"canal vigilado","canales vigilados")}</b><div class="rsub">Actualizado ${V.actualizado?fmtHace(V.actualizado):"al agregarlos"} · actualizar gasta ~${costo} unidades, no búsquedas</div></div>
+     <button class="btn sm" data-act="actTodos">🔄 Actualizar</button></div></div>
+   ${nov.length?`<h3 class="tit">🔥 Lo más viral de los últimos 14 días <button class="mas" data-act="campana">Ver todo ›</button></h3>${listaTarjetas(nov)}`:""}
+   <h3 class="tit">Tus canales</h3><div class="clist">${canales.map(c=>{ const vids=V.videos[c.id]||[], ult=vids.reduce((m,v)=>!m||Date.parse(v.fecha)>Date.parse(m.fecha)?v:m,null);
+     return `<div class="cc" data-act="canal" data-c="${esc(c.id)}">${avatar(c,c.nombre)}<div class="cb"><div class="cn">${esc(c.nombre)}${c.esMio?`<span class="mio">MI CANAL</span>`:""}</div>
+      <div class="cs">${c.pais?bandera(c.pais)+" ":""}${c.subs!=null?fmtC(c.subs)+" subs":"subs ocultos"} · ${fmtN(c.nvideos)} videos · promedia <b>${fmtC(c.prom)}</b></div>
+      <div class="cs">${ult?"Último video "+fmtHace(ult.fecha):"Sin videos cargados"}</div></div><span class="chev">›</span></div>`; }).join("")}</div>`
+   :vacio("Todavía no vigilas ningún canal.<br><br>Agrega a tu competencia (o tu propio canal) para ver cuáles de sus videos pegan más. También puedes tocar <b>👁 Vigilar</b> en la ficha de cualquier video.")}`;
+}
+
+/* ---------------- Guardados ---------------- */
+async function alternarGuardado(id){
+  const i=estado.guard.findIndex(g=>g.v.id===id);
+  if(i>=0){ estado.guard.splice(i,1); toast("Quitado de Guardados"); }
+  else{ const f=MAPA_FILAS.get(id); if(!f) return; estado.guard.unshift({v:crudo(f),c:f.canal?Object.assign({},f.canal):null,fecha:Date.now()}); toast("★ Guardado"); }
+  await ALM.set("guardados",estado.guard);
+}
+function pintarGuardados(){
+  const G=estado.guard, canales={};
+  G.forEach(g=>{ if(g.c) canales[g.c.id]=g.c; });
+  const F=armar({videos:G.map(g=>g.v),canales});
+  $("#tab-guardados").innerHTML = G.length ? `<div class="card"><div class="hero"><div class="ht"><b>★ ${G.length} ${pl(G.length,"video guardado","videos guardados")}</b><div class="rsub">Los datos son de cuando lo guardaste. Del más reciente al más antiguo.</div></div><button class="btn sm mal" data-act="quitarGuardados">Quitar todos</button></div></div>${listaTarjetas(F)}`
+    : vacio("Aquí quedan los videos que marques con ☆.<br><br>Sirve para armar tu lista de ideas y referencias.");
+}
+
+/* ---------------- Historial ---------------- */
+async function pintarHistorial(){
+  const idx=(await ALM.get("estudios_idx"))||[];
+  $("#tab-historial").innerHTML = idx.length ? `<div class="card"><div class="hero"><div class="ht"><b>${idx.length} ${pl(idx.length,"búsqueda guardada","búsquedas guardadas")}</b><div class="rsub">Abrirlas no gasta cupo. Se guardan las últimas ${MAX_HIST}.</div></div><button class="btn sm mal" data-act="borrarHist">Borrar todo</button></div></div>
+   ${idx.map(x=>`<div class="card"><div class="hq">${esc(tituloEst(x.params))}</div><div class="rsub">${etiquetas(x.params).map(esc).join(" · ")}</div><div class="rsub">${fmtHace(x.fecha)} · ${x.n} videos · el más visto: ${fmtC(x.top)}</div>
+     <div class="row mt"><button class="btn sm pri" data-act="abrirEst" data-id="${esc(x.id)}">Abrir</button><button class="btn sm" data-act="refrescarEst" data-id="${esc(x.id)}">🔄 Actualizar</button><button class="btn sm mal" data-act="borrarEst" data-id="${esc(x.id)}">Borrar</button></div></div>`).join("")}`
+   : vacio("Aquí aparecerán tus búsquedas. Se guardan solas y puedes volver a abrirlas sin gastar cupo.");
+}
+
+/* ---------------- Ajustes (todo lo configurable, junto) ---------------- */
+function pintarAjustes(){
+  const cfg=CFG(), c=cuota();
+  $("#tab-ajustes").innerHTML=`
+  <div class="card"><h2>🔌 Conexión con YouTube</h2><p class="mut" style="margin:0">${cfg.apiKey?`<span class="ok">✔ Conectada.</span> No tienes que configurar nada.`:`<span class="malo">Todavía no está conectada.</span> Puedes usar el modo ejemplo.`}</p></div>
+  <div class="card" data-act="cuenta" style="cursor:pointer"><div class="hero"><div class="ht"><h2 style="margin:0">👤 Mi cuenta y mi canal</h2><div class="rsub">Entrar con Google y decir cuál es tu canal</div></div><span class="chev">›</span></div></div>
+  <div class="card" id="cupoCard"><h2>📦 Cupo de hoy</h2>
+   <div class="tiles dos">${tile(c.busq+" / "+LIMITE_BUSQ,"búsquedas usadas")}${tile(fmtN(c.unid)+" / "+fmtN(LIMITE_UNID),"otras consultas")}</div>
+   <p class="mut mt">YouTube da ${LIMITE_BUSQ} búsquedas gratis al día (cada 50 videos es 1). Se renueva a las <b>${horaRenovacion()}</b> (hora de tu teléfono). Tendencias, canales, Vigilados e Historial no gastan búsquedas. El contador es de este teléfono.</p>
+   <button class="btn sm" data-act="resetCuota">Poner el contador en cero</button></div>
+  <div class="card"><h2>💾 Reutilizar búsquedas</h2><p class="mut">Si repites la misma búsqueda, se abre la guardada sin gastar cupo si tiene menos de:</p>
+   <select data-ch="cache" style="width:100%">${[[0,"No reutilizar (siempre consultar)"],[3,"3 horas"],[6,"6 horas"],[12,"12 horas"],[24,"24 horas"],[72,"3 días"]].map(x=>`<option value="${x[0]}"${+cfg.cacheHoras===x[0]?" selected":""}>${x[1]}</option>`).join("")}</select></div>
+  <div class="card"><h2>🧪 Modo ejemplo</h2><p class="mut">Muestra la app con datos inventados. No gasta cupo ni toca tus datos.</p>
+   <button class="btn" data-act="${modoDemo?"salirDemo":"ejemplo"}">${modoDemo?"Salir del modo ejemplo":"Ver con datos de ejemplo"}</button></div>
+  <div class="card"><h2>🗂 Copia de seguridad</h2><p class="mut">Pasa tus vigilados, guardados y búsquedas a otro teléfono o a la PC.</p>
+   <div class="row"><button class="btn" data-act="exportar">⬇ Exportar</button><button class="btn" data-act="importar">⬆ Importar</button><button class="btn mal" data-act="borrarTodo">Borrar todo</button></div></div>
+  ${sec("ayuda","❓ Cómo se calcula cada número",`<dl class="ayuda">
+    <dt>× su canal</dt><dd>Vistas del video ÷ promedio de vistas por video de su canal. 1× es normal para ese canal; 3× o más, muy viral; 10× o más, explosivo. Es la mejor señal de que pegó <b>el tema</b> y no solo el tamaño del canal.</dd>
+    <dt>Puntaje viral (0 a 100)</dt><dd>Compara cada video con los demás de la misma lista: 50% veces su canal, 35% vistas por día y 15% participación. Es el orden «Más viral».</dd>
+    <dt>Participación</dt><dd>(Me gusta + comentarios) ÷ vistas.</dd>
+    <dt>Vistas por día</dt><dd>Vistas ÷ días desde que se publicó. Sirve para comparar videos nuevos con viejos.</dd>
+    <dt>Short</dt><dd>Dura 3 minutos o menos y es vertical.</dd>
+    <dt>Shorts contra largos</dt><dd>YouTube cuenta cada repetición de un Short como vista, por eso suelen tener muchas más. Para comparar justo, míralos en su propia pestaña.</dd>
+    <dt>Idioma y país</dt><dd>El idioma es el que declara el video (si no, se estima por el título). El país es el que declara el canal; muchos no lo ponen.</dd></dl>`,false)}
+  <p class="ver">Radar Viral v${VER} · Usa los Servicios de API de YouTube<br><a href="https://www.youtube.com/t/terms" target="_blank" rel="noopener">Términos de YouTube</a> · <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Privacidad de Google</a> · <a href="./privacidad.html" target="_blank" rel="noopener">Privacidad de la app</a></p>`;
+  if(estado.pila.length) pintarHoja();
+}
+
+/* ---------------- cuenta, mi canal y plataformas ---------------- */
+function pintarUsuario(){ const p=LS.get("perfil",null); $("#userBox").innerHTML = p&&p.foto ? `<img src="${esc(p.foto)}" alt="">` : ic("usuario",18); }
+function htmlCuenta(){
+  const cfg=CFG(), p=LS.get("perfil",null), mio=estado.vig&&estado.vig.canales.find(c=>c.esMio);
+  return `<h3 class="tit" style="margin-top:4px">👤 Cuenta de Google</h3>
+  ${!cfg.clientId?`<div class="card"><p class="mut" style="margin:0">El inicio de sesión no está activado en esta app. No hace falta para buscar.</p></div>`
+   :p?`<div class="cc">${p.foto?`<img class="av" src="${esc(p.foto)}" alt="">`:`<span class="av">${esc((p.nombre||"?").charAt(0))}</span>`}<div class="cb"><div class="cn">${esc(p.nombre||"")}</div><div class="cs">${esc(p.correo||"")}</div></div><button class="btn sm mal" data-act="salirGoogle">Salir</button></div>`
+   :`<div class="card"><p class="mut">Opcional. No hace falta para buscar: sirve para que la app te reconozca.</p><button class="btn pri ancho" data-act="entrarGoogle" style="margin:0">Entrar con Google</button></div>`}
+  <h3 class="tit">⭐ Mi canal</h3>
+  ${mio?`<div class="cc" data-act="canal" data-c="${esc(mio.id)}">${avatar(mio,mio.nombre)}<div class="cb"><div class="cn">${esc(mio.nombre)}<span class="mio">MI CANAL</span></div><div class="cs">${mio.subs!=null?fmtC(mio.subs)+" subs":"subs ocultos"} · ${fmtN(mio.nvideos)} videos · promedia ${fmtC(mio.prom)}</div></div><span class="chev">›</span></div>
+     <p class="mut mt">Toca tu canal para ver cuáles de tus videos funcionaron mejor.</p>`
+   :`<form class="card" id="fMiCanal" autocomplete="off"><p class="mut">Di cuál es tu canal para ver tus propios videos ordenados del más viral al menos. Pega tu @nombre o el enlace del canal.</p>
+     <div class="qrow"><input id="inMiCanal" type="text" placeholder="@micanal o enlace"><button class="btn pri" type="submit">Guardar</button></div>
+     ${cfg.clientId?`<button type="button" class="btn ancho" data-act="detectarMiCanal">Detectarlo con mi cuenta de Google</button>`:""}</form>`}`;
+}
+async function detectarMiCanal(){
+  if(modoDemo){ toast("Sal del modo ejemplo primero"); return; }
+  try{
+    await cargarGSI();
+    google.accounts.oauth2.initTokenClient({client_id:CFG().clientId, scope:"https://www.googleapis.com/auth/youtube.readonly",
+      callback:async r=>{
+        if(r.error){ toast("Google no dio permiso: "+esc(r.error),6000); return; }
+        try{
+          const ch=await yt("channels",{part:P_CANAL,mine:"true",fields:F_CANAL},{token:r.access_token});
+          if(!ch.items||!ch.items[0]){ toast("Esa cuenta de Google no tiene canal de YouTube",6000); return; }
+          const canal=normCanal(ch.items[0]); canal.esMio=true; await vigilar(canal,{actualizar:true}); refrescar();
+        }catch(e){ toast(e.message,7000); }
+      },
+      error_callback:e=>toast("No se completó ("+esc(e&&e.type||"cancelado")+")",6000)}).requestAccessToken();
+  }catch(e){ toast(e.message,6000); }
+}
+function htmlPlataformas(){
+  const P=[["▶","YouTube","Activa. Búsqueda por tema, tendencias, canales, estudio e ideas.",true],
+    ["♪","TikTok","Próximamente. TikTok no entrega a las apps los videos virales de otras personas; solo permitiría ver tu propia cuenta, y requiere su aprobación."],
+    ["◎","Instagram","Próximamente. Meta solo permite ver tu propia cuenta profesional y 30 hashtags por semana, con revisión previa de la app."],
+    ["f","Facebook","Próximamente. Meta solo permite ver las páginas que tú administras, con revisión previa de la app."]];
+  return `<p class="mut">Elige la plataforma que quieres investigar. Cada una se maneja por separado.</p>
+  ${P.map(p=>`<div class="plt${p[3]?" on":""}" data-act="aviso" data-t="${esc(p[3]?"YouTube ya está activa":p[1]+" todavía no está disponible")}"><span class="pi">${p[0]}</span><div><b>${p[1]}</b> ${p[3]?`<span class="ok">✓ en uso</span>`:`<span class="pill n-bajo">próximamente</span>`}<div class="cs">${p[2]}</div></div></div>`).join("")}`;
+}
+
+/* ---------------- copia de seguridad ---------------- */
+async function exportar(){
+  const idx=(await DB.get("estudios_idx"))||[], estudios=[];
+  for(const x of idx){ const e=await DB.get("estudio:"+x.id); if(e) estudios.push(e); }
+  const datos={app:"radar-viral",version:VER,fecha:new Date().toISOString(),vigilados:(await DB.get("vigilados"))||null,guardados:(await DB.get("guardados"))||[],estudios,ajustes:{cacheHoras:CFG().cacheHoras}};
+  descargar(JSON.stringify(datos),"radar-viral-copia_"+new Date().toISOString().slice(0,10)+".json","application/json");
+  toast("Copia descargada");
+}
+async function importar(archivo){
+  if(modoDemo){ toast("Sal del modo ejemplo para importar"); return; }
+  try{
+    const d=JSON.parse(await archivo.text());
+    if(d.app!=="radar-viral") throw new Error("Ese archivo no es una copia de Radar Viral.");
+    if(d.vigilados){
+      const V=(await DB.get("vigilados"))||{canales:[],videos:{},actualizado:0};
+      d.vigilados.canales.forEach(c=>{ if(!V.canales.find(x=>x.id===c.id)) V.canales.push(c); });
+      Object.assign(V.videos,d.vigilados.videos||{});
+      await DB.set("vigilados",V);
+    }
+    if(Array.isArray(d.guardados)){ const G=(await DB.get("guardados"))||[]; d.guardados.forEach(g=>{ if(g&&g.v&&!G.find(x=>x.v.id===g.v.id)) G.push(g); }); await DB.set("guardados",G); }
+    for(const e of (d.estudios||[]).slice().reverse()) await guardarEstudio(e);
+    if(d.ajustes) guardarCFG({cacheHoras:d.ajustes.cacheHoras});
+    estado.vig=null; await cargarDatos();
+    toast(`Importado: ${(d.vigilados&&d.vigilados.canales.length)||0} canales, ${(d.guardados||[]).length} guardados y ${(d.estudios||[]).length} búsquedas`);
+    refrescar();
+  }catch(e){ toast(e.message||"No se pudo leer el archivo",6000); }
+}
+
+/* ---------------- modo ejemplo ---------------- */
 async function activarDemo(){
   if(modoDemo){ irA("buscar"); return; }
-  modoDemo=true; DEMO_MEM.clear(); estado.vig=null; estado.canalAbierto=null;
+  modoDemo=true; DEMO_MEM.clear(); estado.vig=null; estado.tend=null; estado.canalCache={}; estado.pila.length=0; pintarHoja();
   $("#demoBanner").classList.remove("hide"); ajustarCab();
-  irA("buscar");
-  const p={q:"de dónde sale el popó",idioma:"es",pais:"",fecha:"",tipo:"",cat:"",orden:"viewCount",cant:100};
+  const p={q:"cómo produce el veneno una serpiente",idioma:"es",pais:"",fecha:"",tipo:"",cat:"",orden:"viewCount",cant:100};
   const e=estudioDemo(p); await guardarEstudio(e);
-  const V=await cargarVig(); const cs=e.canales; ["DEMO0","DEMO2","DEMO19"].forEach(id=>{ V.canales.push(Object.assign({},cs[id])); V.videos[id]=demoVideosCanal(cs[id]); }); V.canales[2].esMio=true; V.actualizado=Date.now(); await guardarVig();
-  abrirEstudio(e); pintarAjustes(); actualizarGasto();
-  toast("Modo ejemplo: datos inventados. Toca, filtra y ordena con libertad.");
+  const V={canales:[],videos:{},actualizado:Date.now()};
+  ["DEMO0","DEMO2","DEMO19"].forEach(id=>{ V.canales.push(Object.assign({},e.canales[id])); V.videos[id]=demoVideosCanal(e.canales[id]); });
+  V.canales[2].esMio=true; await ALM.set("vigilados",V); await ALM.set("guardados",[]);
+  await cargarDatos(); abrirEstudio(e); actualizarGasto(); pintarCampana();
+  toast("Modo ejemplo: datos inventados. Toca todo con libertad.");
 }
 async function salirDemo(){
-  modoDemo=false; DEMO_MEM.clear(); estado.vig=null; estado.est=null; estado.canalAbierto=null;
+  modoDemo=false; DEMO_MEM.clear(); estado.vig=null; estado.est=null; estado.tend=null; estado.canalCache={}; estado.pila.length=0; pintarHoja();
   $("#demoBanner").classList.add("hide"); ajustarCab();
-  const idx=(await ALM.get("estudios_idx"))||[];
-  const e=idx.length?await ALM.get("estudio:"+idx[0].id):null;
-  if(e) abrirEstudio(e,{silencioso:true}); else { llenarFormulario(LS.get("filtros",null)); pintarResultados(); }
-  pintarAjustes(); actualizarGasto(); irA("buscar");
+  await cargarDatos(); await abrirUltimo(); actualizarGasto(); irA("buscar");
 }
 
 /* ---------------- navegación ---------------- */
+function pintarTab(){
+  const t=estado.tab;
+  if(t==="buscar") pintarResultados();
+  else if(t==="tendencias") pintarTend();
+  else if(t==="vigilados") pintarVigilados();
+  else if(t==="guardados") pintarGuardados();
+  else if(t==="historial") pintarHistorial();
+  else if(t==="ajustes") pintarAjustes();
+}
+function refrescar(){ pintarTab(); pintarHoja(); pintarCampana(); }
 function irA(tab){
   estado.tab=tab;
   document.querySelectorAll("#tabs button").forEach(b=>b.classList.toggle("on",b.dataset.tab===tab));
-  ["buscar","vigilados","historial","ajustes"].forEach(t=>$("#tab-"+t).classList.toggle("hide",t!==tab));
-  if(tab==="vigilados") pintarVigilados();
-  if(tab==="historial") pintarHistorial();
-  if(tab==="ajustes") pintarAjustes();
+  ["buscar","tendencias","vigilados","guardados","historial","ajustes"].forEach(t=>$("#tab-"+t).classList.toggle("hide",t!==tab));
+  if(tab!=="buscar") pintarTab();
   window.scrollTo(0,0);
 }
+async function buscarTema(t, sumar){
+  const p=leerFormulario(), base=(estado.est&&estado.est.params.q)||"";
+  p.q = sumar && base && !normTexto(base).includes(normTexto(t).trim()) ? base+" "+t : t;
+  cerrarHoja(true); llenarFormulario(p); window.scrollTo(0,0); await buscar(p);
+}
 
-/* ---------------- acciones (botones) ---------------- */
+/* ---------------- acciones: qué hace cada cosa que se toca ---------------- */
 const ACCIONES = {
-  irCupo(){ irA("ajustes"); setTimeout(()=>{ const c=$("#cupoCard"); if(c) c.scrollIntoView({block:"center"}); },50); },
-  irAjustes(){ irA("ajustes"); },
+  inicio(){ cerrarHoja(true); irA("buscar"); },
+  ir(b){ cerrarHoja(true); irA(b.dataset.v); },
+  aviso(b){ toast(esc(b.dataset.t)); },
+  plataforma(){ abrirHoja("Plataforma", htmlPlataformas); },
+  campana(){ abrirHoja("Novedades de tus canales", htmlCampana); },
+  cuenta(){ abrirHoja("Mi cuenta", htmlCuenta); },
+  irCupo(){ cerrarHoja(true); irA("ajustes"); setTimeout(()=>{ const c=$("#cupoCard"); if(c) c.scrollIntoView({block:"center"}); },50); },
+  atrasHoja(){ cerrarHoja(false); },
+  cerrarHoja(){ cerrarHoja(true); },
   ejemplo(){ activarDemo(); },
   salirDemo(){ salirDemo(); },
-  idea(b){ const p=leerFormulario(); Object.assign(p,{q:"",cat:b.dataset.cat,fecha:"7d",orden:"viewCount"}); llenarFormulario(p); buscar(p); },
   ejemploTema(b){ $("#q").value=b.dataset.t; buscar(leerFormulario()); },
+  buscarTema(b){ return buscarTema(b.dataset.t, !!b.dataset.sumar); },
+  /* resultados */
   actualizar(){ if(estado.est) buscar(Object.assign({},estado.est.params),{forzar:true}); },
-  mas(){ cargarMas(); },
+  mas(){ return cargarMas(); },
   csv(){ exportarCSV(); },
-  sub(b){ estado.sub=b.dataset.v; estado.limite=60; pintarCuerpo(); const s=$("#rsub"); if(s&&s.getBoundingClientRect().top<0) s.scrollIntoView(); },
-  filtrosToggle(){ estado.filtro.abierto=!estado.filtro.abierto; pintarResultados(); },
-  fpais(b){ alternar(estado.filtro.paises,b.dataset.v); refrescarFiltros(); },
-  fidioma(b){ alternar(estado.filtro.idiomas,b.dataset.v); refrescarFiltros(); },
-  ftipo(b){ estado.filtro.tipo = estado.filtro.tipo===b.dataset.v ? "" : b.dataset.v; refrescarFiltros(); },
-  fnivel(b){ alternar(estado.filtro.niveles,b.dataset.v); refrescarFiltros(); },
+  filtros(){ abrirHoja("Filtros", htmlFiltros); },
+  sub(b){ cerrarHoja(true); irSub(b.dataset.v, !!b.dataset.subir); },
+  ff(b){ alternarFiltro(b.dataset.t,b.dataset.v); pintarResultados(); pintarHoja(); },
+  bf(b){ alternarFiltro(b.dataset.t,b.dataset.v); pintarResultados(); irSub("todos",true); },
   quitar(b){ const F=estado.filtro, t=b.dataset.t, v=b.dataset.v;
-    if(t==="palabra"){ F.palabra=""; F.palabraTxt=""; } else if(t==="canal") F.canal=""; else if(t==="pais") F.paises.delete(v); else if(t==="idioma") F.idiomas.delete(v);
-    else if(t==="tipo") F.tipo=""; else if(t==="nivel") F.niveles.delete(v); else if(t==="min") F.minVistas=0; else if(t==="dentro") F.dentro=0;
-    refrescarFiltros(); },
-  limpiar(){ const ab=estado.filtro.abierto, tx=estado.filtro.texto; estado.filtro=filtroVacio(); estado.filtro.abierto=ab; estado.filtro.texto=tx; refrescarFiltros(); },
-  palabra(b){ const F=estado.filtro; if(F.palabra===b.dataset.k){ F.palabra=""; F.palabraTxt=""; } else { F.palabra=b.dataset.k; F.palabraTxt=b.dataset.t; estado.sub="videos"; } refrescarFiltros(); },
-  buscarPalabra(b){ const p=leerFormulario(); p.q=((estado.est&&estado.est.params.q)||"")+" "+b.dataset.t; p.q=p.q.trim(); llenarFormulario(p); window.scrollTo({top:0,behavior:"smooth"}); buscar(p); },
+    if(t==="texto") F.texto=""; else if(t==="idiomas") F.idiomas.clear(); else if(t==="palabra"){ F.palabra=""; F.palabraTxt=""; } else if(t==="canal") F.canal=""; else if(t==="min") F.minVistas=0; else if(t==="dentro") F.dentro=0; else if(CONJ[t]) F[CONJ[t]].delete(v);
+    estado.limite=40; pintarResultados(); },
+  limpiar(){ estado.filtro=filtroVacio(); estado.limite=40; pintarResultados(); pintarHoja(); },
+  palabra(b){ const F=estado.filtro; if(F.palabra===b.dataset.k){ F.palabra=""; F.palabraTxt=""; pintarResultados(); } else { F.palabra=b.dataset.k; F.palabraTxt=b.dataset.t; pintarResultados(); irSub("todos",true); } },
+  irOrden(b){ estado.orden=b.dataset.o; estado.dir="desc"; guardarVista(); irSub("todos",true); },
+  soloVirales(){ cerrarHoja(true); const s=estado.filtro.niveles; s.clear(); s.add("explosivo"); s.add("muyviral"); estado.orden="mult"; estado.dir="desc"; pintarResultados(); irSub("todos",true); },
+  opExplica(){ abrirHoja("Oportunidad", htmlOportunidad); },
   dir(){ estado.dir=estado.dir==="desc"?"asc":"desc"; guardarVista(); pintarCuerpo(); },
-  vista(b){ estado.vista=b.dataset.v; guardarVista(); pintarCuerpo(); },
+  vista(){ estado.vista=estado.vista==="tabla"?"tarjetas":"tabla"; guardarVista(); pintarCuerpo(); toast(estado.vista==="tabla"?"Vista de tabla":"Vista de tarjetas",1500); },
   ordcol(b){ const k=b.dataset.k; if(estado.orden===k) estado.dir=estado.dir==="desc"?"asc":"desc"; else { estado.orden=k; estado.dir=ORDEN[k].s?"asc":"desc"; } guardarVista(); pintarCuerpo(); },
-  vermas(){ estado.limite+=60; pintarCuerpo(); },
-  det(b){ const id=b.dataset.id; if(estado.abiertos.has(id)) estado.abiertos.delete(id); else estado.abiertos.add(id); refrescarTarjeta(b,id); },
-  async copiar(b){ const f=MAPA_FILAS.get(b.dataset.id); if(f&&await copiar(f.titulo)) toast("Título copiado"); },
-  async vigilar(b){ const cid=b.dataset.c, c=(estado.est&&estado.est.canales[cid]); if(!c){ toast("No tengo los datos de ese canal"); return; } await vigilar(Object.assign({},c)); },
-  verCanal(b){ estado.filtro.canal=b.dataset.c; estado.sub="videos"; refrescarFiltros(); window.scrollTo({top:0}); },
-  actTodos(){ actualizarVigilados(); },
-  abrirCanal(b){ estado.canalAbierto=b.dataset.c; estado.limiteCanal=60; pintarVigilados(); window.scrollTo(0,0); },
-  cerrarCanal(){ estado.canalAbierto=null; pintarVigilados(); window.scrollTo(0,0); },
-  async actCanal(b){ toast("Actualizando canal…"); try{ if(!modoDemo){ const n=await traerCanales([b.dataset.c]); const V=await cargarVig(); const c=V.canales.find(x=>x.id===b.dataset.c); if(c&&n[c.id]) Object.assign(c,n[c.id]); } await traerVideosCanal(b.dataset.c); toast("Canal actualizado"); }catch(e){ toast(e.message,6000); } pintarVigilados(); },
-  async quitarCanal(b){ const V=await cargarVig(), c=V.canales.find(x=>x.id===b.dataset.c); if(!c||!confirm("¿Dejar de vigilar «"+c.nombre+"»?")) return; V.canales=V.canales.filter(x=>x.id!==c.id); delete V.videos[c.id]; await guardarVig(); pintarVigilados(); },
-  async marcarMio(b){ const V=await cargarVig(), c=V.canales.find(x=>x.id===b.dataset.c); if(!c) return; c.esMio=!c.esMio; await guardarVig(); pintarVigilados(); },
-  dirCanal(){ estado.dirCanal=estado.dirCanal==="desc"?"asc":"desc"; pintarVigilados(); },
-  vermasCanal(){ estado.limiteCanal+=60; pintarVigilados(); },
+  vermas(){ estado.limite+=40; pintarLista(); },
+  verAqui(b){ estado.filtro.canal=b.dataset.c; pintarResultados(); irSub("todos",true); },
+  /* videos y canales */
+  video(b){ abrirVideo(b.dataset.id); },
+  canal(b){ abrirCanal(b.dataset.c); },
+  async guardar(b){ await alternarGuardado(b.dataset.id); refrescar(); },
+  async copiarTxt(b){ if(await copiar(b.dataset.t)) toast("Copiado"); else toast("No se pudo copiar"); },
+  async vigilar(b){ const c=canalDe(b.dataset.c); if(!c){ toast("No tengo los datos de ese canal"); return; } await vigilar(Object.assign({},c)); refrescar(); },
+  async dejarVigilar(b){ const V=estado.vig, c=V&&V.canales.find(x=>x.id===b.dataset.c); if(!c||!confirm("¿Dejar de vigilar «"+c.nombre+"»?")) return;
+    MAPA_CANALES.set(c.id,c); estado.canalCache[c.id]=V.videos[c.id]; V.canales=V.canales.filter(x=>x.id!==c.id); delete V.videos[c.id]; await guardarVig(); toast("Ya no vigilas ese canal"); refrescar(); },
+  async marcarMio(b){ const V=estado.vig, c=V&&V.canales.find(x=>x.id===b.dataset.c); if(!c) return; const era=c.esMio; V.canales.forEach(x=>{ x.esMio=false; }); c.esMio=!era; await guardarVig(); toast(c.esMio?"Marcado como tu canal":"Ya no está marcado como tu canal"); refrescar(); },
+  async cargarCanal(b){ if(estado.ocupado) return; estado.ocupado=true; toast("Trayendo sus videos…",20000);
+    try{ await cargarVideosCanal(b.dataset.c); toast("Listo"); }catch(e){ toast(e.message,7000); }
+    estado.ocupado=false; refrescar(); },
+  csub(b){ estado.canalVista[b.dataset.c].sub=b.dataset.v; pintarHoja(); },
+  cdir(b){ const s=estado.canalVista[b.dataset.c]; s.dir=s.dir==="desc"?"asc":"desc"; pintarHoja(); },
+  cmas(b){ estado.canalVista[b.dataset.c].lim+=30; pintarHoja(); },
+  /* tendencias, vigilados, guardados, historial */
+  verTend(){ const s={pais:$("#tPais").value,cat:$("#tCat").value}; LS.set("tendSel",s); estado.tendSub="todos"; return cargarTend(s.pais,s.cat); },
+  tsub(b){ estado.tendSub=b.dataset.v; pintarTend(); },
+  async actTodos(){ await actualizarVigilados(); refrescar(); },
+  async quitarGuardados(){ if(!confirm("¿Quitar todos los videos guardados?")) return; estado.guard=[]; await ALM.set("guardados",[]); refrescar(); },
   async abrirEst(b){ const e=await ALM.get("estudio:"+b.dataset.id); if(e) abrirEstudio(e,{deCache:true}); else toast("No encontré esa búsqueda"); },
   async refrescarEst(b){ const e=await ALM.get("estudio:"+b.dataset.id); if(e){ irA("buscar"); buscar(Object.assign({},e.params),{forzar:true}); } },
-  async borrarEst(b){ let idx=(await ALM.get("estudios_idx"))||[]; idx=idx.filter(x=>x.id!==b.dataset.id); await ALM.del("estudio:"+b.dataset.id); await ALM.set("estudios_idx",idx); if(estado.est&&estado.est.id===b.dataset.id){ estado.est=null; pintarResultados(); } pintarHistorial(); },
-  async borrarHist(){ if(!confirm("¿Borrar todas las búsquedas guardadas?")) return; const idx=(await ALM.get("estudios_idx"))||[]; for(const x of idx) await ALM.del("estudio:"+x.id); await ALM.set("estudios_idx",[]); estado.est=null; pintarResultados(); pintarHistorial(); },
+  async borrarEst(b){ let idx=(await ALM.get("estudios_idx"))||[]; idx=idx.filter(x=>x.id!==b.dataset.id); await ALM.del("estudio:"+b.dataset.id); await ALM.set("estudios_idx",idx); if(estado.est&&estado.est.id===b.dataset.id) estado.est=null; pintarHistorial(); pintarResultados(); },
+  async borrarHist(){ if(!confirm("¿Borrar todas las búsquedas guardadas?")) return; const idx=(await ALM.get("estudios_idx"))||[]; for(const x of idx) await ALM.del("estudio:"+x.id); await ALM.set("estudios_idx",[]); estado.est=null; pintarHistorial(); pintarResultados(); },
+  /* cuenta y ajustes */
   entrarGoogle(){ entrarGoogle(); },
-  salirGoogle(){ salirGoogle(); },
+  salirGoogle(){ salirGoogle(); pintarHoja(); },
+  detectarMiCanal(){ return detectarMiCanal(); },
   resetCuota(){ LS.set("cuota",{dia:diaPacifico(),busq:0,unid:0}); pintarCuota(); pintarAjustes(); actualizarGasto(); toast("Contador en cero"); },
-  exportar(){ exportar(); },
+  exportar(){ return exportar(); },
   importar(){ $("#inImportar").click(); },
-  async borrarTodo(){ if(!confirm("¿Borrar TODO (búsquedas, vigilados y ajustes) de este teléfono?")) return; await DB.borrarTodo(); try{ Object.keys(localStorage).filter(k=>k.startsWith("rv_")).forEach(k=>localStorage.removeItem(k)); }catch(e){} Object.keys(MEM).forEach(k=>delete MEM[k]); location.reload(); }
+  async borrarTodo(){ if(!confirm("¿Borrar TODO (búsquedas, vigilados, guardados y ajustes) de este teléfono?")) return; await DB.borrarTodo(); try{ Object.keys(localStorage).filter(k=>k.startsWith("rv_")).forEach(k=>localStorage.removeItem(k)); }catch(e){} location.reload(); }
 };
-function alternar(set,v){ if(set.has(v)) set.delete(v); else set.add(v); }
-function refrescarFiltros(){ estado.limite=60; pintarResultados(); }
-function refrescarTarjeta(b,id){
-  const art=b.closest("article.vc"), f=MAPA_FILAS.get(id); if(!art||!f) return;
-  const viejo=art.querySelector(".det"); if(viejo) viejo.remove();
-  if(estado.abiertos.has(id)){ art.insertAdjacentHTML("beforeend",detalle(f)); b.textContent="Ocultar"; } else b.textContent="Detalles";
-}
+const CAMBIOS = {   /* listas desplegables */
+  orden(el){ estado.orden=el.value; guardarVista(); pintarLista(); },
+  canOrden(el){ estado.canOrden=el.value; pintarCuerpo(); },
+  fmin(el){ estado.filtro.minVistas=+el.value; pintarResultados(); pintarHoja(); },
+  fdentro(el){ estado.filtro.dentro=+el.value; pintarResultados(); pintarHoja(); },
+  corden(el){ estado.canalVista[el.dataset.c].orden=el.value; pintarHoja(); },
+  tendOrden(el){ estado.tendOrden=el.value; pintarTend(); },
+  cache(el){ guardarCFG({cacheHoras:+el.value}); toast("Guardado"); }
+};
 
 /* ---------------- arranque ---------------- */
 function ajustarCab(){ const c=$(".cab"); if(c) document.documentElement.style.setProperty("--cabH",c.offsetHeight+"px"); }
+async function cargarDatos(){ estado.guard=(await ALM.get("guardados"))||[]; await cargarVig(); estado.tend=(await ALM.get("tend"))||null; }
+async function abrirUltimo(){
+  const idx=(await ALM.get("estudios_idx"))||[], e=idx.length?await ALM.get("estudio:"+idx[0].id):null;
+  if(e) abrirEstudio(e,{silencioso:true,deCache:true}); else { estado.est=null; llenarFormulario(LS.get("filtros",null)); pintarResultados(); }
+}
 function enlazar(){
   document.addEventListener("click", async e=>{
-    const t=e.target.closest("[data-tab]"); if(t){ irA(t.dataset.tab); return; }
-    const b=e.target.closest("[data-act]"); if(!b) return;
+    if(e.target.id==="hoja"){ cerrarHoja(true); return; }
+    const t=e.target.closest("[data-tab]"); if(t){ cerrarHoja(true); irA(t.dataset.tab); return; }
+    const b=e.target.closest("[data-act]"), a=e.target.closest("a[href]");
+    if(a && (!b || b.contains(a))) return;          /* los enlaces a YouTube se abren solos */
+    if(!b) return;
     const fn=ACCIONES[b.dataset.act]; if(!fn) return;
     e.preventDefault();
     try{ await fn(b); }catch(err){ toast(err.message||"Algo salió mal",6000); }
   });
   document.addEventListener("change", e=>{
-    const el=e.target, ch=el.dataset&&el.dataset.ch;
+    const el=e.target;
     if(el.id==="inImportar"){ if(el.files[0]) importar(el.files[0]); el.value=""; return; }
     if(el.closest&&el.closest("#fBuscar")){ actualizarGasto(); LS.set("filtros",leerFormulario()); return; }
-    if(!ch) return;
-    if(ch==="orden"){ estado.orden=el.value; guardarVista(); pintarCuerpo(); }
-    else if(ch==="fmin"){ estado.filtro.minVistas=+el.value; refrescarFiltros(); }
-    else if(ch==="fdentro"){ estado.filtro.dentro=+el.value; refrescarFiltros(); }
-    else if(ch==="ordenCanal"){ estado.ordenCanal=el.value; pintarVigilados(); }
-    else if(ch==="cache"){ guardarCFG({cacheHoras:+el.value}); toast("Guardado"); }
+    const fn=el.dataset&&CAMBIOS[el.dataset.ch]; if(fn) fn(el);
   });
   let tTexto=null;
   document.addEventListener("input", e=>{
-    if(e.target.id==="ftexto"){ estado.filtro.texto=e.target.value; clearTimeout(tTexto); tTexto=setTimeout(()=>{ estado.limite=60; pintarCuerpo(); },180); }
+    if(e.target.id!=="ftexto") return;
+    estado.filtro.texto=e.target.value; clearTimeout(tTexto);
+    tTexto=setTimeout(()=>{ estado.limite=40; const base=filtrar(estado.filas); $("#activos").innerHTML=htmlActivos(); pintarSub(base); pintarLista(); },180);
   });
   document.addEventListener("toggle", e=>{ const d=e.target; if(d&&d.matches&&d.matches("details[data-sec]")) estado.secs[d.dataset.sec]=d.open; }, true);
   document.addEventListener("submit", async e=>{
     e.preventDefault();
-    if(e.target.id==="fBuscar"){ $("#q").blur(); buscar(leerFormulario()); }
-    else if(e.target.id==="fCanal"){
-      const v=$("#inCanal").value.trim(); if(!v) return;
-      if(modoDemo){ toast("En el ejemplo no se agregan canales reales. Sal del ejemplo para hacerlo."); return; }
-      try{ toast("Buscando el canal…"); const c=await resolverCanal(v); await vigilar(c); $("#inCanal").value=""; }catch(err){ toast(err.message,6000); }
-    }
+    const id=e.target.id;
+    if(id==="fBuscar"){ $("#q").blur(); buscar(leerFormulario()); return; }
+    if(id!=="fCanal" && id!=="fMiCanal") return;
+    const mio=id==="fMiCanal", inp=$(mio?"#inMiCanal":"#inCanal"), v=inp.value.trim(); if(!v) return;
+    if(modoDemo){ toast("En el ejemplo no se agregan canales reales. Sal del ejemplo para hacerlo."); return; }
+    try{
+      toast("Buscando el canal…",15000);
+      const c=await resolverCanal(v);
+      if(mio){ if(estado.vig) estado.vig.canales.forEach(x=>{ x.esMio=false; }); c.esMio=true; }
+      await vigilar(c,{actualizar:mio}); refrescar();
+    }catch(err){ toast(err.message,6000); }
   });
+  window.addEventListener("resize",ajustarCab);
 }
 async function iniciar(){
+  document.querySelectorAll("#tabs button").forEach(b=>b.insertAdjacentHTML("afterbegin",ic(b.dataset.ic,21)));
   llenarFormulario(LS.get("filtros",null));
-  pintarCuota(); pintarUsuario(); enlazar(); ajustarCab(); window.addEventListener("resize",ajustarCab);
-  const idx=(await ALM.get("estudios_idx"))||[];
-  const e=idx.length?await ALM.get("estudio:"+idx[0].id):null;
-  if(e) abrirEstudio(e,{silencioso:true,deCache:true}); else pintarBienvenida();
+  pintarCuota(); pintarUsuario(); enlazar(); ajustarCab();
+  await cargarDatos(); pintarCampana();
+  await abrirUltimo();
   if("serviceWorker" in navigator && location.protocol==="https:") navigator.serviceWorker.register("./sw.js").catch(()=>{});
 }
 iniciar();
