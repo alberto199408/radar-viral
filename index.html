@@ -1,0 +1,1533 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Radar Viral</title>
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23151925'/%3E%3Ccircle cx='32' cy='32' r='20' fill='none' stroke='%23FF5A36' stroke-width='3' opacity='.45'/%3E%3Ccircle cx='32' cy='32' r='12' fill='none' stroke='%23FF5A36' stroke-width='3' opacity='.75'/%3E%3Cpath d='M28 25 L40 32 L28 39 Z' fill='%23FF5A36'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="./icon-virales-192.png">
+<meta name="theme-color" content="#151925">
+<style>
+:root{
+  --bg:#F1F2EE; --card:#fff; --ink:#141821; --ink2:#4A5263; --ink3:#8B92A3;
+  --rule:#DCDFE5; --rule2:#ECEEF2; --plate:#151925; --plate2:#232A3A;
+  --fuego:#FF5A36; --fuego2:#E5401C; --fuegoS:#FFE8E1;
+  --ambar:#E8890C; --ambarS:#FFF1DC; --azul:#2D6BD8; --azulS:#E5EDFC;
+  --verde:#13915F; --verdeS:#E0F4EA; --gris:#7C8394; --grisS:#EEF0F3;
+  --mono:ui-monospace,"SF Mono",Consolas,monospace; --r:10px;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:14px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-text-size-adjust:100%}
+button,input,select{font:inherit;color:inherit}
+a{color:inherit}
+.hide{display:none!important}
+.mut{color:var(--ink2);font-size:13px;margin:0 0 8px}
+
+/* ---------- cabecera ---------- */
+.cab{position:sticky;top:0;z-index:30;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+header.top{background:var(--plate);color:#fff;display:flex;align-items:center;gap:10px;padding:10px 14px;padding-top:max(10px,env(safe-area-inset-top))}
+.logo{display:flex;align-items:center;gap:8px;font-weight:800;letter-spacing:.14em;font-size:15px;white-space:nowrap}
+.logo b{color:var(--fuego)}
+.sp{flex:1}
+.cuota{background:var(--plate2);border:1px solid #39415A;border-radius:999px;padding:5px 11px;font-size:12px;color:#C9CFDC;cursor:pointer;white-space:nowrap}
+.cuota b{color:#fff}
+.cuota.alerta{border-color:var(--fuego);color:#FFD0C4}
+.user{display:flex;align-items:center;gap:6px;cursor:pointer}
+.user img{width:30px;height:30px;border-radius:50%;display:block;border:2px solid #39415A}
+nav.tabs{background:var(--plate);display:flex;padding:0 6px;overflow-x:auto;scrollbar-width:none}
+nav.tabs::-webkit-scrollbar{display:none}
+nav.tabs button{background:none;border:0;color:#9BA3B6;padding:10px 14px 11px;font-weight:700;font-size:13.5px;border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap}
+nav.tabs button.on{color:#fff;border-bottom-color:var(--fuego)}
+.demo{background:#FFD84D;color:#3A2E00;font-size:12.5px;font-weight:700;text-align:center;padding:6px 10px;display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap}
+.demo button{background:#3A2E00;color:#FFD84D;border:0;border-radius:6px;padding:4px 10px;font-weight:700;cursor:pointer;font-size:12px}
+
+main{max-width:1180px;margin:0 auto;padding:12px 12px 90px}
+.card{background:var(--card);border:1px solid var(--rule);border-radius:var(--r);padding:14px;margin-bottom:12px;box-shadow:0 1px 2px rgba(20,24,33,.04)}
+h2{font-size:16px;margin:0 0 8px}
+h2 small{font-weight:500;color:var(--ink3);font-size:12px}
+h3.tit{font-size:14px;margin:18px 2px 8px}
+
+/* ---------- formulario de búsqueda ---------- */
+.qrow{display:flex;gap:8px}
+.qrow input{flex:1;min-width:0;padding:12px 14px;border:1.5px solid var(--rule);border-radius:10px;font-size:16px;background:#FAFBFC}
+.qrow input:focus{outline:none;border-color:var(--fuego);background:#fff}
+.btn{border:1px solid var(--rule);background:#fff;border-radius:9px;padding:9px 14px;font-weight:700;cursor:pointer;white-space:nowrap;text-decoration:none;display:inline-flex;align-items:center;gap:5px;justify-content:center}
+.btn:active{transform:translateY(1px)}
+.btn.pri{background:var(--fuego);border-color:var(--fuego2);color:#fff}
+.btn.osc{background:var(--plate);border-color:var(--plate);color:#fff}
+.btn.sm{padding:6px 10px;font-size:12.5px;border-radius:7px}
+.btn.mal{color:var(--fuego2);border-color:#F3C3B6}
+.btn[disabled]{opacity:.5;pointer-events:none}
+.btn.mas{width:100%;margin-top:10px;padding:12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-top:10px}
+.grid label,.grid2 label,label.lbl{display:flex;flex-direction:column;gap:3px;font-size:11px;color:var(--ink2);font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+select{padding:9px 8px;border:1px solid var(--rule);border-radius:8px;background:#fff;font-size:14px;text-transform:none;letter-spacing:0;font-weight:500;color:var(--ink);min-width:0}
+.gasto{font-size:12px;color:var(--ink2);margin-top:10px}
+#opcs>summary{list-style:none;cursor:pointer;font-size:12.5px;color:var(--ink2);margin-top:10px;display:flex;gap:6px;align-items:baseline}
+#opcs>summary::-webkit-details-marker{display:none}
+#opcs>summary::after{content:"▾ cambiar";margin-left:auto;font-weight:700;color:var(--fuego2);white-space:nowrap}
+#opcs[open]>summary::after{content:"▴ ocultar"}
+#opcs>summary b{color:var(--ink)}
+.gasto b{color:var(--ink)}
+.ideas{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;align-items:center;font-size:12px;color:var(--ink2)}
+.chip{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--rule);background:#fff;border-radius:999px;padding:5px 11px;font-size:12.5px;cursor:pointer;white-space:nowrap;font-weight:600}
+.chip.on{background:var(--plate);border-color:var(--plate);color:#fff}
+.chip small{color:var(--ink3);font-weight:700}
+.chip.on small{color:#AEB6C8}
+
+/* ---------- resultados ---------- */
+.rhead{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-start;justify-content:space-between}
+.rtitle{font-size:17px;font-weight:800;word-break:break-word}
+.rsub{font-size:12px;color:var(--ink2);margin-top:2px}
+.row{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+@media(max-width:600px){.rhead{flex-direction:column}.rhead>.row{width:100%}.rhead>.row .btn{flex:1}}
+.fbar{display:flex;gap:8px;margin-top:12px}
+.fin{flex:1;min-width:0;padding:8px 12px;border:1px solid var(--rule);border-radius:8px;font-size:14px;background:#FAFBFC}
+.fpanel{margin-top:6px;border-top:1px dashed var(--rule);padding-top:4px}
+.flab{font-size:11px;font-weight:700;color:var(--ink2);text-transform:uppercase;letter-spacing:.04em;margin:10px 0 5px}
+.frow{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;scrollbar-width:thin}
+.activos{display:flex;flex-wrap:wrap;gap:6px}
+.activos:not(:empty){margin-top:8px}
+.activos .chip{background:var(--fuegoS);border-color:#F7C2B4;color:#9C2A10}
+.subtabs{display:flex;gap:4px;background:#E2E4E9;padding:4px;border-radius:10px;margin:0 0 12px;position:sticky;top:calc(var(--cabH,94px) + 6px);z-index:20;box-shadow:0 0 0 6px var(--bg)}
+.subtabs button{flex:1;border:0;background:none;padding:9px 4px;border-radius:7px;font-weight:800;color:var(--ink2);cursor:pointer;font-size:13px}
+.subtabs button.on{background:#fff;color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.12)}
+.nota{font-size:12.5px;background:var(--azulS);color:#1E4FA8;border-radius:8px;padding:8px 10px;margin-bottom:10px}
+.vacio{text-align:center;color:var(--ink2);padding:26px 14px}
+.cargando{display:flex;gap:12px;align-items:center;font-weight:600}
+.spin{width:22px;height:22px;flex:none;border:3px solid var(--rule);border-top-color:var(--fuego);border-radius:50%;animation:g .8s linear infinite}
+@keyframes g{to{transform:rotate(360deg)}}
+.aviso{border-left:4px solid var(--ambar);background:var(--ambarS)}
+.error{border-left:4px solid var(--fuego);background:var(--fuegoS)}
+
+/* ---------- estudio ---------- */
+.kpis{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:8px;margin-bottom:12px}
+.kpi{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:10px 12px;min-width:0}
+.kpi b{display:block;font-size:20px;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kpi span{font-size:11.5px;color:var(--ink2);display:block}
+.kpi.top b{font-size:14px;white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+details.sec{background:var(--card);border:1px solid var(--rule);border-radius:var(--r);margin-bottom:10px}
+details.sec>summary{padding:12px 14px;font-weight:800;cursor:pointer;list-style:none;display:flex;align-items:center;gap:8px}
+details.sec>summary::-webkit-details-marker{display:none}
+details.sec>summary::after{content:"▾";margin-left:auto;color:var(--ink3);transition:transform .15s}
+details.sec:not([open])>summary::after{transform:rotate(-90deg)}
+details.sec .in{padding:0 14px 14px}
+.ins{list-style:none;margin:0;padding:0}
+.ins li{display:flex;gap:10px;padding:9px 0;border-top:1px solid var(--rule2);font-size:13.5px}
+.ins li:first-child{border-top:0;padding-top:0}
+.ins .ico{flex:none;width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:var(--grisS);font-size:15px}
+.bars{display:flex;flex-direction:column;gap:7px}
+.bar{display:grid;grid-template-columns:minmax(92px,32%) 1fr;gap:4px 10px;align-items:center;font-size:12.5px}
+.bar .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600}
+.bar .tr{height:10px;background:var(--grisS);border-radius:6px;overflow:hidden}
+.bar .tr i{display:block;height:100%;background:var(--fuego);border-radius:6px;min-width:2px}
+.bar .vl{grid-column:2;font-variant-numeric:tabular-nums;color:var(--ink2);font-size:11.5px;margin-top:-3px}
+.bar.click{cursor:pointer;border-radius:6px}
+.bar.click:hover{background:#F7F8FA}
+.bar.on .nm{color:var(--fuego2)}
+.bar.on .tr i{background:var(--plate)}
+.op{padding:2px 9px;border-radius:999px;font-size:12px;font-weight:800}
+.op-alta{background:var(--verdeS);color:var(--verde)}
+.op-media{background:var(--ambarS);color:#9A5600}
+.op-baja{background:var(--grisS);color:var(--gris)}
+.fac{display:grid;grid-template-columns:1fr auto;gap:2px 10px;padding:8px 0;border-top:1px solid var(--rule2);font-size:13px}
+.fac:first-of-type{border-top:0}
+.fac .fd{grid-column:1/3;color:var(--ink2);font-size:12px}
+.pts{letter-spacing:2px;color:var(--fuego);font-weight:800;white-space:nowrap}
+.kws{display:flex;flex-wrap:wrap;gap:6px}
+.kw{display:inline-flex;border:1px solid var(--rule);border-radius:999px;overflow:hidden;background:#fff}
+.kw button{border:0;background:none;padding:5px 10px;font-size:12.5px;cursor:pointer;font-weight:600}
+.kw button+button{border-left:1px solid var(--rule);padding:5px 8px;color:var(--ink3)}
+.kw small{color:var(--ink3);font-weight:700}
+.kw.on{border-color:var(--plate)}
+.kw.on button:first-child{background:var(--plate);color:#fff}
+.sub2{font-size:11.5px;font-weight:700;color:var(--ink2);text-transform:uppercase;letter-spacing:.04em;margin:12px 0 6px}
+.sub2:first-child{margin-top:0}
+
+/* ---------- tarjetas de video ---------- */
+.ctrl{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px}
+.ctrl label.lbl{flex:1;min-width:150px}
+.seg{display:inline-flex;border:1px solid var(--rule);border-radius:8px;overflow:hidden;background:#fff}
+.seg button{border:0;background:none;padding:8px 11px;font-weight:700;font-size:12.5px;cursor:pointer;color:var(--ink2)}
+.seg button.on{background:var(--plate);color:#fff}
+.vlist{display:grid;grid-template-columns:1fr;gap:10px}
+@media(min-width:760px){.vlist{grid-template-columns:1fr 1fr}}
+@media(min-width:1120px){.vlist{grid-template-columns:1fr 1fr 1fr}}
+.vc{background:var(--card);border:1px solid var(--rule);border-radius:var(--r);padding:10px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.vtop{display:grid;grid-template-columns:136px 1fr;gap:10px;min-width:0}
+.th{position:relative;display:block;aspect-ratio:16/9;border-radius:8px;overflow:hidden;background:linear-gradient(135deg,#2A3146,#151925)}
+.th img{width:100%;height:100%;object-fit:cover;display:block}
+.th .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#ffffff66;font-size:26px}
+.rk{position:absolute;top:4px;left:4px;background:rgba(0,0,0,.78);color:#fff;font-size:11px;font-weight:800;padding:1px 6px;border-radius:5px}
+.du{position:absolute;bottom:4px;right:4px;background:rgba(0,0,0,.82);color:#fff;font-size:11px;font-weight:700;padding:1px 5px;border-radius:4px;font-variant-numeric:tabular-nums}
+.shb{position:absolute;bottom:4px;left:4px;background:var(--fuego);color:#fff;font-size:10px;font-weight:800;padding:1px 5px;border-radius:4px;letter-spacing:.04em}
+.shb.lv{background:#D7263D}
+.vb{min-width:0}
+.tt{font-weight:700;font-size:13.5px;line-height:1.3;text-decoration:none;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;word-break:break-word}
+.chn{display:flex;align-items:center;gap:4px 8px;font-size:12px;color:var(--ink2);margin-top:5px;flex-wrap:wrap}
+.chn img{width:18px;height:18px;border-radius:50%}
+.chn a{text-decoration:none}
+.met{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.met>div{background:var(--grisS);border-radius:8px;padding:6px 7px;min-width:0}
+.met b{display:block;font-size:14.5px;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.met span{font-size:10.5px;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
+.n-explosivo{background:var(--fuegoS)!important;color:#B4260C}
+.n-muyviral{background:var(--ambarS)!important;color:#9A5600}
+.n-normal{background:var(--azulS)!important;color:#1E4FA8}
+.n-bajo,.n-sindato{background:var(--grisS)!important;color:var(--gris)}
+.met>div[class^="n-"] span,.met>div[class^="s-"] span{color:inherit;opacity:.85}
+.s-a{background:#FF5A36!important;color:#fff}
+.s-b{background:#FFB08F!important;color:#5B1A08}
+.s-c{background:#DCE6FA!important;color:#1E4FA8}
+.s-d{background:var(--grisS)!important;color:var(--gris)}
+.met2{display:flex;flex-wrap:wrap;gap:3px 12px;font-size:12px;color:var(--ink2)}
+.acc{display:flex;gap:6px;flex-wrap:wrap}
+.det{border-top:1px dashed var(--rule);padding-top:8px;font-size:12.5px;color:var(--ink2);display:flex;flex-direction:column;gap:6px}
+.det b{color:var(--ink)}
+.tags{display:flex;flex-wrap:wrap;gap:4px}
+.tag{background:var(--grisS);border-radius:5px;padding:2px 7px;font-size:11.5px}
+.desc{white-space:pre-wrap;background:#FAFAF8;border-radius:6px;padding:7px 9px;font-size:12px;max-height:130px;overflow:auto}
+.pill{padding:2px 8px;border-radius:999px;font-weight:800;font-size:12px}
+
+/* ---------- tabla ---------- */
+.twrap{overflow:auto;max-height:76vh;border:1px solid var(--rule);border-radius:var(--r);background:#fff;-webkit-overflow-scrolling:touch}
+table.tb{border-collapse:separate;border-spacing:0;font-size:12.5px;width:100%}
+.tb th{position:sticky;top:0;background:#F4F5F8;z-index:2;text-align:left;padding:9px 8px;border-bottom:1px solid var(--rule);white-space:nowrap;cursor:pointer;user-select:none;font-size:11.5px;color:var(--ink2)}
+.tb th.on{color:var(--fuego2)}
+.tb th.num,.tb td.num{text-align:right}
+.tb td{padding:7px 8px;border-bottom:1px solid var(--rule2);white-space:nowrap;font-variant-numeric:tabular-nums;background:#fff}
+.tb td.tv{white-space:normal;min-width:150px;max-width:150px;position:sticky;left:0;z-index:1;border-right:1px solid var(--rule2);font-size:12px}
+.tb th.tv{position:sticky;left:0;z-index:3}
+@media(min-width:760px){.tb td.tv{min-width:300px;max-width:300px}}
+.tb td.tv a{text-decoration:none;font-weight:600;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;line-height:1.3}
+.tb .rkt{color:var(--ink3);font-weight:800;font-size:11px}
+.tb tr:hover td{background:#FBFBF6}
+
+/* ---------- canales ---------- */
+.clist{display:grid;grid-template-columns:1fr;gap:8px}
+@media(min-width:760px){.clist{grid-template-columns:1fr 1fr}}
+.cc{display:flex;gap:10px;align-items:flex-start;background:#fff;border:1px solid var(--rule);border-radius:var(--r);padding:10px;min-width:0}
+.cc .av{width:44px;height:44px;border-radius:50%;flex:none;background:var(--grisS);object-fit:cover;display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--ink3)}
+.cc .cb{flex:1;min-width:0}
+.cc .cn{font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cc .cs{font-size:12px;color:var(--ink2);margin-top:2px}
+.cc .row{margin-top:8px}
+.mio{background:#FFE9A8;color:#6B4D00;font-size:10.5px;font-weight:800;padding:1px 6px;border-radius:5px;margin-left:4px}
+
+/* ---------- ajustes ---------- */
+.campo{display:flex;flex-direction:column;gap:5px;margin:10px 0}
+.campo>label{font-size:12px;font-weight:700;color:var(--ink2)}
+.campo input{padding:10px 12px;border:1px solid var(--rule);border-radius:8px;font-size:14px;font-family:var(--mono);min-width:0}
+.estado{font-size:12.5px;margin-top:8px}
+.ok{color:var(--verde);font-weight:700}
+.malo{color:var(--fuego2);font-weight:700}
+ol.guia{padding-left:20px;margin:6px 0} ol.guia li{margin:7px 0;font-size:13.5px}
+code{font-family:var(--mono);background:var(--grisS);padding:1px 5px;border-radius:4px;font-size:12px;word-break:break-all}
+.cupo{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ayuda dt{font-weight:800;margin-top:10px}
+.ayuda dd{margin:3px 0 0;color:var(--ink2);font-size:13px}
+.ver{text-align:center;color:var(--ink3);font-size:11.5px}
+.hq{font-weight:800;font-size:15px;word-break:break-word}
+
+#toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(140px);background:var(--plate);color:#fff;padding:11px 16px;border-radius:10px;font-size:13.5px;max-width:92vw;z-index:60;transition:transform .25s;box-shadow:0 6px 24px rgba(0,0,0,.25);text-align:center}
+#toast.ver{transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+
+<div class="cab">
+  <header class="top">
+    <div class="logo">
+      <svg width="24" height="24" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="24" fill="none" stroke="#FF5A36" stroke-width="4" opacity=".4"/><circle cx="32" cy="32" r="14" fill="none" stroke="#FF5A36" stroke-width="4" opacity=".75"/><path d="M27 23 L42 32 L27 41 Z" fill="#FF5A36"/></svg>
+      <span><b>RADAR</b> VIRAL</span>
+    </div>
+    <div class="sp"></div>
+    <button class="cuota" id="cuotaPill" data-act="irCupo" title="Búsquedas de YouTube usadas hoy">🔎 <b>0</b>/100</button>
+    <div id="userBox"></div>
+  </header>
+  <div id="demoBanner" class="demo hide">MODO EJEMPLO · datos inventados para ver cómo funciona <button data-act="salirDemo">Salir del ejemplo</button></div>
+  <nav class="tabs" id="tabs">
+    <button data-tab="buscar" class="on">🔎 Buscar</button>
+    <button data-tab="vigilados">👁 Vigilados</button>
+    <button data-tab="historial">🕘 Historial</button>
+    <button data-tab="ajustes">⚙ Ajustes</button>
+  </nav>
+</div>
+
+<main>
+  <section id="tab-buscar">
+    <form id="fBuscar" class="card" autocomplete="off">
+      <div class="qrow">
+        <input id="q" type="search" enterkeyhint="search" placeholder="Tema: ej. de dónde sale el popó">
+        <button class="btn pri" id="btnBuscar" type="submit">Buscar</button>
+      </div>
+      <details id="opcs" open><summary id="opcsRes">⚙ Opciones de búsqueda</summary>
+      <div class="grid">
+        <label>Idioma<select id="fIdioma"></select></label>
+        <label>Buscar en el país<select id="fPais"></select></label>
+        <label>Publicado<select id="fFecha"></select></label>
+        <label>Tipo<select id="fTipo"></select></label>
+        <label>Categoría<select id="fCat"></select></label>
+        <label>Traer primero<select id="fOrden"></select></label>
+        <label>Cantidad<select id="fCant"></select></label>
+      </div>
+      <div class="gasto" id="gasto"></div>
+      <div class="ideas" id="ideas"></div>
+      </details>
+    </form>
+    <div id="resultados"></div>
+  </section>
+  <section id="tab-vigilados" class="hide"></section>
+  <section id="tab-historial" class="hide"></section>
+  <section id="tab-ajustes" class="hide"></section>
+</main>
+
+<div id="toast"></div>
+<input type="file" id="inImportar" accept=".json,application/json" class="hide">
+
+<script>
+"use strict";
+/* =====================================================================
+   RADAR VIRAL · v1.0
+   Busca videos de YouTube por tema, los ordena del más viral al menos
+   viral y hace un estudio completo de lo que encontró.
+   - Todo lo configurable (clave, inicio de sesión, cupo, guardado,
+     copia de seguridad) está junto en la pestaña AJUSTES.
+   - Los datos se guardan solo en este teléfono / navegador.
+   ===================================================================== */
+/* ===================== CONFIGURACIÓN DEL DUEÑO =====================
+   Se llena UNA sola vez (lo hace el dueño de la app). Los usuarios nunca
+   ven ni ponen ninguna clave: abren la app y buscan.
+   - claveYouTube ...... clave de API de YouTube Data API v3, restringida en
+                         Google Cloud a la página de la app (solo sirve ahí).
+   - idClienteGoogle ... ID de cliente para el botón «Entrar con Google».
+                         Si está vacío, el botón no aparece.
+   ==================================================================== */
+const CONFIG = {
+  claveYouTube: "AIzaSyAFeMoFL462h3ig4mDHEwOY5KexFweGN_w",
+  idClienteGoogle: "578899082343-ckp1972mrjhs1cil1e94tqs4crvd6a8d.apps.googleusercontent.com"
+};
+const VERSION = "1.1";
+const API = "https://www.googleapis.com/youtube/v3/";
+const MAX_HIST = 40;               /* búsquedas que se guardan en Historial */
+const LIMITE_BUSQ = 100;           /* búsquedas diarias que da YouTube gratis */
+const LIMITE_UNID = 10000;         /* unidades diarias para lo demás */
+
+/* ---------------- listas de opciones ---------------- */
+const IDIOMAS = [["","Cualquier idioma"],["es","Español"],["en","Inglés"],["pt","Portugués"],["fr","Francés"],["it","Italiano"],["de","Alemán"],["hi","Hindi"],["ar","Árabe"],["ru","Ruso"],["ja","Japonés"],["ko","Coreano"],["id","Indonesio"],["tr","Turco"]];
+const PAISES = [["","Todo el mundo"],["EC","Ecuador"],["MX","México"],["CO","Colombia"],["AR","Argentina"],["PE","Perú"],["CL","Chile"],["VE","Venezuela"],["BO","Bolivia"],["UY","Uruguay"],["PY","Paraguay"],["GT","Guatemala"],["HN","Honduras"],["SV","El Salvador"],["NI","Nicaragua"],["CR","Costa Rica"],["PA","Panamá"],["DO","Rep. Dominicana"],["PR","Puerto Rico"],["BR","Brasil"],["US","Estados Unidos"],["CA","Canadá"],["ES","España"],["GB","Reino Unido"],["FR","Francia"],["DE","Alemania"],["IT","Italia"],["PT","Portugal"],["IN","India"],["JP","Japón"],["KR","Corea del Sur"],["PH","Filipinas"],["ID","Indonesia"],["AU","Australia"]];
+const LATAM = new Set(["AR","BO","BR","CL","CO","CR","CU","DO","EC","SV","GT","HN","MX","NI","PA","PY","PE","PR","UY","VE"]);
+const FECHAS = [["","Cualquier fecha",0],["1d","Últimas 24 horas",1],["7d","Última semana",7],["30d","Último mes",30],["90d","Últimos 3 meses",90],["180d","Últimos 6 meses",180],["365d","Último año",365]];
+const TIPOS = [["","Shorts y largos"],["short","Solo Shorts"],["largo","Solo videos largos"]];
+const CATEGORIAS = [["","Todas"],["27","Educación"],["28","Ciencia y tecnología"],["24","Entretenimiento"],["22","Gente y blogs"],["23","Comedia"],["1","Cine y animación"],["10","Música"],["15","Mascotas y animales"],["17","Deportes"],["20","Videojuegos"],["25","Noticias y política"],["26","Consejos y estilo"],["19","Viajes y eventos"],["2","Autos y vehículos"],["29","Activismo y ONG"]];
+const ORDENES_YT = [["viewCount","Los más vistos"],["relevance","Los más relevantes"],["date","Los más recientes"]];
+const CANTIDADES = [[50,"50 videos"],[100,"100 videos"],[150,"150 videos"],[200,"200 videos"]];
+const NOMBRE_IDIOMA = {es:"Español",en:"Inglés",pt:"Portugués",fr:"Francés",it:"Italiano",de:"Alemán",hi:"Hindi",ar:"Árabe",ru:"Ruso",ja:"Japonés",ko:"Coreano",id:"Indonesio",tr:"Turco",zh:"Chino","?":"Sin dato"};
+const NOMBRE_CAT = Object.assign(Object.fromEntries(CATEGORIAS.filter(c=>c[0])), {"30":"Películas","43":"Programas","44":"Tráileres"});
+const NIVELES = {
+  explosivo:{nombre:"🔥 Explosivo (10× o más)", corto:"explosivo"},
+  muyviral:{nombre:"Muy viral (3× a 10×)", corto:"muy viral"},
+  normal:{nombre:"Normal (1× a 3×)", corto:"normal"},
+  bajo:{nombre:"Bajo (menos de 1×)", corto:"bajo"},
+  sindato:{nombre:"Sin dato del canal", corto:"sin dato"}
+};
+const ORDEN = {   /* cómo se ordena cada columna */
+  puntaje:{n:"Más viral (puntaje)", f:x=>x.puntaje},
+  mult:{n:"Multiplicador vs su canal", f:x=>x.mult},
+  vistas:{n:"Más vistas", f:x=>x.vistas},
+  vpd:{n:"Vistas por día", f:x=>x.vpd},
+  likes:{n:"Más likes", f:x=>x.likes},
+  coment:{n:"Más comentarios", f:x=>x.coment},
+  inter:{n:"% de interacción", f:x=>x.inter},
+  fecha:{n:"Fecha de publicación", f:x=>Date.parse(x.fecha)},
+  dias:{n:"Días publicado", f:x=>x.dias},
+  dur:{n:"Duración", f:x=>x.dur},
+  subs:{n:"Tamaño del canal", f:x=>x.canal?x.canal.subs:null},
+  titulo:{n:"Título", f:x=>x.titulo, s:1},
+  canal:{n:"Canal", f:x=>x.canalNombre, s:1},
+  pais:{n:"País", f:x=>x.canal&&x.canal.pais||null, s:1},
+  tipo:{n:"Tipo", f:x=>x.short?"Short":"Largo", s:1},
+  idioma:{n:"Idioma", f:x=>x.idioma?nombreIdioma(x.idioma):null, s:1},
+  cat:{n:"Categoría", f:x=>x.cat?nombreCat(x.cat):null, s:1}
+};
+const ORDENES_TARJETAS = ["puntaje","mult","vistas","vpd","likes","coment","inter","fecha","dur","subs"];
+const DUR_B = [[0,60,"Menos de 1 min"],[60,180,"1 a 3 min"],[180,480,"3 a 8 min"],[480,900,"8 a 15 min"],[900,1800,"15 a 30 min"],[1800,Infinity,"Más de 30 min"]];
+const EDAD_B = [[0,7,"Última semana"],[7,30,"1 a 4 semanas"],[30,90,"1 a 3 meses"],[90,365,"3 a 12 meses"],[365,1095,"1 a 3 años"],[1095,Infinity,"Más de 3 años"]];
+const TAM_B = [[0,1e4,"Menos de 10 mil"],[1e4,1e5,"10 mil a 100 mil"],[1e5,1e6,"100 mil a 1 M"],[1e6,1e7,"1 M a 10 M"],[1e7,Infinity,"Más de 10 M"]];
+const DIAS_SEM = ["Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado"];
+const STOP = new Set((
+ "a al algo alguna algunas alguno algunos ante antes asi aun aunque bajo bien cada casi como con contra cual cuales cuando cuanto cuanta de del desde donde dos el ella ellas ellos en entre era eres es esa esas ese eso esos esta estas este esto estos estan fue fueron ha hace hacen han hasta hay la las le les lo los mas me mi mis mucho mucha muy nada ni no nos nuestro nuestra o otra otro otros para pero poco por porque que quien quienes se ser si sin sobre solo son su sus tambien te tiene tienen todo todos toda todas tu tus un una uno unos unas usted ustedes va vez y ya yo asi parte cosas cosa veces hoy aqui alli ahi " +
+ "the and of to in is it its you your for on with this that these those what how why are be was were when where who can do does did not no yes from at by an or as if so we they them their our my me i he she his her will just about all get got have has had more most very into out than then there here one two " +
+ "o os as do da dos das um uma uns umas com nao seu sua voce isso esse essa este esta mais muito quando onde e pra pro sobre " +
+ "video videos short shorts youtube canal ep episodio capitulo nuevo nueva new hd 4k full completo completa oficial official vs parte part"
+).split(/\s+/));
+
+/* ---------------- utilidades ---------------- */
+const $ = s => document.querySelector(s);
+const esc = s => String(s==null?"":s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const suma = a => a.reduce((x,y)=>x+(y||0),0);
+const sinTildes = s => String(s||"").normalize("NFD").replace(/[̀-ͯ]/g,"");
+const normTexto = s => " "+sinTildes(String(s||"").toLowerCase()).replace(/[^\p{L}\p{N}#]+/gu," ").trim()+" ";
+const pl = (n,a,b) => n===1 ? a : b;
+const cortar = (s,n) => { s=String(s||""); return s.length>n ? s.slice(0,n-1)+"…" : s; };
+const cap = s => s ? s.charAt(0).toUpperCase()+s.slice(1) : s;
+function mediana(a){ const b=a.filter(x=>x!=null&&isFinite(x)).sort((x,y)=>x-y); if(!b.length) return null; const m=b.length>>1; return b.length%2 ? b[m] : (b[m-1]+b[m])/2; }
+function bucket(x,B){ if(x==null||!isFinite(x)) return -1; for(let i=0;i<B.length;i++) if(x>=B[i][0]&&x<B[i][1]) return i; return -1; }
+function contar(arr, fn){ const o={}; arr.forEach(x=>{ const k=fn(x); o[k]=(o[k]||0)+1; }); return o; }
+let dnPais=null, dnIdioma=null;
+try{ dnPais=new Intl.DisplayNames(["es"],{type:"region"}); dnIdioma=new Intl.DisplayNames(["es"],{type:"language"}); }catch(e){}
+const MAPA_PAIS = Object.fromEntries(PAISES.filter(p=>p[0]));
+function nombrePais(c){ if(!c||c==="-") return "Sin país"; if(MAPA_PAIS[c]) return MAPA_PAIS[c]; try{ return dnPais?dnPais.of(c):c; }catch(e){ return c; } }
+function nombreIdioma(c){ if(!c||c==="?") return "Sin dato"; if(NOMBRE_IDIOMA[c]) return NOMBRE_IDIOMA[c]; try{ return dnIdioma?cap(dnIdioma.of(c)):c; }catch(e){ return c; } }
+function nombreCat(c){ return NOMBRE_CAT[c] || (c ? "Categoría "+c : "Sin categoría"); }
+function bandera(c){ return c && /^[A-Z]{2}$/.test(c) ? String.fromCodePoint(...[...c].map(x=>127397+x.charCodeAt(0))) : ""; }
+const nf = new Intl.NumberFormat("es-EC",{maximumFractionDigits:0});
+const nf1 = new Intl.NumberFormat("es-EC",{maximumFractionDigits:1});
+function fmtN(n){ return n==null||!isFinite(n) ? "—" : nf.format(Math.round(n)); }
+function fmtC(n){
+  if(n==null||!isFinite(n)) return "—";
+  const a=Math.abs(n), d=x=> x>=100 ? nf.format(Math.round(x)) : nf1.format(x);
+  if(a>=1e9) return d(n/1e9)+" mil M";
+  if(a>=1e6) return d(n/1e6)+" M";
+  if(a>=1e4) return d(n/1e3)+" mil";
+  return fmtN(n);
+}
+function fmtX(x){ if(x==null||!isFinite(x)) return "—"; return (x>=10 ? nf.format(Math.round(x)) : nf1.format(x))+"×"; }
+function fmtPct(x){ if(x==null||!isFinite(x)) return "—"; return new Intl.NumberFormat("es-EC",{maximumFractionDigits: x<1?2:1}).format(x)+" %"; }
+function fmtDur(s){ if(!s) return "—"; const h=Math.floor(s/3600), m=Math.floor(s%3600/60), x=s%60, p=n=>String(n).padStart(2,"0"); return h ? h+":"+p(m)+":"+p(x) : m+":"+p(x); }
+function fmtFecha(iso){ return new Date(iso).toLocaleDateString("es-EC",{day:"numeric",month:"short",year:"numeric"}).replace(/\./g,""); }
+function fmtHora(iso){ return new Date(iso).toLocaleTimeString("es-EC",{hour:"2-digit",minute:"2-digit",hour12:false}); }
+function fmtHace(t){
+  const ms=Date.now()-(typeof t==="number"?t:Date.parse(t)), h=ms/36e5;
+  if(h<1) return "hace "+Math.max(1,Math.round(ms/6e4))+" min";
+  if(h<24) return "hace "+Math.round(h)+" h";
+  const d=h/24;
+  if(d<14) return "hace "+Math.round(d)+" d";
+  if(d<60) return "hace "+Math.round(d/7)+" sem";
+  if(d<365){ const m=Math.round(d/30.4); return "hace "+m+" "+pl(m,"mes","meses"); }
+  const a=d/365, r=a<10?Math.round(a*10)/10:Math.round(a);
+  return "hace "+nf1.format(r)+" "+(r===1?"año":"años");
+}
+function toast(msg, ms){ const t=$("#toast"); t.innerHTML=msg; t.classList.add("ver"); clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.remove("ver"), ms||3200); }
+function descargar(contenido, nombre, tipo){
+  const b=new Blob([contenido],{type:tipo}), u=URL.createObjectURL(b), a=document.createElement("a");
+  a.href=u; a.download=nombre; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(u), 4000);
+}
+async function copiar(txt){
+  try{ await navigator.clipboard.writeText(txt); return true; }catch(e){
+    const ta=document.createElement("textarea"); ta.value=txt; ta.style.position="fixed"; ta.style.opacity="0"; document.body.appendChild(ta); ta.select();
+    let ok=false; try{ ok=document.execCommand("copy"); }catch(_){}
+    ta.remove(); return ok;
+  }
+}
+
+/* ---------------- guardado ---------------- */
+/* Ajustes pequeños → localStorage. Búsquedas y vigilados → IndexedDB (cabe mucho más).
+   Si el navegador no deja guardar, todo sigue funcionando en memoria. */
+const MEM = {};
+const LS = {
+  get(k,d){ try{ const v=localStorage.getItem("rv_"+k); if(v!=null) return JSON.parse(v); }catch(e){} return (k in MEM) ? MEM[k] : d; },
+  set(k,v){ MEM[k]=v; try{ if(v==null) localStorage.removeItem("rv_"+k); else localStorage.setItem("rv_"+k, JSON.stringify(v)); }catch(e){} }
+};
+const DB = (()=>{
+  let dbp=null; const mem=new Map();
+  function abrir(){
+    if(dbp) return dbp;
+    dbp = new Promise(res=>{
+      try{
+        const r=indexedDB.open("radar-viral",1);
+        r.onupgradeneeded=()=>r.result.createObjectStore("kv");
+        r.onsuccess=()=>res(r.result); r.onerror=()=>res(null); r.onblocked=()=>res(null);
+      }catch(e){ res(null); }
+    });
+    return dbp;
+  }
+  async function op(modo, fn){
+    const db=await abrir(); if(!db) return undefined;
+    return new Promise(res=>{
+      try{ const tx=db.transaction("kv",modo), st=tx.objectStore("kv"), rq=fn(st);
+        if(modo==="readonly"){ rq.onsuccess=()=>res(rq.result); rq.onerror=()=>res(undefined); }
+        else { tx.oncomplete=()=>res(true); tx.onerror=()=>res(false); tx.onabort=()=>res(false); }
+      }catch(e){ res(undefined); }
+    });
+  }
+  return {
+    async get(k){ const v=await op("readonly", st=>st.get(k)); return v===undefined ? mem.get(k) : v; },
+    async set(k,v){ mem.set(k,v); await op("readwrite", st=>st.put(v,k)); },
+    async del(k){ mem.delete(k); await op("readwrite", st=>st.delete(k)); },
+    async borrarTodo(){ mem.clear(); await op("readwrite", st=>st.clear()); }
+  };
+})();
+let modoDemo = false;
+const DEMO_MEM = new Map();
+const ALM = {   /* en modo ejemplo nada toca tus datos reales */
+  get(k){ return modoDemo ? Promise.resolve(DEMO_MEM.get(k)) : DB.get(k); },
+  set(k,v){ if(modoDemo){ DEMO_MEM.set(k,v); return Promise.resolve(); } return DB.set(k,v); },
+  del(k){ if(modoDemo){ DEMO_MEM.delete(k); return Promise.resolve(); } return DB.del(k); }
+};
+function CFG(){ const c=Object.assign({cacheHoras:12}, LS.get("cfg",{})); c.apiKey=String(CONFIG.claveYouTube||"").trim(); c.clientId=String(CONFIG.idClienteGoogle||"").trim(); return c; }
+function guardarCFG(c){ LS.set("cfg", Object.assign(CFG(), c)); }
+
+/* ---------------- cupo diario ---------------- */
+/* YouTube renueva el cupo a medianoche hora del Pacífico. Esto es un conteo
+   propio de esta app (si usas la misma clave en otro lado, no lo ve). */
+function diaPacifico(){ try{ return new Intl.DateTimeFormat("en-CA",{timeZone:"America/Los_Angeles",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date()); }catch(e){ return new Date().toISOString().slice(0,10); } }
+function cuota(){ let c=LS.get("cuota",null); const d=diaPacifico(); if(!c||c.dia!==d) c={dia:d,busq:0,unid:0}; return c; }
+function sumarCuota(tipo){ if(modoDemo) return; const c=cuota(); if(tipo==="search") c.busq++; else c.unid++; LS.set("cuota",c); pintarCuota(); }
+function horaRenovacion(){
+  try{
+    const p=new Intl.DateTimeFormat("en-US",{timeZone:"America/Los_Angeles",hour:"numeric",minute:"numeric",second:"numeric",hourCycle:"h23"}).formatToParts(new Date());
+    const g=t=>+p.find(x=>x.type===t).value, seg=(g("hour")%24)*3600+g("minute")*60+g("second");
+    return new Date(Date.now()+(86400-seg)*1000).toLocaleTimeString("es-EC",{hour:"2-digit",minute:"2-digit",hour12:false});
+  }catch(e){ return "medianoche (hora del Pacífico)"; }
+}
+function pintarCuota(){ const c=cuota(), el=$("#cuotaPill"); el.innerHTML=`🔎 <b>${c.busq}</b>/${LIMITE_BUSQ}`; el.classList.toggle("alerta", c.busq>=LIMITE_BUSQ*0.9); }
+
+/* ---------------- conexión con YouTube ---------------- */
+class ApiError extends Error{ constructor(m,code,reason){ super(m); this.code=code; this.reason=reason; } }
+async function yt(recurso, params, opt={}){
+  const u=new URL(API+recurso);
+  Object.entries(params).forEach(([k,v])=>{ if(v!==undefined&&v!==null&&v!=="") u.searchParams.set(k,v); });
+  const headers={};
+  if(opt.token) headers.Authorization="Bearer "+opt.token;
+  else { const key=CFG().apiKey; if(!key) throw new ApiError("Esta app todavía no está conectada a YouTube.",0,"sinClave"); u.searchParams.set("key",key); }
+  let r;
+  try{ r=await fetch(u.toString(),{headers}); }
+  catch(e){ throw new ApiError("No hay conexión con YouTube. Revisa tu internet e intenta otra vez.",0,"red"); }
+  sumarCuota(recurso==="search"?"search":"otro");
+  let data=null; try{ data=await r.json(); }catch(e){}
+  if(!r.ok) throw traducirError(r.status,data);
+  return data||{};
+}
+function traducirError(status,data){
+  const e=(data&&data.error)||{}, msg=e.message||"";
+  const reason=[(e.errors&&e.errors[0]&&e.errors[0].reason)||"", ...(e.details||[]).map(d=>d.reason||""), e.status||""].join(" ");
+  const todo=reason+" "+msg;
+  if(/quota|rateLimit/i.test(todo)) return new ApiError("Se acabó el cupo de YouTube por hoy. Se renueva a las "+horaRenovacion()+" (hora de tu teléfono). Mientras tanto puedes abrir tus búsquedas en Historial sin gastar nada.",status,"cuota");
+  if(/REFERRER|referer/i.test(todo)) return new ApiError("YouTube no acepta consultas desde esta dirección (<code>"+esc(location.origin)+"</code>). Abre la app desde su página oficial.",status,"referer");
+  if(/keyInvalid|API_KEY_INVALID|API key not valid/i.test(todo)) return new ApiError("La conexión de la app con YouTube no es válida (la clave de la app está mal copiada).",status,"clave");
+  if(/accessNotConfigured|SERVICE_DISABLED|has not been used|is disabled/i.test(todo)) return new ApiError("La conexión de la app con YouTube todavía no está activada. Intenta en unos minutos.",status,"api");
+  if(status===401) return new ApiError("La sesión de Google venció. Vuelve a entrar con Google.",status,"auth");
+  return new ApiError("YouTube respondió con un error ("+status+"): "+esc(msg||"sin detalle"),status,reason);
+}
+function durSeg(iso){ const m=/^P(?:(\d+)D)?(?:T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?)?$/.exec(iso||""); if(!m) return 0; return (+m[1]||0)*86400+(+m[2]||0)*3600+(+m[3]||0)*60+(+m[4]||0); }
+const num = x => x==null ? 0 : Number(x)||0;
+function normLang(l){ if(!l) return null; const c=String(l).toLowerCase().split(/[-_]/)[0]; return (c==="zxx"||c==="und"||c==="mul"||!c) ? null : c; }
+const PISTAS = {   /* palabras típicas de cada idioma para estimar cuando el video no lo dice */
+  es:"el los las del una que por para con es qué cómo porque cuando muy más pero este esta así también tu mi lo se como sobre sin hay",
+  en:"the and of to is in what how why you your this that with for are it when does was",
+  pt:"não você do da dos das uma é isso seu sua mais muito quando com os as pra sobre",
+  fr:"le les des du est et une pour dans qui pas vous ce sur c'est",
+  it:"il gli della che non per sono è come perché questo una",
+  de:"der die das und ist nicht ein eine mit für wie warum ich"
+};
+const PISTAS_SET = Object.fromEntries(Object.entries(PISTAS).map(([k,v])=>[k,new Set(v.split(" "))]));
+function detectarIdioma(texto){
+  const t=String(texto||"").toLowerCase(), w=t.match(/[\p{L}']+/gu)||[];
+  const pts={es:0,en:0,pt:0,fr:0,it:0,de:0};
+  w.forEach(x=>{ for(const k in PISTAS_SET) if(PISTAS_SET[k].has(x)) pts[k]++; });
+  if(/ñ|¿|¡/.test(t)) pts.es+=3;
+  if(/ã|õ|ç|ção|ções/.test(t)) pts.pt+=3;
+  const orden=Object.entries(pts).sort((a,b)=>b[1]-a[1]);
+  return (orden[0][1]>=2 && orden[0][1]>orden[1][1]) ? orden[0][0] : null;
+}
+function normVideo(it){
+  const s=it.snippet||{}, st=it.statistics||{}, cd=it.contentDetails||{}, py=it.player||{};
+  const dur=durSeg(cd.duration), texto=(s.title||"")+" "+(s.description||"");
+  const vertical = (py.embedWidth&&py.embedHeight) ? (+py.embedHeight > +py.embedWidth) : null;
+  let esShort=false;
+  if(dur>0 && dur<=180){
+    if(vertical===true) esShort=true;
+    else if(vertical===false) esShort=false;
+    else esShort = dur<=60 || /#shorts?\b/i.test(texto);
+  }
+  const lang=normLang(s.defaultAudioLanguage||s.defaultLanguage);
+  return {
+    id:it.id, titulo:s.title||"", desc:(s.description||"").slice(0,400), canalId:s.channelId||"", canalNombre:s.channelTitle||"",
+    fecha:s.publishedAt||new Date().toISOString(), dur, short:esShort,
+    vistas:num(st.viewCount), likes: st.likeCount==null?null:num(st.likeCount), coment: st.commentCount==null?null:num(st.commentCount),
+    tags:(s.tags||[]).slice(0,25), cat:s.categoryId||"", idioma: lang || detectarIdioma(texto), idiomaEst: !lang,
+    envivo:s.liveBroadcastContent||"none"
+  };
+}
+function normCanal(it){
+  const s=it.snippet||{}, st=it.statistics||{}, vc=num(st.videoCount), vw=num(st.viewCount);
+  const th=s.thumbnails||{};
+  return { id:it.id, nombre:s.title||"", url:s.customUrl||"", pais:s.country||"",
+    foto:(th.default||th.medium||{}).url||"", subs: st.hiddenSubscriberCount ? null : num(st.subscriberCount),
+    vistas:vw, nvideos:vc, prom: vc>0 ? vw/vc : 0,
+    uploads:(it.contentDetails&&it.contentDetails.relatedPlaylists&&it.contentDetails.relatedPlaylists.uploads)||"" };
+}
+const P_VIDEO="snippet,statistics,contentDetails,player";
+const F_VIDEO="items(id,snippet(publishedAt,channelId,channelTitle,title,description,tags,categoryId,defaultLanguage,defaultAudioLanguage,liveBroadcastContent),statistics(viewCount,likeCount,commentCount),contentDetails(duration),player(embedWidth,embedHeight))";
+const P_CANAL="snippet,statistics,contentDetails";
+const F_CANAL="items(id,snippet(title,customUrl,country,thumbnails(default(url))),statistics(viewCount,subscriberCount,hiddenSubscriberCount,videoCount),contentDetails(relatedPlaylists(uploads)))";
+async function traerVideos(ids, avance){
+  const out=[];
+  for(let i=0;i<ids.length;i+=50){
+    const r=await yt("videos",{part:P_VIDEO,id:ids.slice(i,i+50).join(","),maxWidth:480,fields:F_VIDEO});
+    (r.items||[]).forEach(it=>{ const v=normVideo(it); if(v.envivo!=="upcoming") out.push(v); });
+    if(avance) avance(`Leyendo estadísticas… ${Math.min(i+50,ids.length)} de ${ids.length} videos`);
+  }
+  const pos=new Map(ids.map((id,i)=>[id,i]));
+  return out.sort((a,b)=>pos.get(a.id)-pos.get(b.id));
+}
+async function traerCanales(ids, avance){
+  const out={};
+  for(let i=0;i<ids.length;i+=50){
+    const r=await yt("channels",{part:P_CANAL,id:ids.slice(i,i+50).join(","),fields:F_CANAL});
+    (r.items||[]).forEach(it=>{ out[it.id]=normCanal(it); });
+    if(avance) avance(`Leyendo canales… ${Math.min(i+50,ids.length)} de ${ids.length}`);
+  }
+  return out;
+}
+
+/* ---------------- métricas ---------------- */
+function nivelDe(m){ return m==null ? "sindato" : m>=10 ? "explosivo" : m>=3 ? "muyviral" : m>=1 ? "normal" : "bajo"; }
+function rangos(filas,campo){   /* posición 0..1 de cada video frente a los demás (empates = mismo valor) */
+  const arr=filas.filter(f=>f[campo]!=null&&isFinite(f[campo])).sort((a,b)=>a[campo]-b[campo]);
+  const n=arr.length, m=new Map(); let i=0;
+  while(i<n){ let j=i; while(j+1<n && arr[j+1][campo]===arr[i][campo]) j++; const r=n>1?((i+j)/2)/(n-1):0.5; for(let k=i;k<=j;k++) m.set(arr[k],r); i=j+1; }
+  return f => m.has(f) ? m.get(f) : 0.5;
+}
+const MAPA_FILAS = new Map();   /* id → fila, para botones como "Copiar título" */
+function construirFilas(est){
+  const ahora=Date.now();
+  const filas=(est.videos||[]).map(v=>{
+    const canal=(est.canales||{})[v.canalId]||null;
+    const horas=Math.max((ahora-Date.parse(v.fecha))/36e5,1);
+    const f=Object.assign({},v,{
+      canal, dias:horas/24, vpd:v.vistas/horas*24,
+      mult: canal&&canal.prom>0 ? v.vistas/canal.prom : null,
+      inter: v.vistas>0 && (v.likes!=null||v.coment!=null) ? ((v.likes||0)+(v.coment||0))/v.vistas*100 : null
+    });
+    f.nivel=nivelDe(f.mult);
+    f._norm=normTexto(v.titulo+" "+(v.tags||[]).join(" ")+" "+v.desc);
+    f._txt=normTexto(v.titulo+" "+v.canalNombre);
+    return f;
+  });
+  const rM=rangos(filas,"mult"), rV=rangos(filas,"vpd"), rI=rangos(filas,"inter");
+  filas.forEach(f=>{ f.puntaje=Math.round(100*(0.5*rM(f)+0.35*rV(f)+0.15*rI(f))); MAPA_FILAS.set(f.id,f); });
+  return filas;
+}
+function ordenarPor(filas, clave, dir){
+  const o=ORDEN[clave]||ORDEN.puntaje, s=dir==="asc"?1:-1;
+  return [...filas].sort((a,b)=>{
+    const x=o.f(a), y=o.f(b);
+    const nx=x==null||(typeof x==="number"&&!isFinite(x)), ny=y==null||(typeof y==="number"&&!isFinite(y));
+    if(nx&&ny) return 0; if(nx) return 1; if(ny) return -1;   /* los sin dato siempre al final */
+    if(o.s) return s*String(x).localeCompare(String(y),"es",{sensitivity:"base"});
+    return s*(x-y) || (b.vistas-a.vistas);
+  });
+}
+
+/* ---------------- estado de la pantalla ---------------- */
+function filtroVacio(){ return {texto:"",paises:new Set(),idiomas:new Set(),tipo:"",niveles:new Set(),minVistas:0,dentro:0,palabra:"",palabraTxt:"",canal:"",abierto:false}; }
+const vistaGuardada=LS.get("vista",{});
+const estado = {
+  tab:"buscar", est:null, filas:[], sub:"estudio", filtro:filtroVacio(),
+  orden:vistaGuardada.orden||"puntaje", dir:vistaGuardada.dir||"desc", vista:vistaGuardada.vista||"tarjetas",
+  limite:60, abiertos:new Set(), secs:{}, ocupado:false, deCache:false,
+  vig:null, canalAbierto:null, ordenCanal:"puntaje", dirCanal:"desc", limiteCanal:60, token:null
+};
+function guardarVista(){ LS.set("vista",{orden:estado.orden,dir:estado.dir,vista:estado.vista}); }
+
+/* ---------------- formulario ---------------- */
+function opciones(sel, lista, valor){ $(sel).innerHTML=lista.map(o=>`<option value="${esc(o[0])}"${String(o[0])===String(valor)?" selected":""}>${esc(o[1])}</option>`).join(""); }
+function llenarFormulario(p){
+  p=Object.assign({q:"",idioma:"es",pais:"",fecha:"",tipo:"",cat:"",orden:"viewCount",cant:50}, p||{});
+  $("#q").value=p.q;
+  opciones("#fIdioma",IDIOMAS,p.idioma); opciones("#fPais",PAISES,p.pais); opciones("#fFecha",FECHAS,p.fecha);
+  opciones("#fTipo",TIPOS,p.tipo); opciones("#fCat",CATEGORIAS,p.cat); opciones("#fOrden",ORDENES_YT,p.orden); opciones("#fCant",CANTIDADES,p.cant);
+  actualizarGasto();
+}
+function leerFormulario(){
+  return { q:$("#q").value.trim(), idioma:$("#fIdioma").value, pais:$("#fPais").value, fecha:$("#fFecha").value,
+    tipo:$("#fTipo").value, cat:$("#fCat").value, orden:$("#fOrden").value, cant:+$("#fCant").value||50 };
+}
+function actualizarGasto(){
+  const pf=leerFormulario();
+  $("#opcsRes").innerHTML=`⚙ <span><b>${esc(etiquetas(pf).slice(0,-1).join(" · "))}</b> · ${pf.cant} videos</span>`;
+  const n=(+$("#fCant").value||50)/50, c=cuota(), quedan=Math.max(0,LIMITE_BUSQ-c.busq);
+  $("#gasto").innerHTML = modoDemo ? "Modo ejemplo: no gasta cupo." :
+    `Esta búsqueda gasta <b>${n}</b> de tus ${LIMITE_BUSQ} búsquedas diarias · te ${pl(quedan,"queda","quedan")} <b>${quedan}</b>. Si ya buscaste lo mismo hace poco, se abre lo guardado sin gastar.`;
+  $("#ideas").innerHTML = `<span>Ideas rápidas (lo más viral de la semana):</span>`+
+    [["27","Educación"],["28","Ciencia y tecnología"],["24","Entretenimiento"],["22","Gente y blogs"]].map(([c,n])=>`<button type="button" class="chip" data-act="idea" data-cat="${c}">${n}</button>`).join("");
+}
+function etiquetas(p){
+  const e=[];
+  e.push(p.idioma?nombreIdioma(p.idioma):"Cualquier idioma");
+  e.push(p.pais?bandera(p.pais)+" "+nombrePais(p.pais):"Todo el mundo");
+  e.push((FECHAS.find(x=>x[0]===p.fecha)||FECHAS[0])[1]);
+  if(p.tipo) e.push((TIPOS.find(x=>x[0]===p.tipo)||TIPOS[0])[1]);
+  if(p.cat && p.q) e.push(nombreCat(p.cat));
+  e.push("trae: "+((ORDENES_YT.find(x=>x[0]===p.orden)||ORDENES_YT[0])[1]).toLowerCase());
+  return e;
+}
+const tituloEst = p => p.q ? "«"+p.q+"»" : "Lo más viral en "+nombreCat(p.cat);
+const claveBusqueda = p => JSON.stringify([p.q.trim().toLowerCase(),p.idioma,p.pais,p.fecha,p.tipo,p.cat,p.orden,p.cant]);
+
+/* ---------------- búsqueda ---------------- */
+function paramsBusqueda(p){
+  const o={part:"snippet",type:"video",maxResults:50,order:p.orden||"viewCount",fields:"nextPageToken,items(id(videoId))"};
+  if(p.q) o.q=p.q;
+  if(p.pais) o.regionCode=p.pais;
+  if(p.idioma) o.relevanceLanguage=p.idioma;
+  const f=FECHAS.find(x=>x[0]===p.fecha);
+  if(f&&f[2]) o.publishedAfter=new Date(Date.now()-f[2]*864e5).toISOString().replace(/\.\d+Z$/,"Z");
+  if(p.tipo==="short") o.videoDuration="short";
+  if(p.cat) o.videoCategoryId=p.cat;
+  return o;
+}
+const filtrarTipo = (vids,tipo) => tipo==="short" ? vids.filter(v=>v.short) : tipo==="largo" ? vids.filter(v=>!v.short) : vids;
+function cargando(msg){ $("#resultados").innerHTML=`<div class="card"><div class="cargando"><div class="spin"></div><div id="msgCarga">${esc(msg)}</div></div></div>`; }
+function avance(msg){ const m=$("#msgCarga"); if(m) m.textContent=msg; }
+function ocupar(si){ estado.ocupado=si; $("#btnBuscar").disabled=si; }
+
+async function buscar(p, opt={}){
+  if(estado.ocupado) return;
+  if(!p.q && !p.cat){ toast("Escribe un tema o elige una categoría"); $("#q").focus(); return; }
+  LS.set("filtros",p);
+  const clave=claveBusqueda(p);
+  if(!opt.forzar){
+    const idx=(await ALM.get("estudios_idx"))||[], horas=CFG().cacheHoras;
+    const prev=idx.find(x=>x.clave===clave && horas>0 && Date.now()-x.fecha < horas*36e5);
+    if(prev){ const e=await ALM.get("estudio:"+prev.id); if(e){ abrirEstudio(e,{deCache:true}); toast("Abrí la búsqueda guardada "+fmtHace(e.fecha)+" (no gastó cupo)"); return; } }
+  }
+  if(modoDemo){ const e=estudioDemo(p); await guardarEstudio(e); abrirEstudio(e); return; }
+  if(!CFG().apiKey){ mostrarError(new ApiError("Esta app todavía no está conectada a YouTube. Mientras tanto puedes verla funcionando con datos de ejemplo.",0,"sinClave")); return; }
+  ocupar(true); cargando("Buscando videos en YouTube…");
+  try{
+    const ids=[], vistos=new Set(); let token=null;
+    for(let i=0;i<p.cant/50;i++){
+      const r=await yt("search",Object.assign(paramsBusqueda(p),{pageToken:token||undefined}));
+      (r.items||[]).forEach(it=>{ const id=it.id&&it.id.videoId; if(id&&!vistos.has(id)){ vistos.add(id); ids.push(id); } });
+      token=r.nextPageToken||null;
+      avance(`Buscando… ${ids.length} videos encontrados`);
+      if(!token) break;
+    }
+    if(!ids.length){ ocupar(false); $("#resultados").innerHTML=`<div class="card vacio">YouTube no encontró videos con esos filtros. Prueba con otras palabras, otra fecha o «Cualquier idioma».</div>`; return; }
+    let videos=await traerVideos(ids,avance);
+    const antes=videos.length; videos=filtrarTipo(videos,p.tipo);
+    const canales=await traerCanales([...new Set(videos.map(v=>v.canalId))],avance);
+    const est={id:"e"+Date.now(), clave, params:p, fecha:Date.now(), videos, canales, siguiente:token, descartados:antes-videos.length};
+    await guardarEstudio(est);
+    ocupar(false);
+    abrirEstudio(est);
+  }catch(e){ ocupar(false); mostrarError(e); }
+}
+async function cargarMas(){
+  const est=estado.est; if(!est||!est.siguiente||estado.ocupado) return;
+  ocupar(true); toast("Trayendo 50 videos más…");
+  try{
+    if(modoDemo){ const extra=estudioDemo(est.params, (est.pag||1), est); est.videos.push(...extra.videos); est.pag=(est.pag||1)+1; est.siguiente=est.pag<5?"demo":null; }
+    else{
+      const r=await yt("search",Object.assign(paramsBusqueda(est.params),{pageToken:est.siguiente}));
+      const ya=new Set(est.videos.map(v=>v.id));
+      const ids=(r.items||[]).map(it=>it.id&&it.id.videoId).filter(id=>id&&!ya.has(id));
+      const vids=filtrarTipo(await traerVideos(ids), est.params.tipo);
+      const faltan=[...new Set(vids.map(v=>v.canalId))].filter(c=>!est.canales[c]);
+      Object.assign(est.canales, await traerCanales(faltan));
+      est.videos.push(...vids); est.siguiente=r.nextPageToken||null;
+      toast(vids.length ? `Se agregaron ${vids.length} videos` : "YouTube no devolvió videos nuevos");
+    }
+    await guardarEstudio(est);
+    estado.filas=construirFilas(est);
+    pintarResultados();
+  }catch(e){ toast(e.message, 6000); }
+  ocupar(false);
+}
+function mostrarError(e){
+  const html=`<div class="card error"><b>No se pudo completar.</b><div style="margin-top:6px">${e.message}</div>
+    ${e.reason==="sinClave"?`<div class="row" style="margin-top:10px"><button class="btn osc sm" data-act="ejemplo">Ver con datos de ejemplo</button></div>`:""}</div>`;
+  if(estado.est){ toast(e.message, 7000); pintarResultados(); }
+  else $("#resultados").innerHTML=html;
+  if(estado.est) $("#resultados").insertAdjacentHTML("afterbegin",html);
+}
+
+/* ---------------- historial (búsquedas guardadas) ---------------- */
+async function guardarEstudio(est){
+  let idx=(await ALM.get("estudios_idx"))||[];
+  for(const v of idx.filter(x=>x.clave===est.clave && x.id!==est.id)) await ALM.del("estudio:"+v.id);
+  idx=idx.filter(x=>x.clave!==est.clave && x.id!==est.id);
+  const top=est.videos.reduce((m,v)=>Math.max(m,v.vistas),0);
+  idx.unshift({id:est.id, clave:est.clave, params:est.params, fecha:est.fecha, n:est.videos.length, top});
+  while(idx.length>MAX_HIST){ const x=idx.pop(); await ALM.del("estudio:"+x.id); }
+  await ALM.set("estudio:"+est.id, est);
+  await ALM.set("estudios_idx", idx);
+}
+function abrirEstudio(est, opt={}){
+  estado.est=est; estado.filas=construirFilas(est); estado.filtro=filtroVacio(); estado.limite=60; estado.abiertos.clear();
+  estado.deCache=!!opt.deCache;
+  if(est.params.idioma){ estado.filtro.idiomas.add(est.params.idioma); if(estado.filas.some(f=>!f.idioma)) estado.filtro.idiomas.add("?"); }
+  if(!opt.mantenerSub) estado.sub="estudio";
+  llenarFormulario(est.params);
+  $("#opcs").open=false;
+  if(estado.tab!=="buscar") irA("buscar");
+  pintarResultados();
+  if(!opt.silencioso) $("#resultados").scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+/* ---------------- filtros sobre los resultados ---------------- */
+function aplicarFiltros(filas){
+  const F=estado.filtro, txt=sinTildes(F.texto.toLowerCase()).trim(), lim=F.dentro?Date.now()-F.dentro*864e5:0;
+  return filas.filter(f=>{
+    if(F.canal && f.canalId!==F.canal) return false;
+    if(F.paises.size){ const p=(f.canal&&f.canal.pais)||"-"; let ok=false; for(const x of F.paises){ if(x==="LATAM"?LATAM.has(p):x===p){ ok=true; break; } } if(!ok) return false; }
+    if(F.idiomas.size && !F.idiomas.has(f.idioma||"?")) return false;
+    if(F.tipo==="short" && !f.short) return false;
+    if(F.tipo==="largo" && f.short) return false;
+    if(F.niveles.size && !F.niveles.has(f.nivel)) return false;
+    if(F.minVistas && f.vistas<F.minVistas) return false;
+    if(lim && Date.parse(f.fecha)<lim) return false;
+    if(F.palabra && !f._norm.includes(" "+F.palabra+" ")) return false;
+    if(txt && !txt.split(/\s+/).every(w=>f._txt.includes(w))) return false;
+    return true;
+  });
+}
+function nActivos(){ const F=estado.filtro; return F.paises.size+F.idiomas.size+(F.tipo?1:0)+F.niveles.size+(F.minVistas?1:0)+(F.dentro?1:0)+(F.palabra?1:0)+(F.canal?1:0); }
+function chip(act,v,txt,n,on){ return `<button class="chip${on?" on":""}" data-act="${act}" data-v="${esc(v)}">${txt}${n!=null?` <small>${n}</small>`:""}</button>`; }
+function htmlFiltros(){
+  const F=estado.filtro, all=estado.filas, na=nActivos();
+  let h=`<div class="fbar"><input id="ftexto" class="fin" type="search" placeholder="Filtrar por palabra del título o canal…" value="${esc(F.texto)}">
+    <button class="btn sm${F.abierto?" osc":""}" data-act="filtrosToggle">⚙ Filtros${na?" ("+na+")":""}</button></div>`;
+  if(F.abierto){
+    const pc=contar(all,f=>(f.canal&&f.canal.pais)||"-"), lat=all.filter(f=>f.canal&&LATAM.has(f.canal.pais)).length;
+    const ic=contar(all,f=>f.idioma||"?"), nc=contar(all,f=>f.nivel);
+    const ord=o=>Object.entries(o).sort((a,b)=>(a[0]==="-"||a[0]==="?")-(b[0]==="-"||b[0]==="?") || b[1]-a[1]);
+    h+=`<div class="fpanel">
+      <div class="flab">País del canal</div><div class="frow">${lat?chip("fpais","LATAM","🌎 Latinoamérica",lat,F.paises.has("LATAM")):""}${ord(pc).map(([k,n])=>chip("fpais",k,k==="-"?"Sin país":bandera(k)+" "+esc(nombrePais(k)),n,F.paises.has(k))).join("")}</div>
+      <div class="flab">Idioma del video</div><div class="frow">${ord(ic).map(([k,n])=>chip("fidioma",k,esc(nombreIdioma(k)),n,F.idiomas.has(k))).join("")}</div>
+      <div class="flab">Tipo</div><div class="frow">${chip("ftipo","","Todos",all.length,!F.tipo)}${chip("ftipo","short","📱 Shorts",all.filter(f=>f.short).length,F.tipo==="short")}${chip("ftipo","largo","🎬 Largos",all.filter(f=>!f.short).length,F.tipo==="largo")}</div>
+      <div class="flab">Viralidad (vistas comparadas con el promedio de su canal)</div><div class="frow">${Object.keys(NIVELES).filter(k=>nc[k]).map(k=>chip("fnivel",k,NIVELES[k].nombre,nc[k],F.niveles.has(k))).join("")}</div>
+      <div class="grid2">
+        <label>Vistas mínimas<select data-ch="fmin">${[[0,"Cualquiera"],[1e4,"10 mil"],[1e5,"100 mil"],[5e5,"500 mil"],[1e6,"1 millón"],[1e7,"10 millones"]].map(o=>`<option value="${o[0]}"${F.minVistas==o[0]?" selected":""}>${o[1]}</option>`).join("")}</select></label>
+        <label>Publicado hace menos de<select data-ch="fdentro">${[[0,"Sin límite"],[1,"1 día"],[7,"1 semana"],[30,"1 mes"],[90,"3 meses"],[365,"1 año"]].map(o=>`<option value="${o[0]}"${F.dentro==o[0]?" selected":""}>${o[1]}</option>`).join("")}</select></label>
+      </div></div>`;
+  }
+  return h;
+}
+function htmlActivos(){
+  const F=estado.filtro, c=[];
+  const q=(tipo,v,txt)=>c.push(`<button class="chip" data-act="quitar" data-t="${tipo}" data-v="${esc(v)}">${txt} ✕</button>`);
+  if(F.palabra) q("palabra","",`🧩 «${esc(F.palabraTxt)}»`);
+  if(F.canal){ const fx=estado.filas.find(f=>f.canalId===F.canal); q("canal","","📺 "+esc(fx?fx.canalNombre:"canal")); }
+  F.paises.forEach(p=>q("pais",p, p==="LATAM"?"🌎 Latinoamérica":p==="-"?"Sin país":bandera(p)+" "+esc(nombrePais(p))));
+  F.idiomas.forEach(i=>q("idioma",i,"🗣 "+(i==="?"?"Idioma sin dato":esc(nombreIdioma(i)))));
+  if(F.tipo) q("tipo","",F.tipo==="short"?"📱 Shorts":"🎬 Largos");
+  F.niveles.forEach(n=>q("nivel",n,NIVELES[n].corto));
+  if(F.minVistas) q("min","","≥ "+fmtC(F.minVistas)+" vistas");
+  if(F.dentro) q("dentro","","últimos "+F.dentro+" días");
+  if(c.length>1) c.push(`<button class="chip" data-act="limpiar">Quitar todos</button>`);
+  return c.join("");
+}
+
+/* ---------------- pintar resultados ---------------- */
+function pintarResultados(){
+  const est=estado.est;
+  if(!est){ pintarBienvenida(); return; }
+  const p=est.params;
+  $("#resultados").innerHTML=`
+  <div class="card">
+    <div class="rhead">
+      <div style="min-width:0;flex:1">
+        <div class="rtitle">${esc(tituloEst(p))}</div>
+        <div class="rsub">${est.videos.length} videos · ${etiquetas(p).map(esc).join(" · ")}</div>
+        <div class="rsub">${estado.deCache?"Guardado":"Consultado"} ${fmtHace(est.fecha)}${est.descartados?` · se quitaron ${est.descartados} que no eran del tipo pedido`:""}</div>
+      </div>
+      <div class="row">
+        <button class="btn sm" data-act="actualizar" title="Volver a consultar YouTube">🔄 Actualizar</button>
+        ${est.siguiente?`<button class="btn sm" data-act="mas" title="Gasta 1 búsqueda">＋ 50 más</button>`:""}
+        <button class="btn sm" data-act="csv" title="Descargar para Excel">⬇ Excel</button>
+      </div>
+    </div>
+    ${htmlFiltros()}
+    <div id="activos" class="activos"></div>
+  </div>
+  <div id="rsub"></div>
+  <div id="rcuerpo"></div>`;
+  pintarCuerpo();
+}
+function pintarCuerpo(){
+  if(!estado.est) return;
+  const vis=aplicarFiltros(estado.filas);
+  const nCan=new Set(vis.map(f=>f.canalId)).size;
+  $("#activos").innerHTML=htmlActivos();
+  $("#rsub").innerHTML=`<div class="subtabs">
+    <button data-act="sub" data-v="estudio" class="${estado.sub==="estudio"?"on":""}">🧠 Estudio</button>
+    <button data-act="sub" data-v="videos" class="${estado.sub==="videos"?"on":""}">🎬 Videos (${vis.length})</button>
+    <button data-act="sub" data-v="canales" class="${estado.sub==="canales"?"on":""}">📺 Canales (${nCan})</button></div>`;
+  $("#rcuerpo").innerHTML = estado.sub==="videos" ? htmlVideos(vis) : estado.sub==="canales" ? htmlCanales(vis) : htmlEstudio(vis);
+}
+function pintarBienvenida(){
+  $("#opcs").open=true;
+  const cfg=CFG(), perfil=LS.get("perfil",null);
+  $("#resultados").innerHTML = cfg.apiKey ? `
+   <div class="card"><h2>¿Qué tema quieres estudiar?</h2>
+    <p class="mut">Escribe un tema arriba y toca <b>Buscar</b>. Entre más específico, más fino el estudio: «popó» trae todo lo relacionado; «de dónde sale el popó» va directo a eso.</p>
+    <div class="ideas">${["datos curiosos del cuerpo humano","de dónde sale el popó","historia de los romanos","cultura general preguntas"].map(t=>`<button class="chip" data-act="ejemploTema" data-t="${esc(t)}">${esc(t)}</button>`).join("")}</div>
+    ${cfg.clientId&&!perfil?`<div class="row" style="margin-top:12px"><button class="btn osc" data-act="entrarGoogle">Entrar con Google</button><span class="mut" style="margin:0">Opcional: para que la app te reconozca.</span></div>`:""}</div>` : `
+   <div class="card aviso"><h2>Radar Viral</h2>
+    <p class="mut" style="color:var(--ink)">La app todavía no está conectada a YouTube. Mientras tanto puedes verla funcionando con datos de ejemplo.</p>
+    <div class="row"><button class="btn osc" data-act="ejemplo">Ver con datos de ejemplo</button></div></div>`;
+}
+
+/* ---------------- estudio ---------------- */
+function grupos(F, fn, B){ const g=B.map(b=>({nombre:b[2],filas:[]})); F.forEach(f=>{ const i=fn(f); if(i>=0&&g[i]) g[i].filas.push(f); }); return g; }
+function tokens(s){ return (String(s||"").toLowerCase().match(/[\p{L}\p{N}#]+/gu)||[]).map(f=>{ const k=sinTildes(f); return {f,k,stop:STOP.has(k)}; }); }
+function palabrasClave(F, q){
+  const qk=new Set(tokens(q).map(t=>t.k)), terms=new Map();
+  const vale=t=>t && !t.stop && t.k.length>=3 && !qk.has(t.k) && !/^\d+$/.test(t.k) && t.k[0]!=="#";
+  F.forEach((f,i)=>{
+    const vistos=new Set();
+    const add=(k,form)=>{ if(vistos.has(k)) return; vistos.add(k); let t=terms.get(k); if(!t){ t={k,forms:new Map(),docs:[]}; terms.set(k,t); } t.docs.push(i); t.forms.set(form,(t.forms.get(form)||0)+1); };
+    const tk=tokens(f.titulo);
+    tk.forEach((t,j)=>{ if(!vale(t)) return; add(t.k,t.f); if(vale(tk[j+1])) add(t.k+" "+tk[j+1].k, t.f+" "+tk[j+1].f); });
+    (f.tags||[]).forEach(tag=>{
+      let tt=tokens(tag); while(tt.length&&tt[0].stop) tt.shift(); while(tt.length&&tt[tt.length-1].stop) tt.pop();
+      if(tt.length && tt.length<=3 && tt.every(vale)) add(tt.map(t=>t.k).join(" "), tt.map(t=>t.f).join(" "));
+    });
+  });
+  const lista=[...terms.values()].filter(t=>t.docs.length>=2).map(t=>({
+    k:t.k, txt:[...t.forms.entries()].sort((a,b)=>b[1]-a[1])[0][0], n:t.docs.length, med:mediana(t.docs.map(i=>F[i].vistas))
+  }));
+  const porK=new Map(lista.map(t=>[t.k,t])), fuera=new Set();
+  lista.forEach(t=>{ if(!t.k.includes(" ")) return; t.k.split(" ").forEach(w=>{ const u=porK.get(w); if(u&&u.n<=t.n*1.15) fuera.add(w); }); });
+  for(let i=lista.length-1;i>=0;i--) if(fuera.has(lista[i].k)) lista.splice(i,1);
+  const minDocs=Math.max(3,Math.round(F.length*0.03));
+  return {
+    frec:[...lista].sort((a,b)=>b.n-a.n||b.med-a.med).slice(0,20),
+    vistas:lista.filter(t=>t.n>=minDocs).sort((a,b)=>b.med-a.med).slice(0,12)
+  };
+}
+function hashtags(F){
+  const m=new Map();
+  F.forEach(f=>{ const s=new Set(((f.titulo+" "+f.desc).match(/#[\p{L}\p{N}_]+/gu)||[]).map(h=>sinTildes(h.toLowerCase())).filter(h=>h!=="#shorts"&&h!=="#short"&&h.length>2)); s.forEach(h=>m.set(h,(m.get(h)||0)+1)); });
+  return [...m.entries()].filter(x=>x[1]>=2).sort((a,b)=>b[1]-a[1]).slice(0,16);
+}
+function estudiar(F){
+  const n=F.length, vis=F.map(f=>f.vistas), total=suma(vis), med=mediana(vis), vpdMed=mediana(F.map(f=>f.vpd));
+  const top=F.reduce((a,b)=>b.vistas>a.vistas?b:a);
+  const conMult=F.filter(f=>f.mult!=null), virales=conMult.filter(f=>f.mult>=3), explos=conMult.filter(f=>f.mult>=10);
+  const interMed=mediana(F.map(f=>f.inter));
+  const sh=F.filter(f=>f.short), lg=F.filter(f=>!f.short);
+  const medSh=mediana(sh.map(f=>f.vistas)), medLg=mediana(lg.map(f=>f.vistas));
+  const durG=grupos(F,f=>bucket(f.dur,DUR_B),DUR_B), edadG=grupos(F,f=>bucket(f.dias,EDAD_B),EDAD_B);
+  const tamB=TAM_B.concat([[NaN,NaN,"Suscriptores ocultos"]]);
+  const tamG=grupos(F,f=>!f.canal?-1:f.canal.subs==null?TAM_B.length:bucket(f.canal.subs,TAM_B),tamB);
+  const diaG=DIAS_SEM.map((d,i)=>({nombre:d,filas:F.filter(f=>new Date(f.fecha).getDay()===i)}));
+  const horaG=[0,3,6,9,12,15,18,21].map(h=>({nombre:String(h).padStart(2,"0")+":00 a "+String(h+3).padStart(2,"0")+":00",filas:F.filter(f=>{ const x=new Date(f.fecha).getHours(); return x>=h&&x<h+3; })}));
+  const porPais=new Map(), porIdioma=new Map(), porCat=new Map(), porCanal=new Map();
+  const meter=(m,k,f)=>{ if(!m.has(k)) m.set(k,[]); m.get(k).push(f); };
+  F.forEach(f=>{
+    meter(porPais,(f.canal&&f.canal.pais)||"-",f); meter(porIdioma,f.idioma||"?",f); meter(porCat,f.cat||"",f);
+    let a=porCanal.get(f.canalId); if(!a){ a={id:f.canalId,nombre:f.canalNombre,canal:f.canal,n:0,vistas:0,mejor:null}; porCanal.set(f.canalId,a); }
+    a.n++; a.vistas+=f.vistas; if(f.mult!=null&&(a.mejor==null||f.mult>a.mejor)) a.mejor=f.mult;
+  });
+  const canales=[...porCanal.values()].sort((a,b)=>b.vistas-a.vistas);
+  const top5=total>0 ? Math.round(suma(canales.slice(0,5).map(c=>c.vistas))/total*100) : 0;
+  const chicos=F.filter(f=>f.canal&&f.canal.subs!=null&&f.canal.subs<1e5), chicosVir=chicos.filter(f=>f.mult!=null&&f.mult>=3);
+  const kw=palabrasClave(F, estado.est?estado.est.params.q:"");
+  /* oportunidad */
+  const dem=vpdMed>=5000?2:vpdMed>=500?1:0, pctCh=n?chicosVir.length/n*100:0, puerta=pctCh>=10?2:pctCh>=3?1:0, comp=top5<40?2:top5<70?1:0;
+  const pts=dem+puerta+comp, op={nivel:pts>=5?"alta":pts>=3?"media":"baja", nombre:pts>=5?"Alta":pts>=3?"Media":"Baja", fac:[
+    {nombre:"Demanda", p:dem, et:["Baja","Media","Alta"][dem], txt:`Un video típico de este tema suma ${fmtC(vpdMed)} vistas por día.`},
+    {nombre:"Puerta para canales chicos", p:puerta, et:["Cerrada","Entreabierta","Abierta"][puerta], txt:`${chicosVir.length} de ${n} videos son de canales con menos de 100 mil suscriptores que superaron 3 veces su promedio.`},
+    {nombre:"Competencia", p:comp, et:["Alta","Media","Baja"][comp], txt:`Los 5 canales con más vistas se llevan el ${top5}% de las vistas del tema.`}
+  ]};
+  /* conclusiones */
+  const C=[];
+  C.push({i:"📊",t:`La mitad de estos videos tiene más de <b>${fmtC(med)}</b> vistas. Ritmo típico: <b>${fmtC(vpdMed)}</b> vistas por día.`});
+  if(explos.length||virales.length) C.push({i:"🔥",t:`<b>${virales.length}</b> de ${n} videos son virales (3× o más el promedio de su canal)${explos.length?`, y <b>${explos.length}</b> son explosivos (10× o más)`:""}. El tema, no solo el canal, está jalando vistas.`});
+  else if(conMult.length>=5) C.push({i:"🧊",t:`Ningún video supera 3 veces el promedio de su canal: aquí las vistas vienen del tamaño del canal, no del tema.`});
+  if(sh.length>=3&&lg.length>=3&&medSh&&medLg){
+    const r=medSh/medLg;
+    if(r>=1.3) C.push({i:"📱",t:`Los <b>Shorts</b> rinden <b>${fmtX(r)}</b> más que los videos largos (mediana ${fmtC(medSh)} contra ${fmtC(medLg)}).`});
+    else if(r<=0.77) C.push({i:"🎬",t:`Los <b>videos largos</b> rinden <b>${fmtX(1/r)}</b> más que los Shorts (mediana ${fmtC(medLg)} contra ${fmtC(medSh)}).`});
+    else C.push({i:"⚖️",t:`Shorts y videos largos rinden parecido (mediana ${fmtC(medSh)} y ${fmtC(medLg)}).`});
+  }
+  const bd=durG.filter(g=>g.filas.length>=3).map(g=>({g,m:mediana(g.filas.map(f=>f.vistas))})).sort((a,b)=>b.m-a.m)[0];
+  if(bd) C.push({i:"⏱",t:`La duración que mejor funciona: <b>${bd.g.nombre}</b> (mediana ${fmtC(bd.m)} vistas en ${bd.g.filas.length} videos).`});
+  if(chicosVir.length){ const b=chicosVir.reduce((a,x)=>x.mult>a.mult?x:a); C.push({i:"🚀",t:`<b>${chicosVir.length}</b> ${pl(chicosVir.length,"video de un canal chico","videos de canales chicos")} (menos de 100 mil suscriptores) ${pl(chicosVir.length,"superó","superaron")} 3 veces su promedio. El mejor: «${esc(cortar(b.titulo,70))}» con ${fmtC(b.vistas)} vistas (${fmtX(b.mult)}). Este tema sí le abre la puerta a un canal pequeño.`}); }
+  else if(chicos.length>=3) C.push({i:"🧱",t:`Ningún canal chico pegó fuerte con este tema: lo dominan canales grandes.`});
+  if(canales.length>=6) C.push({i:"🏆",t:`Los 5 canales con más vistas se llevan el <b>${top5}%</b> de todas las vistas${top5>=70?" (tema muy concentrado)":top5<40?" (tema repartido, hay espacio)":""}.`});
+  const rec=F.filter(f=>f.dias<=30), recVir=rec.filter(f=>f.mult!=null&&f.mult>=3);
+  if(rec.length) C.push({i:"🆕",t:`<b>${rec.length}</b> ${pl(rec.length,"video es","videos son")} del último mes${recVir.length?`, y <b>${recVir.length}</b> ya ${pl(recVir.length,"supera","superan")} 3× su canal: el tema está activo ahora`:""}.`});
+  else if(n>=20) C.push({i:"💤",t:`Ningún video del último mes aparece aquí. Para ver lo nuevo, busca con «Publicado: Último mes».`});
+  if(n>=20){ const dd=diaG.filter(g=>g.filas.length>=3).map(g=>({g,m:mediana(g.filas.map(f=>f.vistas))})).sort((a,b)=>b.m-a.m)[0]; if(dd) C.push({i:"📅",t:`Los publicados en <b>${dd.g.nombre.toLowerCase()}</b> tienen la mediana más alta (${fmtC(dd.m)}). Tómalo como pista, no como regla.`}); }
+  if(kw.vistas.length) C.push({i:"🧩",t:`Palabras que más vistas atraen: ${kw.vistas.slice(0,5).map(k=>"<b>"+esc(k.txt)+"</b>").join(", ")}.`});
+  const idTop=[...porIdioma.entries()].sort((a,b)=>b[1].length-a[1].length)[0], paTop=[...porPais.entries()].filter(x=>x[0]!=="-").sort((a,b)=>b[1].length-a[1].length)[0];
+  if(idTop) C.push({i:"🌎",t:`Idioma principal: <b>${esc(nombreIdioma(idTop[0]))}</b> (${Math.round(idTop[1].length/n*100)}%).${paTop?` País con más videos: <b>${bandera(paTop[0])} ${esc(nombrePais(paTop[0]))}</b> (${paTop[1].length}).`:""}`});
+  if(interMed!=null) C.push({i:"💬",t:`Interacción típica (likes + comentarios ÷ vistas): <b>${fmtPct(interMed)}</b>.`});
+  return {n,total,med,vpdMed,top,virales,explos,interMed,sh,lg,medSh,medLg,durG,edadG,tamG,diaG,horaG,porPais,porIdioma,porCat,canales,top5,kw,op,C,hs:hashtags(F)};
+}
+function barras(items){   /* items: {nombre, valor, texto, act, v, on} */
+  const max=Math.max(...items.map(x=>x.valor||0),1);
+  return `<div class="bars">${items.map(x=>`<div class="bar${x.act?" click":""}${x.on?" on":""}"${x.act?` data-act="${x.act}" data-v="${esc(x.v)}"`:""}>
+    <div class="nm">${x.nombre}</div><div class="tr"><i style="width:${Math.max(1,(x.valor||0)/max*100)}%"></i></div><div class="vl">${x.texto}</div></div>`).join("")}</div>`;
+}
+const barrasGrupo = (g, extra) => barras(g.filter(x=>x.filas.length).map(x=>{ const m=mediana(x.filas.map(f=>f.vistas)); return {nombre:esc(x.nombre), valor:m, texto:`${x.filas.length} ${pl(x.filas.length,"video","videos")} · mediana ${fmtC(m)} vistas${extra?extra(x.filas):""}`}; }));
+const sec = (k,titulo,cuerpo,def) => `<details class="sec" data-sec="${k}" ${(k in estado.secs?estado.secs[k]:def)?"open":""}><summary>${titulo}</summary><div class="in">${cuerpo}</div></details>`;
+function htmlEstudio(F){
+  if(!F.length) return `<div class="card vacio">Ningún video cumple los filtros. Quita alguno arriba.</div>`;
+  const E=estudiar(F), Fl=estado.filtro;
+  const kwHtml=lst=>`<div class="kws">${lst.map(k=>`<span class="kw${Fl.palabra===k.k?" on":""}"><button data-act="palabra" data-k="${esc(k.k)}" data-t="${esc(k.txt)}" title="Ver solo estos videos">${esc(k.txt)} <small>${k.n} · ${fmtC(k.med)}</small></button><button data-act="buscarPalabra" data-t="${esc(k.txt)}" title="Nueva búsqueda más específica">🔎</button></span>`).join("")}</div>`;
+  const paisItems=[...E.porPais.entries()].sort((a,b)=>(a[0]==="-")-(b[0]==="-")||suma(b[1].map(f=>f.vistas))-suma(a[1].map(f=>f.vistas))).map(([k,fs])=>({nombre:k==="-"?"Sin país":bandera(k)+" "+esc(nombrePais(k)), valor:suma(fs.map(f=>f.vistas)), texto:`${fs.length} ${pl(fs.length,"video","videos")} · ${fmtC(suma(fs.map(f=>f.vistas)))} vistas · mediana ${fmtC(mediana(fs.map(f=>f.vistas)))}`, act:"fpais", v:k, on:Fl.paises.has(k)}));
+  const lat=F.filter(f=>f.canal&&LATAM.has(f.canal.pais));
+  if(lat.length&&lat.length<F.length) paisItems.unshift({nombre:"🌎 <b>Latinoamérica</b>", valor:suma(lat.map(f=>f.vistas)), texto:`${lat.length} videos · ${fmtC(suma(lat.map(f=>f.vistas)))} vistas · mediana ${fmtC(mediana(lat.map(f=>f.vistas)))}`, act:"fpais", v:"LATAM", on:Fl.paises.has("LATAM")});
+  const idiomaItems=[...E.porIdioma.entries()].sort((a,b)=>b[1].length-a[1].length).map(([k,fs])=>({nombre:esc(nombreIdioma(k)), valor:fs.length, texto:`${fs.length} videos (${Math.round(fs.length/E.n*100)}%) · mediana ${fmtC(mediana(fs.map(f=>f.vistas)))}`, act:"fidioma", v:k, on:Fl.idiomas.has(k)}));
+  const nivelItems=Object.keys(NIVELES).map(k=>{ const fs=F.filter(f=>f.nivel===k); return {nombre:NIVELES[k].nombre, valor:fs.length, texto:`${fs.length} videos (${Math.round(fs.length/E.n*100)}%)`, act:"fnivel", v:k, on:Fl.niveles.has(k)}; }).filter(x=>x.valor);
+  const catItems=[...E.porCat.entries()].sort((a,b)=>b[1].length-a[1].length).map(([k,fs])=>({nombre:esc(nombreCat(k)), valor:fs.length, texto:`${fs.length} videos · mediana ${fmtC(mediana(fs.map(f=>f.vistas)))}`}));
+  const shItems=[["📱 Shorts",E.sh,E.medSh],["🎬 Largos",E.lg,E.medLg]].filter(x=>x[1].length).map(([nm,fs,m])=>({nombre:nm, valor:m, texto:`${fs.length} videos · mediana ${fmtC(m)} vistas · ${fmtC(suma(fs.map(f=>f.vistas)))} en total`, act:"ftipo", v:nm.includes("Shorts")?"short":"largo", on:Fl.tipo===(nm.includes("Shorts")?"short":"largo")}));
+  return `
+  ${F.length<estado.filas.length?`<div class="nota">Este estudio analiza <b>${F.length}</b> de ${estado.filas.length} videos (los que pasan tus filtros).</div>`:""}
+  <div class="kpis">
+    <div class="kpi"><b>${E.n}</b><span>videos analizados</span></div>
+    <div class="kpi"><b>${fmtC(E.total)}</b><span>vistas sumadas</span></div>
+    <div class="kpi"><b>${fmtC(E.med)}</b><span>mediana de vistas</span></div>
+    <div class="kpi"><b>${fmtC(E.vpdMed)}</b><span>vistas por día (típico)</span></div>
+    <div class="kpi"><b>${E.virales.length}</b><span>virales (3× o más su canal)</span></div>
+    <div class="kpi top"><b>${esc(E.top.titulo)}</b><span>el más visto: ${fmtC(E.top.vistas)} · ${esc(E.top.canalNombre)}</span></div>
+  </div>
+  ${sec("ins","🧠 Conclusiones",`<ul class="ins">${E.C.map(c=>`<li><span class="ico">${c.i}</span><span>${c.t}</span></li>`).join("")}</ul>`,true)}
+  ${sec("op",`🎯 Oportunidad del tema: <span class="op op-${E.op.nivel}">${E.op.nombre}</span>`,E.op.fac.map(f=>`<div class="fac"><b>${f.nombre}</b><span class="pts">${"●".repeat(f.p+1)}${"○".repeat(2-f.p)} ${f.et}</span><span class="fd">${f.txt}</span></div>`).join("")+`<p class="mut" style="margin-top:8px">Se suma demanda + puerta para canales chicos + poca competencia. Es una guía para escoger temas, no una promesa.</p>`,true)}
+  ${sec("kw","🧩 Subtemas y palabras clave",(E.kw.frec.length?`<div class="sub2">Las que más se repiten (toca una para ver solo esos videos · 🔎 para buscar más a fondo)</div>${kwHtml(E.kw.frec)}`:`<p class="mut">Hacen falta más videos para encontrar subtemas.</p>`)+(E.kw.vistas.length?`<div class="sub2">Las que más vistas traen (mediana)</div>${kwHtml(E.kw.vistas)}`:"")+(E.hs.length?`<div class="sub2">Hashtags más usados</div><div class="kws">${E.hs.map(([h,c])=>`<span class="kw${Fl.palabra===h?" on":""}"><button data-act="palabra" data-k="${esc(h)}" data-t="${esc(h)}">${esc(h)} <small>${c}</small></button></span>`).join("")}</div>`:""),true)}
+  ${sec("niv","🔥 Nivel de viralidad",barras(nivelItems)+`<p class="mut" style="margin-top:8px">Se compara cada video con el promedio de vistas de su propio canal. Toca un nivel para filtrar.</p>`,true)}
+  ${sec("dur","⏱ Shorts vs largos y duración",`<div class="sub2">Formato</div>${barras(shItems)}<div class="sub2">Duración (mediana de vistas)</div>${barrasGrupo(E.durG)}`,true)}
+  ${sec("pais","🌎 País del canal",barras(paisItems)+`<p class="mut" style="margin-top:8px">Es el país que el canal declara en YouTube. Toca uno para filtrar.</p>`,true)}
+  ${sec("idi","🗣 Idioma del video",barras(idiomaItems)+`<p class="mut" style="margin-top:8px">El que declara el video; si no lo declara, se estima por el título.</p>`,true)}
+  ${sec("can","📺 Canales que dominan el tema",`<div class="clist">${E.canales.slice(0,8).map((c,i)=>tarjetaCanalRes(c,i)).join("")}</div>${E.canales.length>8?`<button class="btn mas" data-act="sub" data-v="canales">Ver los ${E.canales.length} canales</button>`:""}`,true)}
+  ${sec("edad","📅 Antigüedad de los videos",barrasGrupo(E.edadG),false)}
+  ${sec("tam","👥 Tamaño del canal",barrasGrupo(E.tamG, fs=>{ const v=fs.filter(f=>f.mult!=null&&f.mult>=3).length; return v?` · ${v} virales`:""; }),false)}
+  ${sec("dia","🕒 Día y hora de publicación",`<div class="sub2">Día de la semana</div>${barrasGrupo(E.diaG)}<div class="sub2">Hora (hora de tu teléfono)</div>${barrasGrupo(E.horaG)}`,false)}
+  ${sec("cat","🏷 Categoría",barras(catItems),false)}`;
+}
+
+/* ---------------- videos (tarjetas y tabla) ---------------- */
+function claseNivelPuntaje(p){ return p>=80?"s-a":p>=60?"s-b":p>=40?"s-c":"s-d"; }
+function urlVideo(f){ return (f.short?"https://www.youtube.com/shorts/":"https://www.youtube.com/watch?v=")+f.id; }
+function tarjeta(f,i,o={}){
+  const c=f.canal||{}, ab=estado.abiertos.has(f.id), u=urlVideo(f);
+  const img=f.demo?`<span class="ph">▶</span>`:`<img loading="lazy" src="https://i.ytimg.com/vi/${esc(f.id)}/mqdefault.jpg" alt="">`;
+  return `<article class="vc">
+   <div class="vtop">
+    <a class="th" href="${u}" target="_blank" rel="noopener">${img}<span class="rk">#${i+1}</span>${f.dur?`<span class="du">${fmtDur(f.dur)}</span>`:""}${f.envivo==="live"?`<span class="shb lv">EN VIVO</span>`:f.short?`<span class="shb">SHORT</span>`:""}</a>
+    <div class="vb">
+     <a class="tt" href="${u}" target="_blank" rel="noopener">${esc(f.titulo)}</a>
+     ${o.sinCanal?"":`<div class="chn">${c.foto&&!f.demo?`<img src="${esc(c.foto)}" alt="" loading="lazy">`:""}<a href="https://www.youtube.com/channel/${esc(f.canalId)}" target="_blank" rel="noopener"><b>${esc(f.canalNombre)}</b></a>${c.pais?`<span>${bandera(c.pais)} ${esc(nombrePais(c.pais))}</span>`:""}<span>${c.subs!=null?fmtC(c.subs)+" subs":"subs ocultos"}</span></div>`}
+    </div>
+   </div>
+   <div class="met">
+    <div><b>${fmtC(f.vistas)}</b><span>vistas</span></div>
+    <div title="Publicado ${fmtHace(f.fecha)}"><b>${fmtHace(f.fecha).replace("hace ","")}</b><span>${fmtFecha(f.fecha)}</span></div>
+    <div class="n-${f.nivel}" title="Vistas comparadas con el promedio de su canal"><b>${fmtX(f.mult)}</b><span>${NIVELES[f.nivel].corto}</span></div>
+    <div class="${claseNivelPuntaje(f.puntaje)}" title="Puntaje viral 0 a 100 dentro de esta lista"><b>${f.puntaje}</b><span>puntaje</span></div>
+   </div>
+   <div class="met2"><span>⚡ ${fmtC(f.vpd)}/día</span><span>👍 ${fmtC(f.likes)}</span><span>💬 ${fmtC(f.coment)}</span><span>❤ ${fmtPct(f.inter)}</span><span>🗣 ${esc(nombreIdioma(f.idioma))}${f.idiomaEst&&f.idioma?"*":""}</span>${f.cat?`<span>🏷 ${esc(nombreCat(f.cat))}</span>`:""}</div>
+   <div class="acc">
+    <button class="btn sm" data-act="det" data-id="${esc(f.id)}">${ab?"Ocultar":"Detalles"}</button>
+    ${o.sinVigilar?"":`<button class="btn sm" data-act="vigilar" data-c="${esc(f.canalId)}">👁 Vigilar canal</button>`}
+    <button class="btn sm" data-act="copiar" data-id="${esc(f.id)}">Copiar título</button>
+   </div>
+   ${ab?detalle(f):""}
+  </article>`;
+}
+function detalle(f){
+  const c=f.canal;
+  return `<div class="det">
+   <div>📅 Publicado el <b>${fmtFecha(f.fecha)}</b> a las <b>${fmtHora(f.fecha)}</b> (hora de tu teléfono) · ${fmtN(f.dias)} días</div>
+   <div>👁 <b>${fmtN(f.vistas)}</b> vistas exactas · ⚡ ${fmtN(f.vpd)} por día · 👍 ${fmtN(f.likes)} · 💬 ${fmtN(f.coment)}</div>
+   ${c?`<div>📺 Su canal promedia <b>${fmtC(c.prom)}</b> vistas por video (${fmtC(c.vistas)} vistas en ${fmtN(c.nvideos)} videos) → este video lleva <b>${fmtX(f.mult)}</b> ese promedio.</div>`:""}
+   <div>⏱ ${fmtDur(f.dur)} · ${f.short?"Short":"Video largo"} · 🗣 ${esc(nombreIdioma(f.idioma))}${f.idiomaEst&&f.idioma?" (estimado por el título)":""} · 🏷 ${esc(nombreCat(f.cat))}</div>
+   ${f.tags&&f.tags.length?`<div><b>Etiquetas del video</b><div class="tags">${f.tags.map(t=>`<span class="tag">${esc(t)}</span>`).join("")}</div></div>`:""}
+   ${f.desc?`<div><b>Descripción</b><div class="desc">${esc(f.desc)}</div></div>`:""}
+   <div class="row"><a class="btn sm osc" href="${urlVideo(f)}" target="_blank" rel="noopener">▶ Abrir en YouTube</a><a class="btn sm" href="https://www.youtube.com/channel/${esc(f.canalId)}" target="_blank" rel="noopener">Abrir canal</a></div>
+  </div>`;
+}
+function controlesOrden(clave,dir,actO,actD){
+  return `<label class="lbl">Ordenar por<select data-ch="${actO}">${ORDENES_TARJETAS.map(k=>`<option value="${k}"${k===clave?" selected":""}>${ORDEN[k].n}</option>`).join("")}${ORDENES_TARJETAS.includes(clave)?"":`<option value="${clave}" selected>${ORDEN[clave].n}</option>`}</select></label>
+   <button class="btn sm" data-act="${actD}" style="padding:9px 11px">${dir==="desc"?"↓ Mayor a menor":"↑ Menor a mayor"}</button>`;
+}
+function htmlVideos(F){
+  const ctrl=`<div class="ctrl">${controlesOrden(estado.orden,estado.dir,"orden","dir")}
+    <div class="seg"><button data-act="vista" data-v="tarjetas" class="${estado.vista==="tarjetas"?"on":""}">Tarjetas</button><button data-act="vista" data-v="tabla" class="${estado.vista==="tabla"?"on":""}">Tabla</button></div></div>`;
+  if(!F.length) return ctrl+`<div class="card vacio">Ningún video cumple los filtros.</div>`;
+  const ord=ordenarPor(F,estado.orden,estado.dir);
+  if(estado.vista==="tabla") return ctrl+htmlTabla(ord);
+  return ctrl+`<div class="vlist">${ord.slice(0,estado.limite).map((f,i)=>tarjeta(f,i)).join("")}</div>`+
+    (ord.length>estado.limite?`<button class="btn mas" data-act="vermas">Mostrar más (${ord.length-estado.limite} restantes)</button>`:"");
+}
+const COLS = [
+  {k:"titulo",n:"Video",cls:"tv",v:(f,i)=>`<a href="${urlVideo(f)}" target="_blank" rel="noopener"><span class="rkt">${i+1}.</span> ${esc(f.titulo)}</a>`},
+  {k:"vistas",n:"Vistas",num:1,v:f=>fmtN(f.vistas)},
+  {k:"mult",n:"× su canal",num:1,v:f=>`<span class="pill n-${f.nivel}">${fmtX(f.mult)}</span>`},
+  {k:"puntaje",n:"Puntaje",num:1,v:f=>`<span class="pill ${claseNivelPuntaje(f.puntaje)}">${f.puntaje}</span>`},
+  {k:"fecha",n:"Publicado",v:f=>fmtFecha(f.fecha)+" "+fmtHora(f.fecha)},
+  {k:"vpd",n:"Vistas/día",num:1,v:f=>fmtN(f.vpd)},
+  {k:"canal",n:"Canal",v:f=>esc(cortar(f.canalNombre,28))},
+  {k:"pais",n:"País",v:f=>f.canal&&f.canal.pais?bandera(f.canal.pais)+" "+f.canal.pais:"—"},
+  {k:"subs",n:"Subs canal",num:1,v:f=>fmtC(f.canal&&f.canal.subs)},
+  {k:"dias",n:"Días",num:1,v:f=>fmtN(f.dias)},
+  {k:"likes",n:"Likes",num:1,v:f=>fmtN(f.likes)},
+  {k:"coment",n:"Coment.",num:1,v:f=>fmtN(f.coment)},
+  {k:"inter",n:"Interacción",num:1,v:f=>fmtPct(f.inter)},
+  {k:"dur",n:"Duración",num:1,v:f=>fmtDur(f.dur)},
+  {k:"tipo",n:"Tipo",v:f=>f.short?"Short":"Largo"},
+  {k:"idioma",n:"Idioma",v:f=>esc(nombreIdioma(f.idioma))+(f.idiomaEst&&f.idioma?"*":"")},
+  {k:"cat",n:"Categoría",v:f=>esc(nombreCat(f.cat))}
+];
+function htmlTabla(F){
+  return `<div class="twrap"><table class="tb"><thead><tr>${COLS.map(c=>`<th class="${c.cls||""}${c.num?" num":""}${estado.orden===c.k?" on":""}" data-act="ordcol" data-k="${c.k}">${c.n}${estado.orden===c.k?(estado.dir==="desc"?" ▼":" ▲"):""}</th>`).join("")}</tr></thead>
+   <tbody>${F.map((f,i)=>`<tr>${COLS.map(c=>`<td class="${c.cls||""}${c.num?" num":""}">${c.v(f,i)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>
+   <p class="mut" style="margin-top:6px">Toca el nombre de una columna para ordenar; tócalo otra vez para invertir. * = idioma estimado por el título.</p>`;
+}
+
+/* ---------------- canales dentro de una búsqueda ---------------- */
+function avatar(c,nombre){ return c&&c.foto&&!String(c.id).startsWith("DEMO") ? `<img class="av" src="${esc(c.foto)}" alt="" loading="lazy">` : `<span class="av">${esc((nombre||"?").charAt(0).toUpperCase())}</span>`; }
+function tarjetaCanalRes(a,i){
+  const c=a.canal;
+  return `<div class="cc">${avatar(c,a.nombre)}<div class="cb">
+    <div class="cn">${i+1}. ${esc(a.nombre)}</div>
+    <div class="cs">${c&&c.pais?bandera(c.pais)+" "+esc(nombrePais(c.pais))+" · ":""}${c&&c.subs!=null?fmtC(c.subs)+" subs":"subs ocultos"}${c?" · promedia "+fmtC(c.prom)+" por video":""}</div>
+    <div class="cs">Aquí: <b>${a.n}</b> ${pl(a.n,"video","videos")} · <b>${fmtC(a.vistas)}</b> vistas · mejor ${fmtX(a.mejor)}</div>
+    <div class="row"><button class="btn sm" data-act="verCanal" data-c="${esc(a.id)}">Ver sus videos</button><button class="btn sm" data-act="vigilar" data-c="${esc(a.id)}">👁 Vigilar</button></div>
+  </div></div>`;
+}
+function htmlCanales(F){
+  if(!F.length) return `<div class="card vacio">Ningún video cumple los filtros.</div>`;
+  const m=new Map();
+  F.forEach(f=>{ let a=m.get(f.canalId); if(!a){ a={id:f.canalId,nombre:f.canalNombre,canal:f.canal,n:0,vistas:0,mejor:null}; m.set(f.canalId,a); } a.n++; a.vistas+=f.vistas; if(f.mult!=null&&(a.mejor==null||f.mult>a.mejor)) a.mejor=f.mult; });
+  const lst=[...m.values()].sort((a,b)=>b.vistas-a.vistas);
+  return `<p class="mut">Ordenados por las vistas que suman en esta búsqueda.</p><div class="clist">${lst.map((a,i)=>tarjetaCanalRes(a,i)).join("")}</div>`;
+}
+
+/* ---------------- exportar a Excel ---------------- */
+function exportarCSV(){
+  const est=estado.est; if(!est) return;
+  const F=ordenarPor(aplicarFiltros(estado.filas),estado.orden,estado.dir);
+  const d=x=>x==null||!isFinite(x)?"":String(Math.round(x*100)/100).replace(".",",");
+  const cols=[["#",(f,i)=>i+1],["Título",f=>f.titulo],["Canal",f=>f.canalNombre],["País del canal",f=>f.canal&&f.canal.pais?nombrePais(f.canal.pais):""],["Suscriptores",f=>f.canal?f.canal.subs:""],
+    ["Vistas",f=>f.vistas],["Likes",f=>f.likes],["Comentarios",f=>f.coment],["Interacción %",f=>d(f.inter)],["Vistas por día",f=>Math.round(f.vpd)],
+    ["Veces el promedio del canal",f=>d(f.mult)],["Nivel",f=>NIVELES[f.nivel].corto],["Puntaje viral",f=>f.puntaje],
+    ["Fecha de publicación",f=>{ const x=new Date(f.fecha), p=n=>String(n).padStart(2,"0"); return `${x.getFullYear()}-${p(x.getMonth()+1)}-${p(x.getDate())} ${p(x.getHours())}:${p(x.getMinutes())}`; }],
+    ["Días publicado",f=>Math.round(f.dias)],["Duración (min)",f=>d(f.dur/60)],["Tipo",f=>f.short?"Short":"Largo"],["Idioma",f=>nombreIdioma(f.idioma)],["Categoría",f=>nombreCat(f.cat)],
+    ["Etiquetas",f=>(f.tags||[]).join(", ")],["Enlace",f=>urlVideo(f)]];
+  const celda=v=>{ v=v==null?"":String(v); if(/^[=+\-@]/.test(v)) v="'"+v; return /[;"\r\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v; };
+  const lineas=[cols.map(c=>c[0])].concat(F.map((f,i)=>cols.map(c=>c[1](f,i))));
+  const nombre="radar-viral_"+sinTildes(est.params.q||nombreCat(est.params.cat)).replace(/[^\w]+/g,"-").replace(/^-|-$/g,"").slice(0,40)+".csv";
+  descargar("﻿"+lineas.map(r=>r.map(celda).join(";")).join("\r\n"), nombre, "text/csv;charset=utf-8");
+  toast(`Descargado: ${F.length} videos para abrir en Excel`);
+}
+
+/* ---------------- vigilados ---------------- */
+async function cargarVig(){ if(!estado.vig) estado.vig=(await ALM.get("vigilados"))||{canales:[],videos:{},actualizado:0}; return estado.vig; }
+async function guardarVig(){ await ALM.set("vigilados",estado.vig); }
+function analizarEntrada(s){
+  s=s.trim(); let m;
+  if((m=s.match(/(?:youtu\.be\/|[?&]v=|\/shorts\/|\/live\/)([\w-]{11})/))) return {video:m[1]};
+  if((m=s.match(/(UC[\w-]{22})/))) return {id:m[1]};
+  if((m=s.match(/youtube\.com\/(@[^/?#\s]+)/i))) return {handle:decodeURIComponent(m[1])};
+  if((m=s.match(/youtube\.com\/(?:c|user)\/([^/?#\s]+)/i))) return {usuario:decodeURIComponent(m[1])};
+  if((m=s.match(/^@([^\s/]+)$/))) return {handle:"@"+m[1]};
+  if(/^[\w.\-]{3,}$/.test(s)) return {handle:"@"+s, texto:s};
+  return {texto:s};
+}
+async function resolverCanal(txt){
+  const e=analizarEntrada(txt), sinNada=r=>!r||!r.items||!r.items.length;
+  let r=null;
+  if(e.video){ const v=await yt("videos",{part:"snippet",id:e.video,fields:"items(snippet(channelId))"}); const cid=v.items&&v.items[0]&&v.items[0].snippet.channelId; if(!cid) throw new Error("No encontré ese video."); e.id=cid; }
+  if(e.id) r=await yt("channels",{part:P_CANAL,id:e.id,fields:F_CANAL});
+  else if(e.handle) r=await yt("channels",{part:P_CANAL,forHandle:e.handle,fields:F_CANAL});
+  else if(e.usuario){ r=await yt("channels",{part:P_CANAL,forUsername:e.usuario,fields:F_CANAL}); if(sinNada(r)) r=await yt("channels",{part:P_CANAL,forHandle:"@"+e.usuario,fields:F_CANAL}); }
+  if(sinNada(r) && e.texto){
+    const s=await yt("search",{part:"snippet",type:"channel",q:e.texto,maxResults:1,fields:"items(id(channelId))"});
+    const cid=s.items&&s.items[0]&&s.items[0].id.channelId;
+    if(cid) r=await yt("channels",{part:P_CANAL,id:cid,fields:F_CANAL});
+  }
+  if(sinNada(r)) throw new Error("No encontré ese canal. Prueba con su @nombre o pega el enlace del canal o de un video suyo.");
+  return normCanal(r.items[0]);
+}
+async function traerVideosCanal(cid){
+  const V=await cargarVig(), c=V.canales.find(x=>x.id===cid); if(!c) return;
+  if(modoDemo){ V.videos[cid]=demoVideosCanal(c); c.actualizado=Date.now(); await guardarVig(); return; }
+  const pl_=await yt("playlistItems",{part:"contentDetails",playlistId:c.uploads||("UU"+cid.slice(2)),maxResults:50,fields:"items(contentDetails(videoId))"});
+  V.videos[cid]=await traerVideos((pl_.items||[]).map(it=>it.contentDetails.videoId));
+  c.actualizado=Date.now(); await guardarVig();
+}
+async function vigilar(canal, opt={}){
+  const V=await cargarVig(), i=V.canales.findIndex(c=>c.id===canal.id);
+  if(i>=0 && !opt.actualizar){ toast("Ya vigilas "+esc(canal.nombre)); return; }
+  if(i>=0) V.canales[i]=Object.assign(V.canales[i],canal); else V.canales.push(Object.assign({agregado:Date.now()},canal));
+  await guardarVig();
+  toast("👁 Ahora vigilas "+esc(canal.nombre));
+  try{ await traerVideosCanal(canal.id); }catch(e){ toast(e.message,6000); }
+  if(estado.tab==="vigilados") pintarVigilados();
+}
+async function actualizarVigilados(){
+  const V=await cargarVig(); if(!V.canales.length||estado.ocupado) return;
+  estado.ocupado=true; toast("Actualizando canales…", 60000);
+  try{
+    if(!modoDemo){
+      const nuevos=await traerCanales(V.canales.map(c=>c.id));
+      V.canales.forEach((c,i)=>{ if(nuevos[c.id]) V.canales[i]=Object.assign(c,nuevos[c.id]); });
+    }
+    for(let i=0;i<V.canales.length;i++){ toast(`Actualizando ${i+1} de ${V.canales.length}: ${esc(V.canales[i].nombre)}`,60000); await traerVideosCanal(V.canales[i].id); }
+    V.actualizado=Date.now(); await guardarVig(); toast("Listo: canales actualizados");
+  }catch(e){ toast(e.message,7000); }
+  estado.ocupado=false; pintarVigilados();
+}
+async function pintarVigilados(){
+  const V=await cargarVig(), el=$("#tab-vigilados");
+  if(estado.canalAbierto){ el.innerHTML=htmlCanalDetalle(V,estado.canalAbierto); return; }
+  const canales=[...V.canales].sort((a,b)=>(b.esMio?1:0)-(a.esMio?1:0)||(b.subs||0)-(a.subs||0));
+  const mapa=Object.fromEntries(canales.map(c=>[c.id,c]));
+  const recientes=[]; canales.forEach(c=>(V.videos[c.id]||[]).forEach(v=>{ if(Date.now()-Date.parse(v.fecha)<=14*864e5) recientes.push(v); }));
+  const nov=ordenarPor(construirFilas({videos:recientes,canales:mapa}),"mult","desc").slice(0,12);
+  const costo=canales.length*2+Math.ceil(canales.length/50);
+  el.innerHTML=`
+   <form class="card" id="fCanal" autocomplete="off"><h2>👁 Vigilar un canal</h2>
+    <p class="mut">Pega el enlace del canal, su @nombre o el enlace de cualquier video suyo. No gasta búsquedas (solo 2 unidades de las 10.000 diarias).</p>
+    <div class="qrow"><input id="inCanal" placeholder="@canal o enlace de YouTube"><button class="btn pri" type="submit">Agregar</button></div></form>
+   ${canales.length?`
+   <div class="card"><div class="rhead"><div><b>${canales.length} ${pl(canales.length,"canal vigilado","canales vigilados")}</b>
+     <div class="rsub">Actualizado ${V.actualizado?fmtHace(V.actualizado):"al agregarlos"} · actualizar todos gasta ~${costo} unidades (no usa búsquedas)</div></div>
+     <button class="btn osc sm" data-act="actTodos">🔄 Actualizar todos</button></div></div>
+   ${nov.length?`<h3 class="tit">🔥 Novedades de los últimos 14 días, de la más viral a la menos</h3><div class="vlist">${nov.map((f,i)=>tarjeta(f,i,{sinVigilar:true})).join("")}</div>`:""}
+   <h3 class="tit">Tus canales</h3><div class="clist">${canales.map(c=>tarjetaVigilado(c,V)).join("")}</div>`
+   :`<div class="card vacio">Todavía no vigilas ningún canal.<br><br>Agrega a tu competencia (o tu propio canal) para ver cuáles de sus videos pegan más y enterarte cuando suban uno que se haga viral. También puedes tocar <b>👁 Vigilar canal</b> en cualquier video de una búsqueda.</div>`}`;
+}
+function tarjetaVigilado(c,V){
+  const vids=V.videos[c.id]||[], ult=vids.reduce((m,v)=>!m||Date.parse(v.fecha)>Date.parse(m.fecha)?v:m,null);
+  const filas=construirFilas({videos:vids,canales:{[c.id]:c}}), mejor=ordenarPor(filas,"mult","desc")[0];
+  return `<div class="cc">${avatar(c,c.nombre)}<div class="cb">
+    <div class="cn">${esc(c.nombre)}${c.esMio?`<span class="mio">⭐ MI CANAL</span>`:""}</div>
+    <div class="cs">${c.pais?bandera(c.pais)+" "+esc(nombrePais(c.pais))+" · ":""}${c.subs!=null?fmtC(c.subs)+" subs":"subs ocultos"} · ${fmtC(c.vistas)} vistas · ${fmtN(c.nvideos)} videos</div>
+    <div class="cs">Promedia <b>${fmtC(c.prom)}</b> por video${ult?` · último video ${fmtHace(ult.fecha)}`:""}</div>
+    ${mejor?`<div class="cs">Mejor de sus últimos ${vids.length}: «${esc(cortar(mejor.titulo,48))}» ${fmtX(mejor.mult)}</div>`:""}
+    <div class="row"><button class="btn sm osc" data-act="abrirCanal" data-c="${esc(c.id)}">Ver sus videos</button><button class="btn sm" data-act="marcarMio" data-c="${esc(c.id)}">${c.esMio?"⭐ Es mi canal":"☆ Es mi canal"}</button><button class="btn sm mal" data-act="quitarCanal" data-c="${esc(c.id)}">Quitar</button></div>
+  </div></div>`;
+}
+function htmlCanalDetalle(V,cid){
+  const c=V.canales.find(x=>x.id===cid);
+  if(!c){ estado.canalAbierto=null; return ""; }
+  const filas=construirFilas({videos:V.videos[cid]||[],canales:{[cid]:c}});
+  const ord=ordenarPor(filas,estado.ordenCanal,estado.dirCanal);
+  const sh=filas.filter(f=>f.short), lg=filas.filter(f=>!f.short), mSh=mediana(sh.map(f=>f.vistas)), mLg=mediana(lg.map(f=>f.vistas));
+  const vir=filas.filter(f=>f.mult!=null&&f.mult>=3).length;
+  const durG=grupos(filas,f=>bucket(f.dur,DUR_B),DUR_B);
+  return `<div class="card"><div class="row" style="justify-content:space-between">
+     <button class="btn sm" data-act="cerrarCanal">← Volver</button>
+     <div class="row"><button class="btn sm" data-act="actCanal" data-c="${esc(cid)}">🔄 Actualizar</button><a class="btn sm" href="https://www.youtube.com/channel/${esc(cid)}" target="_blank" rel="noopener">Abrir en YouTube</a></div></div>
+    <div class="cc" style="border:0;padding:12px 0 0">${avatar(c,c.nombre)}<div class="cb"><div class="cn" style="font-size:16px">${esc(c.nombre)}${c.esMio?`<span class="mio">⭐ MI CANAL</span>`:""}</div>
+     <div class="cs">${c.pais?bandera(c.pais)+" "+esc(nombrePais(c.pais))+" · ":""}${c.url?esc(c.url)+" · ":""}actualizado ${c.actualizado?fmtHace(c.actualizado):"—"}</div></div></div></div>
+   <div class="kpis">
+    <div class="kpi"><b>${c.subs!=null?fmtC(c.subs):"oculto"}</b><span>suscriptores</span></div>
+    <div class="kpi"><b>${fmtC(c.vistas)}</b><span>vistas totales</span></div>
+    <div class="kpi"><b>${fmtN(c.nvideos)}</b><span>videos subidos</span></div>
+    <div class="kpi"><b>${fmtC(c.prom)}</b><span>promedio por video</span></div>
+    <div class="kpi"><b>${fmtC(mediana(filas.map(f=>f.vistas)))}</b><span>mediana de sus últimos ${filas.length}</span></div>
+    <div class="kpi"><b>${vir}</b><span>virales (3× o más) entre los últimos ${filas.length}</span></div>
+   </div>
+   ${filas.length?sec("cform","⏱ Qué le funciona a este canal",`<div class="sub2">Formato</div>${barras([["📱 Shorts",sh,mSh],["🎬 Largos",lg,mLg]].filter(x=>x[1].length).map(([n,fs,m])=>({nombre:n,valor:m,texto:`${fs.length} videos · mediana ${fmtC(m)} vistas`})))}<div class="sub2">Duración (mediana de vistas)</div>${barrasGrupo(durG)}`,true):""}
+   <h3 class="tit">Sus últimos ${filas.length} videos</h3>
+   <div class="ctrl">${controlesOrden(estado.ordenCanal,estado.dirCanal,"ordenCanal","dirCanal")}</div>
+   ${ord.length?`<div class="vlist">${ord.slice(0,estado.limiteCanal).map((f,i)=>tarjeta(f,i,{sinCanal:true,sinVigilar:true})).join("")}</div>${ord.length>estado.limiteCanal?`<button class="btn mas" data-act="vermasCanal">Mostrar más</button>`:""}`:`<div class="card vacio">Todavía no hay videos. Pulsa 🔄 Actualizar.</div>`}`;
+}
+
+/* ---------------- historial ---------------- */
+async function pintarHistorial(){
+  const idx=(await ALM.get("estudios_idx"))||[], el=$("#tab-historial");
+  el.innerHTML = idx.length ? `
+   <div class="card"><div class="rhead"><div><b>${idx.length} ${pl(idx.length,"búsqueda guardada","búsquedas guardadas")}</b><div class="rsub">Abrirlas no gasta cupo. Se guardan las últimas ${MAX_HIST}.</div></div>
+    <button class="btn sm mal" data-act="borrarHist">Borrar todo</button></div></div>
+   ${idx.map(x=>`<div class="card"><div class="hq">${esc(tituloEst(x.params))}</div>
+     <div class="rsub">${etiquetas(x.params).map(esc).join(" · ")}</div>
+     <div class="rsub">${fmtHace(x.fecha)} · ${x.n} videos · el más visto: ${fmtC(x.top)}</div>
+     <div class="row" style="margin-top:8px"><button class="btn sm pri" data-act="abrirEst" data-id="${esc(x.id)}">Abrir</button><button class="btn sm" data-act="refrescarEst" data-id="${esc(x.id)}">🔄 Actualizar</button><button class="btn sm mal" data-act="borrarEst" data-id="${esc(x.id)}">Borrar</button></div></div>`).join("")}`
+   : `<div class="card vacio">Aquí aparecerán tus búsquedas. Se guardan solas y puedes volver a abrirlas sin gastar cupo.</div>`;
+}
+
+/* ---------------- ajustes ---------------- */
+function origenWeb(){ return /^https?:/.test(location.protocol) && location.origin!=="null" ? location.origin : "https://TU-USUARIO.github.io"; }
+function pintarAjustes(){
+  const cfg=CFG(), c=cuota(), perfil=LS.get("perfil",null), o=origenWeb();
+  $("#tab-ajustes").innerHTML=`
+  <div class="card"><h2>🔌 Conexión con YouTube</h2>
+   <p class="mut" style="margin:0">${cfg.apiKey?`<span class="ok">✔ Conectada.</span> No tienes que configurar nada: solo busca.`:`<span class="malo">Todavía no está conectada.</span> Mientras tanto puedes usar el modo ejemplo.`}</p></div>
+  ${cfg.clientId?`<div class="card"><h2>👤 Tu cuenta de Google</h2>
+   ${perfil?`<div class="cc" style="margin-bottom:8px">${perfil.foto?`<img class="av" src="${esc(perfil.foto)}" alt="">`:`<span class="av">${esc((perfil.nombre||"?").charAt(0))}</span>`}<div class="cb"><div class="cn">${esc(perfil.nombre||"")}</div><div class="cs">${esc(perfil.correo||"")}</div></div></div>
+     <div class="row"><button class="btn mal" data-act="salirGoogle">Cerrar sesión</button></div>`
+   :`<p class="mut">Opcional: entra con tu cuenta de Google para que la app te reconozca. No hace falta para buscar.</p><button class="btn osc" data-act="entrarGoogle">Entrar con Google</button>`}
+  </div>`:""}
+  <div class="card" id="cupoCard"><h2>📦 Cupo de hoy</h2>
+   <div class="cupo"><div class="kpi"><b>${c.busq} / ${LIMITE_BUSQ}</b><span>búsquedas usadas</span></div><div class="kpi"><b>${fmtN(c.unid)} / ${fmtN(LIMITE_UNID)}</b><span>otras consultas (estadísticas, canales)</span></div></div>
+   <p class="mut" style="margin-top:8px">YouTube da a la app ${LIMITE_BUSQ} búsquedas gratis al día (cada 50 videos es 1 búsqueda). Este contador es lo que se buscó desde este teléfono. Se renueva a las <b>${horaRenovacion()}</b> (hora de tu teléfono). Vigilar canales y abrir el Historial no gastan búsquedas.</p>
+   <button class="btn sm" data-act="resetCuota">Poner el contador en cero</button>
+  </div>
+  <div class="card"><h2>💾 Reutilizar búsquedas</h2>
+   <p class="mut">Si repites la misma búsqueda con los mismos filtros, se abre la guardada sin gastar cupo, siempre que tenga menos de:</p>
+   <select data-ch="cache">${[[0,"No reutilizar (siempre consultar)"],[3,"3 horas"],[6,"6 horas"],[12,"12 horas"],[24,"24 horas"],[72,"3 días"]].map(x=>`<option value="${x[0]}"${+cfg.cacheHoras===x[0]?" selected":""}>${x[1]}</option>`).join("")}</select>
+  </div>
+  <div class="card"><h2>🧪 Modo ejemplo</h2><p class="mut">Muestra la app con datos inventados, para ver cómo funciona sin clave. No toca tus datos.</p>
+   <button class="btn" data-act="ejemplo">${modoDemo?"Ya estás en el ejemplo":"Ver con datos de ejemplo"}</button></div>
+  <div class="card"><h2>🗂 Copia de seguridad</h2><p class="mut">Pasa tus vigilados y búsquedas a otro teléfono o a la PC.</p>
+   <div class="row"><button class="btn" data-act="exportar">⬇ Exportar</button><button class="btn" data-act="importar">⬆ Importar</button><button class="btn mal" data-act="borrarTodo">Borrar todo</button></div></div>
+  ${sec("ayuda","❓ Cómo se calcula cada número",`<dl class="ayuda">
+    <dt>× su canal (multiplicador)</dt><dd>Vistas del video ÷ promedio de vistas por video de su canal (vistas totales del canal ÷ videos subidos). 1× = normal para ese canal; 3× o más = muy viral; 10× o más = explosivo. Es la mejor señal de que <b>el tema</b> pegó, no solo el tamaño del canal.</dd>
+    <dt>Puntaje viral (0 a 100)</dt><dd>Compara cada video con los demás de la misma búsqueda: 50% multiplicador, 35% vistas por día y 15% interacción. Un 90 significa que está por encima del 90% de esa lista. Es el orden «Más viral».</dd>
+    <dt>Vistas por día</dt><dd>Vistas ÷ días desde que se publicó. Sirve para comparar videos nuevos con viejos.</dd>
+    <dt>Interacción</dt><dd>(Likes + comentarios) ÷ vistas.</dd>
+    <dt>Short</dt><dd>Dura 3 minutos o menos y es vertical. Si YouTube no informa la forma, se toma como Short si dura 1 minuto o menos o tiene #shorts.</dd>
+    <dt>Ojo al comparar Shorts con largos</dt><dd>Desde 2025 YouTube cuenta cada repetición de un Short como vista, por eso suelen tener muchas más. Para comparar justo, filtra Shorts con Shorts.</dd>
+    <dt>Idioma</dt><dd>El que declara el video. Si no lo declara, se estima por las palabras del título (marcado con *).</dd>
+    <dt>País</dt><dd>El que el canal declara en YouTube. Muchos canales no lo ponen: salen como «Sin país».</dd>
+    <dt>Oportunidad del tema</dt><dd>Suma tres cosas: demanda (vistas por día típicas), puerta para canales chicos (cuántos canales de menos de 100 mil suscriptores pegaron) y competencia (cuánto se llevan los 5 canales más grandes).</dd></dl>`,false)}
+  <p class="ver">Radar Viral v${VERSION} · Usa los Servicios de API de YouTube · <a href="https://www.youtube.com/t/terms" target="_blank" rel="noopener">Términos de YouTube</a> · <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Privacidad de Google</a> · <a href="./privacidad.html" target="_blank" rel="noopener">Privacidad de la app</a></p>`;
+}
+
+/* ---------------- inicio de sesión con Google (opcional) ---------------- */
+let gsiPromesa=null;
+function cargarGSI(){
+  if(gsiPromesa) return gsiPromesa;
+  gsiPromesa=new Promise((res,rej)=>{ const s=document.createElement("script"); s.src="https://accounts.google.com/gsi/client"; s.async=true; s.onload=()=>res(); s.onerror=()=>{ gsiPromesa=null; rej(new Error("No se pudo cargar el inicio de sesión de Google. Revisa tu internet.")); }; document.head.appendChild(s); });
+  return gsiPromesa;
+}
+async function entrarGoogle(){
+  if(modoDemo){ toast("Sal del modo ejemplo para iniciar sesión"); return; }
+  const cid=CFG().clientId;
+  if(!cid){ toast("El inicio de sesión todavía no está activado en esta app"); return; }
+  try{
+    await cargarGSI();
+    const tc=google.accounts.oauth2.initTokenClient({
+      client_id:cid,
+      scope:"openid email profile",
+      callback:r=>{ if(r.error){ toast("Google no dio permiso: "+esc(r.error),6000); return; } trasLogin(r.access_token); },
+      error_callback:e=>toast("No se completó el inicio de sesión ("+esc(e&&e.type||"cancelado")+")",6000)
+    });
+    tc.requestAccessToken();
+  }catch(e){ toast(e.message,6000); }
+}
+async function trasLogin(token){
+  estado.token=token;
+  try{
+    const r=await fetch("https://www.googleapis.com/oauth2/v3/userinfo",{headers:{Authorization:"Bearer "+token}});
+    const u=await r.json();
+    const perfil={nombre:u.name||"",foto:u.picture||"",correo:u.email||""};
+    LS.set("perfil",perfil); pintarUsuario(); pintarAjustes();
+    toast("Hola, "+esc(perfil.nombre||"bienvenido"));
+  }catch(e){ toast("No pude leer tu cuenta de Google.",6000); }
+}
+function salirGoogle(){
+  try{ if(estado.token&&window.google) google.accounts.oauth2.revoke(estado.token,()=>{}); }catch(e){}
+  estado.token=null; LS.set("perfil",null); pintarUsuario(); pintarAjustes(); toast("Sesión cerrada");
+}
+function pintarUsuario(){
+  const p=LS.get("perfil",null);
+  $("#userBox").innerHTML = p&&p.foto ? `<span class="user" data-act="irAjustes" title="${esc(p.nombre)}"><img src="${esc(p.foto)}" alt=""></span>`
+    : (CFG().clientId && !p ? `<button class="cuota" data-act="entrarGoogle">Entrar</button>` : "");
+}
+
+/* ---------------- copia de seguridad ---------------- */
+async function exportar(){
+  const idx=(await DB.get("estudios_idx"))||[], estudios=[];
+  for(const x of idx){ const e=await DB.get("estudio:"+x.id); if(e) estudios.push(e); }
+  const datos={app:"radar-viral",version:VERSION,fecha:new Date().toISOString(),vigilados:(await DB.get("vigilados"))||null,estudios,ajustes:{cacheHoras:CFG().cacheHoras},filtros:LS.get("filtros",null)};
+  descargar(JSON.stringify(datos),"radar-viral-copia_"+new Date().toISOString().slice(0,10)+".json","application/json");
+  toast("Copia descargada");
+}
+async function importar(archivo){
+  if(modoDemo){ toast("Sal del modo ejemplo para importar"); return; }
+  try{
+    const d=JSON.parse(await archivo.text());
+    if(d.app!=="radar-viral") throw new Error("Ese archivo no es una copia de Radar Viral.");
+    if(d.vigilados){
+      const V=(await DB.get("vigilados"))||{canales:[],videos:{},actualizado:0};
+      d.vigilados.canales.forEach(c=>{ if(!V.canales.find(x=>x.id===c.id)) V.canales.push(c); });
+      Object.assign(V.videos,d.vigilados.videos||{});
+      await DB.set("vigilados",V);
+    }
+    for(const e of (d.estudios||[]).slice().reverse()) await guardarEstudio(e);
+    if(d.ajustes) guardarCFG({cacheHoras:d.ajustes.cacheHoras});
+    estado.vig=null; toast(`Importado: ${(d.vigilados&&d.vigilados.canales.length)||0} canales y ${(d.estudios||[]).length} búsquedas`);
+    pintarHistorial();
+  }catch(e){ toast(e.message||"No se pudo leer el archivo",6000); }
+}
+
+/* ---------------- modo ejemplo (datos inventados) ---------------- */
+function prng(seed){ let s=(seed>>>0)||1; return ()=>{ s^=s<<13; s>>>=0; s^=s>>>17; s^=s<<5; s>>>=0; return s/4294967296; }; }
+function hashTxt(t){ let h=2166136261; for(const ch of String(t)){ h^=ch.charCodeAt(0); h=Math.imul(h,16777619); } return h>>>0; }
+function normal(r){ const u=Math.max(r(),1e-9), v=r(); return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v); }
+const DEMO_CANALES=[["Cuerpo Curioso","MX",2.4e6],["Ciencia en 60s","ES",870e3],["Dr. Intestino","AR",41e3],["Biología Fácil","CO",1.2e6],["Mundo Asombroso","US",9.8e6],["Datos Locos","MX",3.1e6],["Gut Science Lab","US",640e3],["Curiosamente","CO",220e3],["Saber Más","EC",18e3],["Anatomía Viva","PE",95e3],["Kids Ciencia","CL",510e3],["Ciência Rápida","BR",1.7e6],["Health Facts Daily","GB",2.2e6],["Qué Pasa Si","VE",7.5e3],["Mente Curiosa","AR",330e3],["El Cuerpo Explicado","",62e3],["Planeta Ciencia","ES",4.4e6],["Micro Mundo","MX",12e3],["Tu Salud Hoy","US",150e3],["Aprende Rápido","EC",3.9e3],["Science Bites","CA",880e3],["Curioso TV","DO",27e3]];
+const DEMO_T=[["es","¿{Tema}? Te lo explico en 60 segundos #shorts",1],["es","Lo que nadie te contó sobre {tema}",0],["es","{Tema}: la explicación científica",0],["es","10 datos increíbles sobre {tema}",0],["es","{Tema} explicado fácil y rápido",0],["es","Esto pasa en tu cuerpo: {tema} #shorts",1],["es","El misterio de {tema} que pocos conocen",0],["es","{Tema} | documental corto",0],["es","Así funciona {tema} por dentro",0],["es","{Tema}: mitos y verdades",0],["es","¿Sabías esto? {Tema} #shorts",1],["es","Lo más raro de {tema} 😱",1],["en","{Tema} explained in 60 seconds #shorts",1],["en","The truth about {tema}",0],["en","Why {tema} happens (science)",0],["pt","{Tema}: a ciência explica",0],["pt","Você sabia disso sobre {tema}? #shorts",1]];
+function demoCanales(){
+  const r=prng(42), o={};
+  DEMO_CANALES.forEach(([nombre,pais,subs],i)=>{ const nv=50+Math.floor(r()*850), prom=subs*(0.04+r()*0.5); o["DEMO"+i]={id:"DEMO"+i,nombre,pais,subs,nvideos:nv,prom,vistas:Math.round(prom*nv),foto:"",url:"@"+sinTildes(nombre).replace(/\W/g,"").toLowerCase(),uploads:""}; });
+  return o;
+}
+function demoVideo(r,c,tema,tpl,esShort,maxDias,id){
+  const mult=Math.exp(normal(r)*1.15-0.15)*(r()<0.06?6:1), dias=Math.max(0.2,Math.pow(r(),1.6)*maxDias), madurez=Math.min(1,0.25+dias/30);
+  const vistas=Math.round(c.prom*mult*madurez*(esShort?1.6:1));
+  return {id, demo:true, titulo:tpl[1].replace("{Tema}",cap(tema)).replace("{tema}",tema), desc:"Video de ejemplo para ver cómo funciona Radar Viral. #curiosidades #ciencia",
+    canalId:c.id, canalNombre:c.nombre, fecha:new Date(Date.now()-dias*864e5).toISOString(), dur: esShort?15+Math.floor(r()*160):180+Math.floor(r()*1500), short:esShort,
+    vistas, likes:Math.round(vistas*(0.015+r()*0.04)), coment:Math.round(vistas*(0.0008+r()*0.004)),
+    tags:[tema,"curiosidades","ciencia","cuerpo humano","datos curiosos"].slice(0,2+Math.floor(r()*4)), cat:["27","28","24","22"][Math.floor(r()*4)], idioma:tpl[0], idiomaEst:false, envivo:"none"};
+}
+function estudioDemo(p, pagina=0, previo=null){
+  const r=prng(hashTxt(JSON.stringify([p.q,p.cat,p.idioma,p.pais,p.fecha,p.tipo,pagina])));
+  const canales=previo?previo.canales:demoCanales(), ids=Object.keys(canales), tema=(p.q||nombreCat(p.cat)).toLowerCase();
+  const maxDias=(FECHAS.find(x=>x[0]===p.fecha)||FECHAS[0])[2]||1400, n=previo?50:p.cant, videos=[];
+  for(let i=0;i<n;i++){
+    let tpl=DEMO_T[Math.floor(r()*DEMO_T.length)];
+    if(p.idioma&&r()<0.75){ const m=DEMO_T.filter(t=>t[0]===p.idioma); if(m.length) tpl=m[Math.floor(r()*m.length)]; }
+    let esShort=tpl[2]?r()<0.9:r()<0.15; if(p.tipo==="short") esShort=true; if(p.tipo==="largo") esShort=false;
+    const c=canales[ids[Math.floor(Math.pow(r(),1.3)*ids.length)]];
+    videos.push(demoVideo(r,c,tema,tpl,esShort,maxDias,"demo"+pagina+"_"+i));
+  }
+  return {id:"e"+Date.now()+"_"+pagina, clave:claveBusqueda(p), params:p, fecha:Date.now(), videos, canales, siguiente:"demo", pag:1, descartados:0};
+}
+function demoVideosCanal(c){
+  const r=prng(hashTxt(c.id)), temas=["el cerebro","los huesos","el corazón","la piel","los romanos","las pirámides","el sueño","los dientes","el estómago","los dinosaurios"], out=[];
+  for(let i=0;i<30;i++){ const tpl=DEMO_T[Math.floor(r()*12)]; out.push(demoVideo(r,c,temas[Math.floor(r()*temas.length)],tpl,!!tpl[2]&&r()<0.9,400,c.id+"_v"+i)); }
+  return out;
+}
+async function activarDemo(){
+  if(modoDemo){ irA("buscar"); return; }
+  modoDemo=true; DEMO_MEM.clear(); estado.vig=null; estado.canalAbierto=null;
+  $("#demoBanner").classList.remove("hide"); ajustarCab();
+  irA("buscar");
+  const p={q:"de dónde sale el popó",idioma:"es",pais:"",fecha:"",tipo:"",cat:"",orden:"viewCount",cant:100};
+  const e=estudioDemo(p); await guardarEstudio(e);
+  const V=await cargarVig(); const cs=e.canales; ["DEMO0","DEMO2","DEMO19"].forEach(id=>{ V.canales.push(Object.assign({},cs[id])); V.videos[id]=demoVideosCanal(cs[id]); }); V.canales[2].esMio=true; V.actualizado=Date.now(); await guardarVig();
+  abrirEstudio(e); pintarAjustes(); actualizarGasto();
+  toast("Modo ejemplo: datos inventados. Toca, filtra y ordena con libertad.");
+}
+async function salirDemo(){
+  modoDemo=false; DEMO_MEM.clear(); estado.vig=null; estado.est=null; estado.canalAbierto=null;
+  $("#demoBanner").classList.add("hide"); ajustarCab();
+  const idx=(await ALM.get("estudios_idx"))||[];
+  const e=idx.length?await ALM.get("estudio:"+idx[0].id):null;
+  if(e) abrirEstudio(e,{silencioso:true}); else { llenarFormulario(LS.get("filtros",null)); pintarResultados(); }
+  pintarAjustes(); actualizarGasto(); irA("buscar");
+}
+
+/* ---------------- navegación ---------------- */
+function irA(tab){
+  estado.tab=tab;
+  document.querySelectorAll("#tabs button").forEach(b=>b.classList.toggle("on",b.dataset.tab===tab));
+  ["buscar","vigilados","historial","ajustes"].forEach(t=>$("#tab-"+t).classList.toggle("hide",t!==tab));
+  if(tab==="vigilados") pintarVigilados();
+  if(tab==="historial") pintarHistorial();
+  if(tab==="ajustes") pintarAjustes();
+  window.scrollTo(0,0);
+}
+
+/* ---------------- acciones (botones) ---------------- */
+const ACCIONES = {
+  irCupo(){ irA("ajustes"); setTimeout(()=>{ const c=$("#cupoCard"); if(c) c.scrollIntoView({block:"center"}); },50); },
+  irAjustes(){ irA("ajustes"); },
+  ejemplo(){ activarDemo(); },
+  salirDemo(){ salirDemo(); },
+  idea(b){ const p=leerFormulario(); Object.assign(p,{q:"",cat:b.dataset.cat,fecha:"7d",orden:"viewCount"}); llenarFormulario(p); buscar(p); },
+  ejemploTema(b){ $("#q").value=b.dataset.t; buscar(leerFormulario()); },
+  actualizar(){ if(estado.est) buscar(Object.assign({},estado.est.params),{forzar:true}); },
+  mas(){ cargarMas(); },
+  csv(){ exportarCSV(); },
+  sub(b){ estado.sub=b.dataset.v; estado.limite=60; pintarCuerpo(); const s=$("#rsub"); if(s&&s.getBoundingClientRect().top<0) s.scrollIntoView(); },
+  filtrosToggle(){ estado.filtro.abierto=!estado.filtro.abierto; pintarResultados(); },
+  fpais(b){ alternar(estado.filtro.paises,b.dataset.v); refrescarFiltros(); },
+  fidioma(b){ alternar(estado.filtro.idiomas,b.dataset.v); refrescarFiltros(); },
+  ftipo(b){ estado.filtro.tipo = estado.filtro.tipo===b.dataset.v ? "" : b.dataset.v; refrescarFiltros(); },
+  fnivel(b){ alternar(estado.filtro.niveles,b.dataset.v); refrescarFiltros(); },
+  quitar(b){ const F=estado.filtro, t=b.dataset.t, v=b.dataset.v;
+    if(t==="palabra"){ F.palabra=""; F.palabraTxt=""; } else if(t==="canal") F.canal=""; else if(t==="pais") F.paises.delete(v); else if(t==="idioma") F.idiomas.delete(v);
+    else if(t==="tipo") F.tipo=""; else if(t==="nivel") F.niveles.delete(v); else if(t==="min") F.minVistas=0; else if(t==="dentro") F.dentro=0;
+    refrescarFiltros(); },
+  limpiar(){ const ab=estado.filtro.abierto, tx=estado.filtro.texto; estado.filtro=filtroVacio(); estado.filtro.abierto=ab; estado.filtro.texto=tx; refrescarFiltros(); },
+  palabra(b){ const F=estado.filtro; if(F.palabra===b.dataset.k){ F.palabra=""; F.palabraTxt=""; } else { F.palabra=b.dataset.k; F.palabraTxt=b.dataset.t; estado.sub="videos"; } refrescarFiltros(); },
+  buscarPalabra(b){ const p=leerFormulario(); p.q=((estado.est&&estado.est.params.q)||"")+" "+b.dataset.t; p.q=p.q.trim(); llenarFormulario(p); window.scrollTo({top:0,behavior:"smooth"}); buscar(p); },
+  dir(){ estado.dir=estado.dir==="desc"?"asc":"desc"; guardarVista(); pintarCuerpo(); },
+  vista(b){ estado.vista=b.dataset.v; guardarVista(); pintarCuerpo(); },
+  ordcol(b){ const k=b.dataset.k; if(estado.orden===k) estado.dir=estado.dir==="desc"?"asc":"desc"; else { estado.orden=k; estado.dir=ORDEN[k].s?"asc":"desc"; } guardarVista(); pintarCuerpo(); },
+  vermas(){ estado.limite+=60; pintarCuerpo(); },
+  det(b){ const id=b.dataset.id; if(estado.abiertos.has(id)) estado.abiertos.delete(id); else estado.abiertos.add(id); refrescarTarjeta(b,id); },
+  async copiar(b){ const f=MAPA_FILAS.get(b.dataset.id); if(f&&await copiar(f.titulo)) toast("Título copiado"); },
+  async vigilar(b){ const cid=b.dataset.c, c=(estado.est&&estado.est.canales[cid]); if(!c){ toast("No tengo los datos de ese canal"); return; } await vigilar(Object.assign({},c)); },
+  verCanal(b){ estado.filtro.canal=b.dataset.c; estado.sub="videos"; refrescarFiltros(); window.scrollTo({top:0}); },
+  actTodos(){ actualizarVigilados(); },
+  abrirCanal(b){ estado.canalAbierto=b.dataset.c; estado.limiteCanal=60; pintarVigilados(); window.scrollTo(0,0); },
+  cerrarCanal(){ estado.canalAbierto=null; pintarVigilados(); window.scrollTo(0,0); },
+  async actCanal(b){ toast("Actualizando canal…"); try{ if(!modoDemo){ const n=await traerCanales([b.dataset.c]); const V=await cargarVig(); const c=V.canales.find(x=>x.id===b.dataset.c); if(c&&n[c.id]) Object.assign(c,n[c.id]); } await traerVideosCanal(b.dataset.c); toast("Canal actualizado"); }catch(e){ toast(e.message,6000); } pintarVigilados(); },
+  async quitarCanal(b){ const V=await cargarVig(), c=V.canales.find(x=>x.id===b.dataset.c); if(!c||!confirm("¿Dejar de vigilar «"+c.nombre+"»?")) return; V.canales=V.canales.filter(x=>x.id!==c.id); delete V.videos[c.id]; await guardarVig(); pintarVigilados(); },
+  async marcarMio(b){ const V=await cargarVig(), c=V.canales.find(x=>x.id===b.dataset.c); if(!c) return; c.esMio=!c.esMio; await guardarVig(); pintarVigilados(); },
+  dirCanal(){ estado.dirCanal=estado.dirCanal==="desc"?"asc":"desc"; pintarVigilados(); },
+  vermasCanal(){ estado.limiteCanal+=60; pintarVigilados(); },
+  async abrirEst(b){ const e=await ALM.get("estudio:"+b.dataset.id); if(e) abrirEstudio(e,{deCache:true}); else toast("No encontré esa búsqueda"); },
+  async refrescarEst(b){ const e=await ALM.get("estudio:"+b.dataset.id); if(e){ irA("buscar"); buscar(Object.assign({},e.params),{forzar:true}); } },
+  async borrarEst(b){ let idx=(await ALM.get("estudios_idx"))||[]; idx=idx.filter(x=>x.id!==b.dataset.id); await ALM.del("estudio:"+b.dataset.id); await ALM.set("estudios_idx",idx); if(estado.est&&estado.est.id===b.dataset.id){ estado.est=null; pintarResultados(); } pintarHistorial(); },
+  async borrarHist(){ if(!confirm("¿Borrar todas las búsquedas guardadas?")) return; const idx=(await ALM.get("estudios_idx"))||[]; for(const x of idx) await ALM.del("estudio:"+x.id); await ALM.set("estudios_idx",[]); estado.est=null; pintarResultados(); pintarHistorial(); },
+  entrarGoogle(){ entrarGoogle(); },
+  salirGoogle(){ salirGoogle(); },
+  resetCuota(){ LS.set("cuota",{dia:diaPacifico(),busq:0,unid:0}); pintarCuota(); pintarAjustes(); actualizarGasto(); toast("Contador en cero"); },
+  exportar(){ exportar(); },
+  importar(){ $("#inImportar").click(); },
+  async borrarTodo(){ if(!confirm("¿Borrar TODO (búsquedas, vigilados y ajustes) de este teléfono?")) return; await DB.borrarTodo(); try{ Object.keys(localStorage).filter(k=>k.startsWith("rv_")).forEach(k=>localStorage.removeItem(k)); }catch(e){} Object.keys(MEM).forEach(k=>delete MEM[k]); location.reload(); }
+};
+function alternar(set,v){ if(set.has(v)) set.delete(v); else set.add(v); }
+function refrescarFiltros(){ estado.limite=60; pintarResultados(); }
+function refrescarTarjeta(b,id){
+  const art=b.closest("article.vc"), f=MAPA_FILAS.get(id); if(!art||!f) return;
+  const viejo=art.querySelector(".det"); if(viejo) viejo.remove();
+  if(estado.abiertos.has(id)){ art.insertAdjacentHTML("beforeend",detalle(f)); b.textContent="Ocultar"; } else b.textContent="Detalles";
+}
+
+/* ---------------- arranque ---------------- */
+function ajustarCab(){ const c=$(".cab"); if(c) document.documentElement.style.setProperty("--cabH",c.offsetHeight+"px"); }
+function enlazar(){
+  document.addEventListener("click", async e=>{
+    const t=e.target.closest("[data-tab]"); if(t){ irA(t.dataset.tab); return; }
+    const b=e.target.closest("[data-act]"); if(!b) return;
+    const fn=ACCIONES[b.dataset.act]; if(!fn) return;
+    e.preventDefault();
+    try{ await fn(b); }catch(err){ toast(err.message||"Algo salió mal",6000); }
+  });
+  document.addEventListener("change", e=>{
+    const el=e.target, ch=el.dataset&&el.dataset.ch;
+    if(el.id==="inImportar"){ if(el.files[0]) importar(el.files[0]); el.value=""; return; }
+    if(el.closest&&el.closest("#fBuscar")){ actualizarGasto(); LS.set("filtros",leerFormulario()); return; }
+    if(!ch) return;
+    if(ch==="orden"){ estado.orden=el.value; guardarVista(); pintarCuerpo(); }
+    else if(ch==="fmin"){ estado.filtro.minVistas=+el.value; refrescarFiltros(); }
+    else if(ch==="fdentro"){ estado.filtro.dentro=+el.value; refrescarFiltros(); }
+    else if(ch==="ordenCanal"){ estado.ordenCanal=el.value; pintarVigilados(); }
+    else if(ch==="cache"){ guardarCFG({cacheHoras:+el.value}); toast("Guardado"); }
+  });
+  let tTexto=null;
+  document.addEventListener("input", e=>{
+    if(e.target.id==="ftexto"){ estado.filtro.texto=e.target.value; clearTimeout(tTexto); tTexto=setTimeout(()=>{ estado.limite=60; pintarCuerpo(); },180); }
+  });
+  document.addEventListener("toggle", e=>{ const d=e.target; if(d&&d.matches&&d.matches("details[data-sec]")) estado.secs[d.dataset.sec]=d.open; }, true);
+  document.addEventListener("submit", async e=>{
+    e.preventDefault();
+    if(e.target.id==="fBuscar"){ $("#q").blur(); buscar(leerFormulario()); }
+    else if(e.target.id==="fCanal"){
+      const v=$("#inCanal").value.trim(); if(!v) return;
+      if(modoDemo){ toast("En el ejemplo no se agregan canales reales. Sal del ejemplo para hacerlo."); return; }
+      try{ toast("Buscando el canal…"); const c=await resolverCanal(v); await vigilar(c); $("#inCanal").value=""; }catch(err){ toast(err.message,6000); }
+    }
+  });
+}
+async function iniciar(){
+  llenarFormulario(LS.get("filtros",null));
+  pintarCuota(); pintarUsuario(); enlazar(); ajustarCab(); window.addEventListener("resize",ajustarCab);
+  const idx=(await ALM.get("estudios_idx"))||[];
+  const e=idx.length?await ALM.get("estudio:"+idx[0].id):null;
+  if(e) abrirEstudio(e,{silencioso:true,deCache:true}); else pintarBienvenida();
+  if("serviceWorker" in navigator && location.protocol==="https:") navigator.serviceWorker.register("./sw.js").catch(()=>{});
+}
+iniciar();
+</script>
+</body>
+</html>

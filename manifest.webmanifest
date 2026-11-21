@@ -1,0 +1,32 @@
+{
+ "name": "Radar Viral",
+ "short_name": "Radar Viral",
+ "description": "Videos virales de YouTube por tema: ranking, filtros por idioma y país, y estudio completo",
+ "start_url": "./",
+ "scope": "./",
+ "display": "standalone",
+ "orientation": "any",
+ "lang": "es",
+ "background_color": "#151925",
+ "theme_color": "#151925",
+ "icons": [
+  {
+   "src": "./icon-virales-192.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "./icon-virales-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "./icon-virales-512-maskable.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}
